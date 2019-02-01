@@ -10,6 +10,7 @@ npm install
 npm run serve (in browser)
 ```
 npm run electron:serve (in electron)
+```
 
 ### Compiles and minifies for production
 ```
