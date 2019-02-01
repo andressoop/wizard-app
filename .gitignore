@@ -1,4 +1,5 @@
 .DS_Store
+<<<<<<< HEAD
 node_modules
 /dist
 
@@ -24,3 +25,17 @@ yarn-error.log*
 
 #Electron-builder output
 /dist_electron
+=======
+dist/electron/*
+dist/web/*
+build/*
+!build/icons
+coverage
+node_modules/
+npm-debug.log
+npm-debug.log.*
+thumbs.db
+!.gitkeep
+
+\.idea/
+>>>>>>> master
