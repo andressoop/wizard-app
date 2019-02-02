@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import db from './firebaseInit'
+import db from '../helpers/firebaseInit'
 
 export default {
   name: 'HelloWorld',
