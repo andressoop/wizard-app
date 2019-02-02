@@ -4,9 +4,21 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
     </div>
-    <router-view/>
+    <fade-transition origin="center" mode="out-in" :duration="250">
+      <router-view/>
+    </fade-transition>
   </div>
 </template>
+
+<script>
+import { FadeTransition } from "vue2-transitions";
+
+export default {
+  components: {
+    FadeTransition
+  }
+};
+</script>
 
 <style>
 #app {
