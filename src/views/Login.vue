@@ -229,18 +229,33 @@ export default {
     },
     googleLogin() {
       fb.auth
-        .signInWithPopup(fb.google_provider)
-        .then(user => {
-          this.$store.commit("setCurrentUser", user.user);
-          this.$store.dispatch("fetchUserProfile");
-          this.$router.push("/dashboard");
-        })
-        .catch(err => {
+        .signInWithPopup(fb.googleProvider)
+        .then(credential => {
+          this.$store.commit("setCurrentUser", credential.user)
+
+          fb.usersCollection.doc(credential.user.uid).set({
+
+          }).then(() => {
+            this.$store.dispatch("fetchUserProfile")
+            this.updateGmailData()
+            this.$router.push("/dashboard")
+          }).catch(err => {
+            console.log(err)
+          })
+        }).catch(err => {
           console.log(err);
         });
     },
     toggleForm() {
       this.showLoginForm = !this.showLoginForm;
+    },
+    updateGmailData() {
+      this.user = fb.auth.currentUser
+      fb.usersCollection.doc(this.user.uid).set({
+        "name": this.user.displayName,
+        "email": this.user.email,
+        "photoURL": this.user.photoURL
+      })
     }
   }
 };
