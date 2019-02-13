@@ -20,11 +20,13 @@ const currentUser = auth.currentUser
 
 // firebase collections
 const usersCollection = db.collection('users')
+const projectsCollection = db.collection('projects')
 
 export {
     db,
     auth,
     currentUser,
+    googleProvider,
     usersCollection,
-    googleProvider
+    projectsCollection
 }
