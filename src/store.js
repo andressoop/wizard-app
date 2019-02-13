@@ -39,7 +39,7 @@ export const store = new Vuex.Store({
         clearData({ commit }) {
             commit('setCurrentUser', null)
             commit('setUserProfile', {})
-            commit('setProjects', null)
+            commit('setUserProjects', null)
         },
         fetchUserProfile({ commit, state }) {
             fb.usersCollection.doc(state.currentUser.uid).get().then(res => {
