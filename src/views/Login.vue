@@ -228,8 +228,10 @@ export default {
         });
     },
     googleLogin() {
-      fb.auth
-        .signInWithPopup(fb.googleProvider)
+      fb.auth.signInWithRedirect(fb.googleProvider)
+    },
+    googleLoginResponse() {
+      fb.auth.getRedirectResult()
         .then(credential => {
           this.$store.commit("setCurrentUser", credential.user)
 
@@ -257,6 +259,9 @@ export default {
         "photoURL": this.user.photoURL
       })
     }
+  },
+  created() {
+    this.googleLoginResponse()
   }
 };
 </script>
