@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <ul>
       <li
         v-for="project in userProjects"
