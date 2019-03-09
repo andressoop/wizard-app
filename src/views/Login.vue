@@ -183,6 +183,16 @@ export default {
       showLoginForm: true
     };
   },
+  beforeCreate: function() {
+    fb.auth.onAuthStateChanged((user) => {
+      if (user) {
+        this.$router.push("/dashboard")
+        this.googleLoginResponse()
+      } else {
+        this.$router.push("/login");
+      }
+    });
+  },
   methods: {
     login() {
       fb.auth
@@ -240,7 +250,6 @@ export default {
           }).then(() => {
             this.$store.dispatch("fetchUserProfile")
             this.updateGmailData()
-            this.$router.push("/dashboard")
           }).catch(err => {
             console.log(err)
           })
@@ -260,9 +269,7 @@ export default {
       })
     }
   },
-  created() {
-    this.googleLoginResponse()
-  }
+  
 };
 </script>
 
