@@ -7,7 +7,7 @@ const fb = require('./helpers/firebaseConfig.js')
 Vue.config.productionTip = false
 
 let app
-fb.auth.onAuthStateChanged(user => {
+fb.auth.onAuthStateChanged(function() {
   if (!app){
     app = new Vue({
       el: '#app',
