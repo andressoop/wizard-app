@@ -9,8 +9,7 @@
         type="email"
         class="form-control"
         placeholder="Email address"
-        required
-        autofocus
+        
       >
       <label for="inputPassword" class="sr-only">Password</label>
       <input
@@ -18,18 +17,17 @@
         type="password"
         class="form-control"
         placeholder="Password"
-        required
       >
       <div class="checkbox mb-3">
         <label>
           <input type="checkbox" value="remember-me"> Remember me
         </label>
       </div>
-      <button @click="login" class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-      <button class="btn btn-lg btn-primary btn-block" type="submit">
+      <button @click="login" class="btn btn-lg btn-primary btn-block" type="button">Sign in</button>
+      <button class="btn btn-lg btn-primary btn-block" type="button">
         <img src="img/icons/github.svg" alt="Github Logo"> Github
       </button>
-      <button @click="googleLogin" class="btn btn-lg btn-primary btn-block" type="submit">
+      <button @click="googleLogin" class="btn btn-lg btn-primary btn-block" type="button">
         <img src="img/icons/google.svg" alt="Google Logo"> Google
       </button>
     </form>
@@ -42,8 +40,7 @@
         type="text"
         class="form-control"
         placeholder="Full Name"
-        required
-        autofocus
+        
       >
       <label for="inputEmail" class="sr-only">Email address</label>
       <input
@@ -51,8 +48,7 @@
         type="email"
         class="form-control"
         placeholder="Email address"
-        required
-        autofocus
+        
       >
       <label for="inputPassword" class="sr-only">Password</label>
       <input
@@ -60,14 +56,13 @@
         type="password"
         class="form-control"
         placeholder="Password"
-        required
       >
       <div class="checkbox mb-3">
         <label>
           <input type="checkbox" value="remember-me"> Privacy Policy
         </label>
       </div>
-      <button @click="signup" class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>
+      <button @click="signup" class="btn btn-lg btn-primary btn-block" type="button">Sign Up</button>
     </form>
   </div>
 </template>
