@@ -1,28 +1,25 @@
 <template>
   <div>
-    <!-- <ul>
-      <li
-        v-for="project in userProjects"
-        v-bind:key="project.id"
-      >{{project.id}} | {{project.name}} | {{project.uid}} | {{project.createdOn | formatDate}}</li>
-    </ul> -->
-    <div v-for="project in userProjects" v-bind:key="project.id" v-bind:ProjectName="project.name"><projectCard/></div>
+    <div class="row">
+      <div class="col-sm-4" v-for="project in userProjects" :key="project.id">
+        <ProjectCard :projectName="project.name" :projectId="project.id" :projectCreatedOn="project.createdOn" />
+      </div>
+    </div>
     
-      <form>
-        <input type="text" v-model.trim="newProject.name">
-        <a @click="createProject" class="btn btn-success">Uus projekt</a>
-      </form>
+    <form @submit.prevent>
+      <input type="text" v-model.trim="newProject.name">
+      <button @click="createProject" type="button" class="btn btn-sm btn-success">Create new project</button>
+    </form>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import moment from 'moment'
 import ProjectCard from '../components/ProjectCard.vue'
-const fb = require("../helpers/firebaseConfig.js");
+const fb = require('../helpers/firebaseConfig.js');
 
 export default {
-  name: "ProjectsList",
+  name: 'ProjectsList',
   components: {
     ProjectCard
   },
@@ -45,13 +42,6 @@ export default {
       }).catch(err => {
         console.log(err)
       });
-    }
-  },
-  filters: {
-    formatDate(val) {
-      if(!val) {return '-'}
-      let date = val.toDate()
-      return moment(date).fromNow()
     }
   }
 };
