@@ -69,20 +69,20 @@
 
 
 <script>
-const fb = require("../helpers/firebaseConfig.js");
+const fb = require('../helpers/firebaseConfig.js');
 
 export default {
-  name: "login",
+  name: 'login',
   data() {
     return {
       loginForm: {
-        email: "",
-        password: ""
+        email: '',
+        password: ''
       },
       signupForm: {
-        name: "",
-        email: "",
-        password: ""
+        name: '',
+        email: '',
+        password: ''
       },
       showLoginForm: true
     };
@@ -90,10 +90,10 @@ export default {
   beforeCreate: function() {
     fb.auth.onAuthStateChanged(user => {
       if (user) {
-        this.$router.push("/dashboard");
+        this.$router.push('/dashboard');
         this.googleLoginResponse();
       } else {
-        this.$router.push("/login");
+        this.$router.push('/login');
       }
     });
   },
@@ -105,9 +105,9 @@ export default {
           this.loginForm.password
         )
         .then(user => {
-          this.$store.commit("setCurrentUser", user.user);
-          this.$store.dispatch("fetchUserProfile");
-          this.$router.push("/dashboard");
+          this.$store.commit('setCurrentUser', user.user);
+          this.$store.dispatch('fetchUserProfile');
+          this.$router.push('/dashboard');
         })
         .catch(err => {
           console.log(err);
@@ -120,7 +120,7 @@ export default {
           this.signupForm.password
         )
         .then(credential => {
-          this.$store.commit("setCurrentUser", credential.user);
+          this.$store.commit('setCurrentUser', credential.user);
 
           // create user object
           fb.usersCollection
@@ -130,8 +130,8 @@ export default {
               email: this.signupForm.email
             })
             .then(() => {
-              this.$store.dispatch("fetchUserProfile");
-              this.$router.push("/dashboard");
+              this.$store.dispatch('fetchUserProfile');
+              this.$router.push('/dashboard');
             })
             .catch(err => {
               console.log(err);
@@ -148,13 +148,13 @@ export default {
       fb.auth
         .getRedirectResult()
         .then(credential => {
-          this.$store.commit("setCurrentUser", credential.user);
+          this.$store.commit('setCurrentUser', credential.user);
 
           fb.usersCollection
             .doc(credential.user.uid)
             .set({})
             .then(() => {
-              this.$store.dispatch("fetchUserProfile");
+              this.$store.dispatch('fetchUserProfile');
               this.updateGmailData();
             })
             .catch(err => {
@@ -212,12 +212,12 @@ body {
 .form-signin .form-control:focus {
   z-index: 2;
 }
-.form-signin input[type="email"] {
+.form-signin input[type='email'] {
   margin-bottom: -1px;
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
 }
-.form-signin input[type="password"] {
+.form-signin input[type='password'] {
   margin-bottom: 10px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;

@@ -1,8 +1,8 @@
 <template>
   <div class="sidenav">
     <div class="profileInfo">
-      <img :src="this.userProfile.photoURL" width="50">
-      <h5>Welcome, {{this.userProfile.name}}!</h5>
+      <img :src="this.userProfile.photoURL">
+      <h5>Welcome, {{ this.userProfile.name }}!</h5>
     </div>
     <hr>
     <a href="#">Projects</a>
@@ -23,7 +23,7 @@ export default {
     return {}
   },
   computed: {
-    ...mapState(['userProfile', 'currentUser', 'userProjects'])
+    ...mapState(['userProfile', 'currentUser', 'userProjects']),
   },
   methods: {
     logout: logout,
@@ -74,6 +74,7 @@ hr {
 }
 
 img {
+  width: 50px;
   border-radius: 50%;
   margin-bottom: 10px;
 }

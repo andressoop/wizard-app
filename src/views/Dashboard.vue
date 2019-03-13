@@ -21,6 +21,7 @@ export default {
 </script>
 
 <style scoped>
+
 .container-main {
   margin-left: 250px;
 }
