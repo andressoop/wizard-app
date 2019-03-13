@@ -1,19 +1,28 @@
 <template>
   <div class="container">
-    <ProjectsList/> 
+  <SidebarMain/>
+    <div class="container-main">
+      <ProjectsList/> 
+    </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import NavbarMain from '@/components/NavbarMain.vue'
-import ProjectsList from '@/components/ProjectsList.vue'
+import SidebarMain from '../components/SidebarMain.vue'
+import ProjectsList from '../components/ProjectsList.vue'
 
 export default {
   name: 'dashboard',
   components: {
-    NavbarMain,
+    SidebarMain,
     ProjectsList
   }
 }
 </script>
+
+<style scoped>
+.container-main {
+  margin-left: 250px;
+}
+</style>
+
