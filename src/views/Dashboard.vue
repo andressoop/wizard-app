@@ -12,7 +12,7 @@ import SidebarMain from '../components/SidebarMain.vue'
 import ProjectsList from '../components/ProjectsList.vue'
 
 export default {
-  name: 'dashboard',
+  name: 'Dashboard',
   components: {
     SidebarMain,
     ProjectsList

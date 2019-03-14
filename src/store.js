@@ -1,20 +1,20 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-const fb = require('./helpers/firebaseConfig.js')
+const firebase = require('./helpers/firebaseConfig.js')
 
 Vue.use(Vuex)
 
-fb.auth.onAuthStateChanged(user => {
+firebase.auth.onAuthStateChanged(user => {
     if (user) {
         store.commit('setCurrentUser', user)
         store.dispatch('fetchUserProfile')
 
-        fb.usersCollection.doc(user.uid).onSnapshot(doc => {
+        firebase.usersCollection.doc(user.uid).onSnapshot(doc => {
             store.commit('setUserProfile', doc.data())
         })
 
         // Realtime updates from user projects collection
-        fb.projectsCollection.where('uid', '==', user.uid).orderBy('createdOn', 'desc').onSnapshot(querySnapshot => {
+        firebase.projectsCollection.where('uid', '==', user.uid).orderBy('createdOn', 'desc').onSnapshot(querySnapshot => {
             if(!querySnapshot.empty){
                 let userProjectsArray = []
 
@@ -42,7 +42,7 @@ export const store = new Vuex.Store({
             commit('setUserProjects', null)
         },
         fetchUserProfile({ commit, state }) {
-            fb.usersCollection.doc(state.currentUser.uid).get().then(res => {
+            firebase.usersCollection.doc(state.currentUser.uid).get().then(res => {
                 commit('setUserProfile', res.data())
             }).catch(err => {
                 console.log(err)

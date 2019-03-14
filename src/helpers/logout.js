@@ -1,7 +1,7 @@
-const fb = require('../helpers/firebaseConfig.js');
+const firebase = require('../helpers/firebaseConfig.js');
 
 export default function logout() {
-    fb.auth
+    firebase.auth
       .signOut()
       .then(() => {
         this.$store.dispatch('clearData');

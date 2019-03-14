@@ -16,7 +16,7 @@
 <script>
 import { mapState } from 'vuex'
 import ProjectCard from '../components/ProjectCard.vue'
-const fb = require('../helpers/firebaseConfig.js');
+const firebase = require('../helpers/firebaseConfig.js');
 
 export default {
   name: 'ProjectsList',
@@ -35,7 +35,7 @@ export default {
   },
   methods: {
     createProject() {
-      fb.projectsCollection.add({
+      firebase.projectsCollection.add({
         createdOn: new Date(),
         uid: this.currentUser.uid,
         name: this.newProject.name

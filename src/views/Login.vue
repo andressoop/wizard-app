@@ -1,160 +1,57 @@
 <template>
   <div class="container">
-    <!-- Sign in -->
-    <form class="form-signin">
-      <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-      <label for="inputEmail" class="sr-only">Email address</label>
-      <input
-        v-model.trim="loginForm.email"
-        type="email"
-        class="form-control"
-        placeholder="Email address"
-        
-      >
-      <label for="inputPassword" class="sr-only">Password</label>
-      <input
-        v-model.trim="loginForm.password"
-        type="password"
-        class="form-control"
-        placeholder="Password"
-      >
-      <div class="checkbox mb-3">
-        <label>
-          <input type="checkbox" value="remember-me"> Remember me
-        </label>
-      </div>
-      <button @click="login" class="btn btn-lg btn-primary btn-block" type="button">Sign in</button>
-      <button class="btn btn-lg btn-primary btn-block" type="button">
-        <img src="img/icons/github.svg" alt="Github Logo"> Github
-      </button>
-      <button @click="googleLogin" class="btn btn-lg btn-primary btn-block" type="button">
-        <img src="img/icons/google.svg" alt="Google Logo"> Google
-      </button>
-    </form>
-    <!-- Sign up -->
-    <form class="form-signin">
-      <h1 class="h3 mb-3 font-weight-normal">Sign Up</h1>
-      <label for="inputName" class="sr-only">Name</label>
-      <input
-        v-model.trim="signupForm.name"
-        type="text"
-        class="form-control"
-        placeholder="Full Name"
-        
-      >
-      <label for="inputEmail" class="sr-only">Email address</label>
-      <input
-        v-model.trim="signupForm.email"
-        type="email"
-        class="form-control"
-        placeholder="Email address"
-        
-      >
-      <label for="inputPassword" class="sr-only">Password</label>
-      <input
-        v-model.trim="signupForm.password"
-        type="password"
-        class="form-control"
-        placeholder="Password"
-      >
-      <div class="checkbox mb-3">
-        <label>
-          <input type="checkbox" value="remember-me"> Privacy Policy
-        </label>
-      </div>
-      <button @click="signup" class="btn btn-lg btn-primary btn-block" type="button">Sign Up</button>
-    </form>
+    <AuthEmailLogin/>
+    <AuthGithub/>
+    <AuthGoogle/>
+    <AuthEmailSignup/>
   </div>
 </template>
 
 
 <script>
-const fb = require('../helpers/firebaseConfig.js');
+import AuthGithub from "../components/AuthGithub.vue";
+import AuthGoogle from "../components/AuthGoogle.vue";
+import AuthEmailLogin from "../components/AuthEmailLogin.vue";
+import AuthEmailSignup from "../components/AuthEmailSignup.vue";
+const firebase = require("../helpers/firebaseConfig.js");
 
 export default {
-  name: 'login',
+  name: "Login",
+  components: {
+    AuthGithub,
+    AuthGoogle,
+    AuthEmailLogin,
+    AuthEmailSignup
+  },
   data() {
-    return {
-      loginForm: {
-        email: '',
-        password: ''
-      },
-      signupForm: {
-        name: '',
-        email: '',
-        password: ''
-      },
-      showLoginForm: true
-    };
+    return {}
   },
   beforeCreate: function() {
-    fb.auth.onAuthStateChanged(user => {
+    firebase.auth.onAuthStateChanged(user => {
       if (user) {
-        this.$router.push('/dashboard');
-        this.googleLoginResponse();
+        this.$router.push("/dashboard");
+
+        if (user.providerData.providerId == 'google.com'){
+          this.googleLoginResponse();
+        }
+        
       } else {
-        this.$router.push('/login');
+        this.$router.push("/login");
       }
     });
   },
   methods: {
-    login() {
-      fb.auth
-        .signInWithEmailAndPassword(
-          this.loginForm.email,
-          this.loginForm.password
-        )
-        .then(user => {
-          this.$store.commit('setCurrentUser', user.user);
-          this.$store.dispatch('fetchUserProfile');
-          this.$router.push('/dashboard');
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
-    signup() {
-      fb.auth
-        .createUserWithEmailAndPassword(
-          this.signupForm.email,
-          this.signupForm.password
-        )
-        .then(credential => {
-          this.$store.commit('setCurrentUser', credential.user);
-
-          // create user object
-          fb.usersCollection
-            .doc(credential.user.uid)
-            .set({
-              name: this.signupForm.name,
-              email: this.signupForm.email
-            })
-            .then(() => {
-              this.$store.dispatch('fetchUserProfile');
-              this.$router.push('/dashboard');
-            })
-            .catch(err => {
-              console.log(err);
-            });
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
-    googleLogin() {
-      fb.auth.signInWithRedirect(fb.googleProvider);
-    },
     googleLoginResponse() {
-      fb.auth
+      firebase.auth
         .getRedirectResult()
         .then(credential => {
-          this.$store.commit('setCurrentUser', credential.user);
+          this.$store.commit("setCurrentUser", credential.user);
 
-          fb.usersCollection
+          firebase.usersCollection
             .doc(credential.user.uid)
             .set({})
             .then(() => {
-              this.$store.dispatch('fetchUserProfile');
+              this.$store.dispatch("fetchUserProfile");
               this.updateGmailData();
             })
             .catch(err => {
@@ -166,8 +63,8 @@ export default {
         });
     },
     updateGmailData() {
-      this.user = fb.auth.currentUser;
-      fb.usersCollection.doc(this.user.uid).set({
+      this.user = firebase.auth.currentUser;
+      firebase.usersCollection.doc(this.user.uid).set({
         name: this.user.displayName,
         email: this.user.email,
         photoURL: this.user.photoURL
@@ -212,12 +109,12 @@ body {
 .form-signin .form-control:focus {
   z-index: 2;
 }
-.form-signin input[type='email'] {
+.form-signin input[type="email"] {
   margin-bottom: -1px;
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
 }
-.form-signin input[type='password'] {
+.form-signin input[type="password"] {
   margin-bottom: 10px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
