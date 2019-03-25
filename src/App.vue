@@ -19,7 +19,7 @@ export default {
 <style>
 
 #dashboard {
-  padding-left: 350px;
+  padding-left: 250px;
 }
 
 #dashboard.collapsed {

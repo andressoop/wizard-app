@@ -1,46 +1,27 @@
 <template>
-  <div id="dashboard" :class="[{'collapsed' : collapsed}]">
+  <div id="dashboard" :class="[{'collapsed' : sidebarCollapsed}]">
     <div class="dashboard">
       <div class="container-main">
       <ProjectsList/> 
       </div>
-      <sidebar-menu @collapse="onCollapse" :menu="menu"/>
+      <Navigation/>
     </div>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import ProjectsList from '../components/ProjectsList.vue'
-import { SidebarMenu } from "vue-sidebar-menu";
-import "vue-sidebar-menu/dist/vue-sidebar-menu.css";
-import "@fortawesome/fontawesome-free/css/all.css";
+import Navigation from '../components/Navigation.vue'
 
 export default {
   name: 'Dashboard',
   components: {
     ProjectsList,
-    SidebarMenu
+    Navigation
   },
-  data() {
-    return {
-      menu: [
-        {
-          header: true,
-          title: "Welcome"
-        },
-        {
-          href: "/dashboard",
-          title: "Dashboard",
-          icon: "fa fa-home"
-        }
-      ],
-      collapsed: false,
-    };
-  },
-  methods: {
-    onCollapse (collapsed) {
-      this.collapsed = collapsed
-    }
+  computed: {
+    ...mapState(['sidebarCollapsed'])
   }
 }
 

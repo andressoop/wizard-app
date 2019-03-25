@@ -33,7 +33,8 @@ export const store = new Vuex.Store({
     state: {
         currentUser: null,
         userProfile: {},
-        userProjects: []
+        userProjects: [],
+        sidebarCollapsed: false
     },
     actions: {
         clearData({ commit }) {
@@ -47,6 +48,9 @@ export const store = new Vuex.Store({
             }).catch(err => {
                 console.log(err)
             })
+        },
+        toggleSidebarCollapsed({ commit }, collapsed) {
+            commit('setSidebarCollapsed', collapsed)
         }
     }, 
     mutations: {
@@ -58,6 +62,9 @@ export const store = new Vuex.Store({
         },
         setUserProjects(state, val) {
             state.userProjects = val
+        },
+        setSidebarCollapsed(state, val) {
+            state.sidebarCollapsed = val
         }
     }
 })
