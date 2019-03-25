@@ -8,6 +8,7 @@
       </h4>
       <p>id: {{ projectId }}</p>
       <p>Created {{ projectCreatedOn | formatDate }}</p>
+      <button type="button" class="btn btn-primary btn-sm" @click="loadProject(projectId)">View Project</button>
     </div>
   </div>
 </template>
@@ -24,6 +25,11 @@ export default {
   ],
   data() {
     return {}
+  },
+  methods: {
+    loadProject(projectId) {
+      this.$router.push('/project/' + projectId)
+    }
   },
   filters: {
     formatDate(val) {
