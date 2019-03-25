@@ -2,7 +2,7 @@ import Vue from 'vue'
 import firebase from 'firebase';
 import Router from 'vue-router'
 import Dashboard from './views/Dashboard.vue'
-import ViewProject from './components/ViewProject.vue'
+import Kanban from './views/Kanban.vue'
 import Login from './views/Login.vue'
 
 Vue.use(Router)
@@ -30,7 +30,7 @@ const router = new Router({
   {
     path: '/project/:id',
     name: 'project',
-    component: ViewProject,
+    component: Kanban,
     meta: {
       requiresAuth: true
     }

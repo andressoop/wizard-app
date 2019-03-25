@@ -2,7 +2,7 @@
   <div id="dashboard" :class="[{'collapsed' : collapsed}]">
     <div class="dashboard">
       <div class="container-main">
-      <ProjectsList/> 
+      <ProjectKanban/> 
       </div>
       <sidebar-menu @collapse="onCollapse" :menu="menu"/>
     </div>
@@ -10,15 +10,15 @@
 </template>
 
 <script>
-import ProjectsList from '../components/ProjectsList.vue'
+import ProjectKanban from '../components/ProjectKanban.vue'
 import { SidebarMenu } from "vue-sidebar-menu";
 import "vue-sidebar-menu/dist/vue-sidebar-menu.css";
 import "@fortawesome/fontawesome-free/css/all.css";
 
 export default {
-  name: 'Dashboard',
+  name: 'Kanban',
   components: {
-    ProjectsList,
+    ProjectKanban,
     SidebarMenu
   },
   data() {

@@ -18,4 +18,20 @@ export default {
 
 <style>
 
+#dashboard {
+  padding-left: 350px;
+}
+
+#dashboard.collapsed {
+  padding-left: 50px;
+}
+
+.dashboard {
+  padding: 50px;
+}
+
+.container-main {
+  max-width: 600px;
+}
+
 </style>

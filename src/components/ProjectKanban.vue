@@ -17,7 +17,7 @@ import firebase from 'firebase';
 import { mapState } from 'vuex'
 
 export default {
-  name: 'ViewProject',
+  name: 'ProjectKanban',
   props: [
     'projectName',
     'projectId',
