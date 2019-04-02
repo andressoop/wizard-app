@@ -1,15 +1,37 @@
 <template>
-  <div class="container">
-    <AuthEmailLogin/>
-    <AuthGithub/>
-    <AuthGoogle/>
-    <AuthEmailSignup/>
+  <div class="container-fluid">
+  <div class="row no-gutter">
+    <div class="d-none d-md-flex col-md-4 col-lg-6 bg-image"></div>
+    <div class="col-md-8 col-lg-6">
+      <div class="login d-flex align-items-center py-5">
+       <div class="container">
+          <div class="row">
+            <div class="col-md-9 col-lg-8 mx-auto">
+              <h3 class="login-heading mb-4" v-if="showLoginForm">Welcome back!</h3>
+              <h3 class="login-heading mb-4" v-else>Create new account</h3>
+                <AuthEmailLogin v-if="showLoginForm" />
+                <AuthEmailSignup v-else/>
+                <hr>
+                <h3 class="login-heading mb-4" v-if="showLoginForm">You can also login with</h3>
+                <h3 class="login-heading mb-4" v-else>You can sign up via</h3>
+                <AuthGoogle/>
+                <div class="text-center mt-5" v-if="showLoginForm">
+                <p class="font-weight-light" @click="toggleForm">Or create an account</p>
+                </div>
+                <div class="text-center mt-5" v-else>
+                  <p class="font-weight-light" @click="toggleForm">Back to login</p>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+</div>
 </template>
 
 
 <script>
-import AuthGithub from "../components/AuthGithub.vue";
 import AuthGoogle from "../components/AuthGoogle.vue";
 import AuthEmailLogin from "../components/AuthEmailLogin.vue";
 import AuthEmailSignup from "../components/AuthEmailSignup.vue";
@@ -18,13 +40,14 @@ const firebase = require("../helpers/firebaseConfig.js");
 export default {
   name: "Login",
   components: {
-    AuthGithub,
     AuthGoogle,
     AuthEmailLogin,
     AuthEmailSignup
   },
   data() {
-    return {}
+    return {
+      showLoginForm: true
+    }
   },
   beforeCreate: function() {
     firebase.auth.onAuthStateChanged(user => {
@@ -69,54 +92,100 @@ export default {
         email: this.user.email,
         photoURL: this.user.photoURL
       });
+    },
+    toggleForm() {
+      this.showLoginForm = !this.showLoginForm
     }
   }
 };
 </script>
 
-<style scoped>
-html,
-body {
-  height: 100%;
+<style>
+:root {
+  --input-padding-x: 1.5rem;
+  --input-padding-y: 0.75rem;
 }
 
-body {
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-align: center;
-  align-items: center;
-  padding-top: 40px;
-  padding-bottom: 40px;
-  background-color: #f5f5f5;
+.login,
+.image {
+  min-height: 100vh;
 }
 
-.form-signin {
-  width: 100%;
-  max-width: 330px;
-  padding: 15px;
-  margin: auto;
+.bg-image {
+  background-image: url('https://source.unsplash.com/WEQbe2jBg40/600x1200');
+  background-size: cover;
+  background-position: center;
 }
-.form-signin .checkbox {
-  font-weight: 400;
+
+.login-heading {
+  font-weight: 300;
 }
-.form-signin .form-control {
+
+.btn-login {
+  font-size: 0.9rem;
+  letter-spacing: 0.05rem;
+  padding: 0.75rem 1rem;
+  border-radius: 2rem;
+}
+
+.form-label-group {
   position: relative;
-  box-sizing: border-box;
+  margin-bottom: 1rem;
+}
+
+.form-label-group>input,
+.form-label-group>label {
+  padding: var(--input-padding-y) var(--input-padding-x);
   height: auto;
-  padding: 10px;
-  font-size: 16px;
+  border-radius: 0.5rem;
 }
-.form-signin .form-control:focus {
-  z-index: 2;
+
+.form-label-group>label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  /* width: 100%; */
+  margin-bottom: 0;
+  /* Override default `<label>` margin */
+  line-height: 1.5;
+  color: #495057;
+  cursor: text;
+  /* Match the input under the label */
+  border: 1px solid transparent;
+  border-radius: .25rem;
+  transition: all .1s ease-in-out;
 }
-.form-signin input[type="email"] {
-  margin-bottom: -1px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
+
+.form-label-group input::-webkit-input-placeholder {
+  color: transparent;
 }
-.form-signin input[type="password"] {
-  margin-bottom: 10px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
+
+.form-label-group input:-ms-input-placeholder {
+  color: transparent;
+}
+
+.form-label-group input::-ms-input-placeholder {
+  color: transparent;
+}
+
+.form-label-group input::-moz-placeholder {
+  color: transparent;
+}
+
+.form-label-group input::placeholder {
+  color: transparent;
+}
+
+.form-label-group input:not(:placeholder-shown) {
+  padding-top: calc(var(--input-padding-y) + var(--input-padding-y) * (2 / 3));
+  padding-bottom: calc(var(--input-padding-y) / 3);
+}
+
+.form-label-group input:not(:placeholder-shown)~label {
+  padding-top: calc(var(--input-padding-y) / 3);
+  padding-bottom: calc(var(--input-padding-y) / 3);
+  font-size: 12px;
+  color: #777;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
-  <button class="btn btn-lg btn-primary btn-block" type="button">
-    <img src="img/icons/github.svg" alt="Github Logo"> Github
+  <button class="btn btn-lg btn-outline-primary btn-block btn-login disabled text-uppercase font-weight-bold mb-2" type="button">
+    <img src="img/icons/github.svg" width="20" alt="Github Logo"> Sign up with Github
   </button>
 </template>
 

@@ -1,6 +1,6 @@
 <template>
-  <button @click="googleLogin" class="btn btn-lg btn-primary btn-block" type="button">
-    <img src="img/icons/google.svg" alt="Google Logo"> Google
+  <button @click="googleLogin" class="btn btn-lg btn-outline-primary btn-block btn-login text-uppercase font-weight-bold mb-2" type="button">
+    <img src="img/icons/google.svg" width="20" alt="Google Logo"> Google
   </button>
 </template>
 

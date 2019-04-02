@@ -26,7 +26,7 @@ export default {
       menu: [
         {
           header: true,
-          title: "Welcome"
+          title: "Welcome",
         },
         {
           href: "/dashboard",
@@ -47,11 +47,12 @@ export default {
   },
   computed: {
     ...mapActions(['toggleSidebarCollapsed']),
-    ...mapState(['sidebarCollapsed'])
+    ...mapState(['sidebarCollapsed', 'currentUser', 'userProfile']),
   },
   methods: {
     onCollapse (collapsed) {
       this.$store.dispatch('toggleSidebarCollapsed', collapsed)
+      console.log(this.currentUser.displayName);
     },
     onItemClick (event, item) {
       if (item.title === "Sign Out") {

@@ -1,48 +1,73 @@
 <template>
-  <form class="form-signin">
-    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-    <label for="inputEmail" class="sr-only">Email address</label>
-    <input
-      v-model.trim="loginForm.email"
-      type="email"
-      class="form-control"
-      placeholder="Email address"
-    >
-    <label for="inputPassword" class="sr-only">Password</label>
-    <input
-      v-model.trim="loginForm.password"
-      type="password"
-      class="form-control"
-      placeholder="Password"
-    >
-    <div class="checkbox mb-3">
-      <label>
-        <input type="checkbox" value="remember-me"> Remember me
-      </label>
+  <form>
+    <div class="form-label-group" :class="{invalid: $v.email.$error}">
+      <input
+        v-model.trim="email"
+        @blur="$v.email.$touch()"
+        type="email"
+        class="form-control"
+        placeholder="Email address"
+        required autofocus
+      >
+      <label for="inputEmail small">Email address</label>
+      <p class="small text-danger ml-1 mt-2" v-if="!$v.email.email">Please provide valid email address.</p>
     </div>
-    <button @click="login" class="btn btn-lg btn-primary btn-block" type="button">Sign in</button>
+
+    <div class="form-label-group" :class="{invalid: $v.password.$error}">
+      <input
+        v-model.trim="password"
+        @blur="$v.password.$touch()"
+        type="password"
+        class="form-control"
+        placeholder="Password"
+      >
+      <label for="inputPassword">Password</label>
+      <p class="small text-danger ml-1 mt-2" v-if="!$v.password.minLength">Password should be at least 6 characters</p>
+    </div>
+
+    <div class="custom-control custom-checkbox mb-3">
+      <input type="checkbox" class="custom-control-input" id="customCheck1">
+      <label class="custom-control-label" for="customCheck1">Remember password</label>
+    </div>
+    <button
+      @click="login"
+      class="btn btn-lg btn-primary btn-block btn-login text-uppercase font-weight-bold mb-2"
+      type="button"
+    >Sign in</button>
+    <div class="text-center">
+      <a class="small text-muted" href="#">Forgot password?</a>
+    </div>
   </form>
 </template>
 
 <script>
+import { required, email, minLength } from 'vuelidate/lib/validators'
 const firebase = require('../helpers/firebaseConfig.js');
 
 export default {
   name: 'AuthEmailLogin',
   data() {
     return {
-      loginForm: {
         email: '',
         password: ''
-      }
     }
+  },
+  validations: {
+    email: {
+      required,
+      email,
+    },
+    password: {
+      required,
+      minLength: minLength(6)
+    },
   },
   methods: {
     login() {
       firebase.auth
         .signInWithEmailAndPassword(
-          this.loginForm.email,
-          this.loginForm.password
+          this.email,
+          this.password
         )
         .then(user => {
           this.$store.commit('setCurrentUser', user.user);
@@ -52,11 +77,19 @@ export default {
         .catch(err => {
           console.log(err);
         });
-    }
+    },
   }
 };
 </script>
 
 <style scoped>
+.invalid label {
+  color: red!important;
+}
+
+.invalid input {
+  border: 1px solid red;
+  background-color: #f1f2f6;
+}
 
 </style>
