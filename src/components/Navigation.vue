@@ -23,10 +23,17 @@ export default {
   },
   data() {
     return {
-      menu: [
+    };
+  },
+  computed: {
+    ...mapActions(['toggleSidebarCollapsed']),
+    ...mapState(['sidebarCollapsed', 'currentUser', 'userProfile']),
+    menu: function(){
+      return [
         {
-          header: true,
-          title: "Welcome",
+          /* header: true, */
+          title: this.userProfile.name,
+          icon: "fa fa-user"
         },
         {
           href: "/dashboard",
@@ -43,16 +50,11 @@ export default {
           icon: "fa fa-sign-out-alt"
         },
       ]
-    };
-  },
-  computed: {
-    ...mapActions(['toggleSidebarCollapsed']),
-    ...mapState(['sidebarCollapsed', 'currentUser', 'userProfile']),
+    }
   },
   methods: {
     onCollapse (collapsed) {
       this.$store.dispatch('toggleSidebarCollapsed', collapsed)
-      console.log(this.currentUser.displayName);
     },
     onItemClick (event, item) {
       if (item.title === "Sign Out") {

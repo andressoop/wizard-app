@@ -5,9 +5,9 @@ const firebase = require('./helpers/firebaseConfig.js')
 Vue.use(Vuex)
 
 firebase.auth.onAuthStateChanged(user => {
+    console.log('run onauth');
     if (user) {
         store.commit('setCurrentUser', user)
-        store.dispatch('fetchUserProfile')
 
         firebase.usersCollection.doc(user.uid).onSnapshot(doc => {
             store.commit('setUserProfile', doc.data())
