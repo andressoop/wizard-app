@@ -1,15 +1,23 @@
 <template>
-  <div>
+  <div class="container-fluid pl-5 mt-4">
     <div class="row">
-      <div class="col-sm-4" v-for="project in userProjects" :key="project.id">
-        <ProjectCard :projectName="project.name" :projectId="project.id" :projectCreatedOn="project.createdOn" />
-      </div>
+    <div class="col-lg-6">
+      <h1>Projects</h1>
+      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum autem magnam cumque, numquam sint distinctio aliquam dolores illo, libero placeat a et expedita iste. Quaerat, iusto quam? Alias, ullam possimus.Consectetur eos fuga deserunt a. Amet corrupti saepe reiciendis, doloremque eius aliquam rem, ipsum quaerat error odit fugit magnam sed modi alias nostrum quidem dolorem nobis nisi! Commodi, culpa repellat.</p>
     </div>
-    
-    <form @submit.prevent>
+    </div>
+    <div class="d-flex flex-row mr-5 mb-5">
+      <form @submit.prevent>
       <input type="text" v-model.trim="newProject.name">
       <button @click="createProject" type="button" class="btn btn-sm btn-success">Create new project</button>
     </form>
+    </div>
+    <hr>
+    <div class="d-flex flex-wrap">
+      <div class="" v-for="project in userProjects" :key="project.id">
+        <ProjectCard :projectName="project.name" :projectId="project.id" :projectCreatedOn="project.createdOn" />
+    </div>
+    </div>
   </div>
 </template>
 
@@ -54,4 +62,5 @@ h3 {
 a {
   color: #42b983;
 }
+
 </style>

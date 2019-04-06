@@ -1,7 +1,7 @@
 <template>
   <div id="dashboard" :class="[{'collapsed' : sidebarCollapsed}]">
-    <div class="dashboard">
-      <div class="container-main">
+    <div>
+      <div>
       <ProjectsList/> 
       </div>
       <Navigation/>

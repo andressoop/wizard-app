@@ -188,4 +188,5 @@ export default {
   font-size: 12px;
   color: #777;
 }
+
 </style>

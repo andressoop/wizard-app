@@ -5,7 +5,6 @@ const firebase = require('./helpers/firebaseConfig.js')
 Vue.use(Vuex)
 
 firebase.auth.onAuthStateChanged(user => {
-    console.log('run onauth');
     if (user) {
         store.commit('setCurrentUser', user)
 
@@ -34,7 +33,7 @@ export const store = new Vuex.Store({
         currentUser: null,
         userProfile: {},
         userProjects: [],
-        sidebarCollapsed: false
+        sidebarCollapsed: false,
     },
     actions: {
         clearData({ commit }) {
