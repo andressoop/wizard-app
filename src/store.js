@@ -23,6 +23,8 @@ firebase.auth.onAuthStateChanged(user => {
                     userProjectsArray.push(project)
                 })
                 store.commit('setUserProjects', userProjectsArray)
+            } else {
+                store.commit('setUserProjects', [])
             }
         })
     }

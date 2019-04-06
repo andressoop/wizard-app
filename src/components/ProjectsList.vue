@@ -6,17 +6,20 @@
       <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum autem magnam cumque, numquam sint distinctio aliquam dolores illo, libero placeat a et expedita iste. Quaerat, iusto quam? Alias, ullam possimus.Consectetur eos fuga deserunt a. Amet corrupti saepe reiciendis, doloremque eius aliquam rem, ipsum quaerat error odit fugit magnam sed modi alias nostrum quidem dolorem nobis nisi! Commodi, culpa repellat.</p>
     </div>
     </div>
-    <div class="d-flex flex-row mr-5 mb-5">
+    <div class="d-flex flex-row mr-5">
       <form @submit.prevent>
       <input type="text" v-model.trim="newProject.name">
       <button @click="createProject" type="button" class="btn btn-sm btn-success">Create new project</button>
     </form>
     </div>
     <hr>
-    <div class="d-flex flex-wrap">
+    <div class="d-flex flex-wrap" v-if="Object.keys(userProjects).length > 0">
       <div class="" v-for="project in userProjects" :key="project.id">
         <ProjectCard :projectName="project.name" :projectId="project.id" :projectCreatedOn="project.createdOn" />
     </div>
+    </div>
+    <div class="d-flex flex wrap" v-else>
+      <h3 class="text-muted">You have no projects</h3>
     </div>
   </div>
 </template>
@@ -57,7 +60,7 @@ export default {
 
 <style scoped>
 h3 {
-  margin: 40px 0 0;
+  margin: 20px 0 0;
 }
 a {
   color: #42b983;
