@@ -1,5 +1,8 @@
 <template>
   <form autocomplete="off">
+    <div v-if="firebaseError" class="firebase-error">
+      {{ firebaseError }}
+    </div>
     <div class="form-label-group" :class="{invalid: $v.name.$error}">
       <input
         type="text" class="form-control" id="name" @blur="$v.name.$touch()" v-model.trim="name"
@@ -63,7 +66,8 @@ export default {
       email: "",
       password: "",
       confirmPassword: "",
-      terms: false
+      terms: false,
+      firebaseError: "",
     };
   },
   validations: {
@@ -108,11 +112,11 @@ export default {
               this.$router.push("/dashboard");
             })
             .catch(err => {
-              console.log(err);
+              this.firebaseError = err.message
             });
         })
         .catch(err => {
-          console.log(err);
+          this.firebaseError = err.message
         });
     }
   }
@@ -132,6 +136,15 @@ export default {
 
 #name {
   text-transform: capitalize;
+}
+
+.firebase-error {
+  margin-bottom: 12px;
+  font-size: 12px;
+  padding: 10px 16px;
+  color: #a94442;
+  background: #F3DEDE;
+  border-radius: 4px;
 }
 
 </style>

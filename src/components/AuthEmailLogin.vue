@@ -1,5 +1,8 @@
 <template>
   <form>
+    <div v-if="firebaseError" class="firebase-error">
+      {{ firebaseError }}
+    </div>
     <div class="form-label-group" :class="{invalid: $v.email.$error}">
       <input
         v-model.trim="email"
@@ -49,7 +52,8 @@ export default {
   data() {
     return {
         email: '',
-        password: ''
+        password: '',
+        firebaseError: '',
     }
   },
   validations: {
@@ -75,8 +79,7 @@ export default {
           this.$router.push('/dashboard');
         })
         .catch(err => {
-          console.log(err);
-          alert(err)
+          this.firebaseError = err.message
         });
     },
   }
@@ -91,6 +94,15 @@ export default {
 .invalid input {
   border: 1px solid red;
   background-color: #f1f2f6;
+}
+
+.firebase-error {
+  margin-bottom: 12px;
+  font-size: 12px;
+  padding: 10px 16px;
+  color: #a94442;
+  background: #F3DEDE;
+  border-radius: 4px;
 }
 
 </style>
