@@ -3,7 +3,7 @@ import App from './App.vue'
 import Vuelidate from 'vuelidate'
 import router from './router'
 import { store } from './store.js'
-const firebase = require('./helpers/firebaseConfig.js')
+import firebase from './helpers/firebaseConfig'
 
 // Init plugin
 Vue.use(Vuelidate)

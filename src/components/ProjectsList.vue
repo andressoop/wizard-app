@@ -27,7 +27,7 @@
 <script>
 import { mapState } from 'vuex'
 import ProjectCard from '../components/ProjectCard.vue'
-const firebase = require('../helpers/firebaseConfig.js');
+import firebase from '../helpers/firebaseConfig'
 
 export default {
   name: 'ProjectsList',

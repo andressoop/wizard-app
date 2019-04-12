@@ -50,7 +50,7 @@
 <script>
 import { mapState } from 'vuex'
 import moment from 'moment'
-const firebase = require('../helpers/firebaseConfig.js');
+import firebase from '../helpers/firebaseConfig'
 
 export default {
   name: 'ProjectCard',

@@ -32,10 +32,10 @@
 
 
 <script>
-import AuthGoogle from "../components/AuthGoogle.vue";
-import AuthEmailLogin from "../components/AuthEmailLogin.vue";
-import AuthEmailSignup from "../components/AuthEmailSignup.vue";
-const firebase = require("../helpers/firebaseConfig.js");
+import AuthGoogle from "../components/AuthGoogle.vue"
+import AuthEmailLogin from "../components/AuthEmailLogin.vue"
+import AuthEmailSignup from "../components/AuthEmailSignup.vue"
+import firebase from '../helpers/firebaseConfig'
 
 export default {
   name: "Login",

@@ -9,7 +9,7 @@
 </template>
 
 <script>
-const firebase = require('../helpers/firebaseConfig.js')
+import firebase from '../helpers/firebaseConfig'
 import { mapActions, mapState } from 'vuex'
 import { SidebarMenu } from "vue-sidebar-menu"
 import "vue-sidebar-menu/dist/vue-sidebar-menu.css"

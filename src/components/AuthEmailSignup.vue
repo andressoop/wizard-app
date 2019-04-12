@@ -56,7 +56,7 @@
 
 <script>
 import { required, email, minLength, sameAs } from 'vuelidate/lib/validators'
-const firebase = require('../helpers/firebaseConfig.js')
+import firebase from '../helpers/firebaseConfig'
 
 export default {
   name: "AuthEmailSignup",

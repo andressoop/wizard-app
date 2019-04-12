@@ -22,7 +22,7 @@ const currentUser = auth.currentUser
 const usersCollection = db.collection('users')
 const projectsCollection = db.collection('projects')
 
-export {
+export default {
     db,
     auth,
     currentUser,

@@ -5,7 +5,7 @@
 </template>
 
 <script>
-const firebase = require('../helpers/firebaseConfig.js');
+import firebase from '../helpers/firebaseConfig'
 
 export default {
   name: 'AuthGithub',
