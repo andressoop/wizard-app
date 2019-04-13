@@ -54,7 +54,7 @@ export default {
       if (user) {
         this.$router.push("/dashboard");
 
-        if (user.providerData.providerId == 'google.com'){
+        if (user.providerData[0].providerId){
           this.googleLoginResponse();
         }
         

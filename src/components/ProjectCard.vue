@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import moment from 'moment'
 import firebase from '../helpers/firebaseConfig'
 
@@ -66,7 +66,9 @@ export default {
     ...mapState(['userProfile', 'currentUser', 'userProjects'])
   },
   methods: {
+    ...mapActions(['fetchSelectedProjectTasks']),
     loadProject(projectId) {
+      this.fetchSelectedProjectTasks(projectId)
       this.$router.push('/project/' + projectId)
     },
     deleteProject() {

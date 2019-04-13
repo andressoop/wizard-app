@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import firebase from './helpers/firebaseConfig'
+import moment from 'moment'
 
 Vue.use(Vuex)
 
@@ -34,10 +35,21 @@ export const store = new Vuex.Store({
     state: {
         currentUser: null,
         userProfile: {},
-        userProjects: []
+        userProjects: [],
+        SelectedProjectTasks: [],
     },
     getters: {
-        isLoggedin: state => !!state.currentUser
+        isLoggedin: state => !!state.currentUser,
+        getAllTasks(state) {
+            let allTasks = state.SelectedProjectTasks;
+            allTasks.forEach( task => {
+                if (!task.createdOn) { task.createdOn = '-' } else {
+                    let date = task.createdOn.toDate()
+                    task.createdOn = moment(date).fromNow()
+                }                
+            })
+            return allTasks
+        }
     },
     actions: {
         clearData({ commit }) {
@@ -51,6 +63,21 @@ export const store = new Vuex.Store({
             }).catch(err => {
                 console.log(err)
             })
+        },
+        fetchSelectedProjectTasks({ commit }, projectId) {
+            firebase.db.collection('projects/' + projectId + '/tasks').onSnapshot(tasksSnapshot => {
+                let projectTasksArray = []
+                tasksSnapshot.forEach((subDoc) => {
+                    let task = subDoc.data()
+                    task.id = subDoc.id
+                    projectTasksArray.push(task)
+                    console.log(subDoc.data());
+                })
+                commit('setSelectedProjectTasks', projectTasksArray)
+          })
+        },
+        toggleSidebarCollapsed({ commit }, collapsed) {
+            commit('setSidebarCollapsed', collapsed)
         }
     }, 
     mutations: {
@@ -62,6 +89,10 @@ export const store = new Vuex.Store({
         },
         setUserProjects(state, val) {
             state.userProjects = val
+        },
+        setSelectedProjectTasks(state, val) {
+            state.SelectedProjectTasks = val
         }
-    }
+    },
+    
 })

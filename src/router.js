@@ -55,13 +55,10 @@ router.beforeEach((to, from, next) => {
 
   if (requiresAuth && !currentUser) {
     next('/login')
-    console.log("First loading");
   } else if (requiresAuth && currentUser) {
     next()
-    console.log("Second Loading");
   } else {
     next()
-    console.log("Third loading");
   }
 })
 
