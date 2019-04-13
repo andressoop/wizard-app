@@ -1,8 +1,8 @@
 <template>
     <div id="app">
-        <navigation v-if="isLoggedin" @onCollapse="onCollapse"></navigation>
+        <navigation v-if="isLoggedIn" @onCollapse="onCollapse"></navigation>
         <fade-transition origin="center" mode="out-in" :duration="250">
-            <div id="content-area-loggedOut" :class="[{'collapsed' : sidebarCollapsed}]">
+            <div :class="[{'collapsed' : sidebarCollapsed}, {'content-area' : isLoggedIn}]">
                 <router-view/>
             </div>
         </fade-transition>
@@ -24,23 +24,17 @@ export default {
             sidebarCollapsed: false
         };
     },
-    computed: mapGetters(["isLoggedin"]),
+    computed: mapGetters(["isLoggedIn"]),
     methods: {
         onCollapse(collapsed) {
             this.sidebarCollapsed = collapsed;
-        }
-    },
-    mounted() {
-        if (this.isLoggedin) {
-            document.getElementById("content-area-loggedOut").id =
-                "content-area-loggedIn";
         }
     }
 };
 </script>
 
 <style>
-#content-area-loggedIn {
+.content-area {
     padding-left: 250px;
     -webkit-transition: all 0.4s ease;
     -moz-transition: all 0.4s ease;
@@ -48,7 +42,7 @@ export default {
     transition: all 0.4s ease;
 }
 
-#content-area-loggedIn.collapsed {
+.content-area.collapsed {
     padding-left: 50px;
     -webkit-transition: all 0.4s ease;
     -moz-transition: all 0.4s ease;

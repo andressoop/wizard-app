@@ -39,7 +39,7 @@ export const store = new Vuex.Store({
         SelectedProjectTasks: [],
     },
     getters: {
-        isLoggedin: state => !!state.currentUser,
+        isLoggedIn: state => !!state.currentUser,
         getAllTasks(state) {
             let allTasks = state.SelectedProjectTasks;
             allTasks.forEach( task => {
