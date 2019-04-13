@@ -3,14 +3,13 @@
       @collapse="onCollapse" 
       @itemClick="onItemClick" 
       :menu="menu" 
-      :collapsed="sidebarCollapsed"
       width="250px"
     />
 </template>
 
 <script>
 import firebase from '../helpers/firebaseConfig'
-import { mapActions, mapState } from 'vuex'
+import { mapState } from 'vuex'
 import { SidebarMenu } from "vue-sidebar-menu"
 import "vue-sidebar-menu/dist/vue-sidebar-menu.css"
 import "@fortawesome/fontawesome-free/css/all.css"
@@ -19,15 +18,14 @@ import MenuSeparator from '../components/ui/MenuSeparator.vue'
 export default {
   name: 'Navigation',
   components: {
-    SidebarMenu
+    SidebarMenu,
   },
   data() {
     return {
     };
   },
   computed: {
-    ...mapActions(['toggleSidebarCollapsed']),
-    ...mapState(['sidebarCollapsed', 'currentUser', 'userProfile']),
+    ...mapState(['currentUser', 'userProfile']),
     menu: function(){
       return [
         {
@@ -64,7 +62,7 @@ export default {
   },
   methods: {
     onCollapse (collapsed) {
-      this.$store.dispatch('toggleSidebarCollapsed', collapsed)
+      this.$emit('onCollapse', collapsed);
     },
     onItemClick (event, item) {
       if (item.title === "Sign Out") {
