@@ -52,10 +52,15 @@ export default {
   beforeCreate: function() {
     firebase.auth.onAuthStateChanged(user => {
       if (user) {
-        this.$router.push("/dashboard");
 
-        if (user.providerData[0].providerId){
+        if (user.providerData[0].providerId == 'google.com'){
           this.googleLoginResponse();
+          this.$router.push("/dashboard");
+        } else {
+          console.log(user)
+          this.$store.commit('setCurrentUser', user);
+          this.$store.dispatch('fetchUserProfile', user);
+          this.$router.push("/dashboard");         
         }
         
       } else {
@@ -74,7 +79,7 @@ export default {
             .doc(credential.user.uid)
             .set({})
             .then(() => {
-              this.$store.dispatch("fetchUserProfile");
+              this.$store.dispatch("fetchUserProfile", credential.user);
               this.updateGmailData();
             })
             .catch(err => {

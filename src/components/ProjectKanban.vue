@@ -10,11 +10,11 @@
         </router-link>
 
         <hr>
-        <input type="text" v-model.trim="newTaskName">
-        <button @click="newTask" type="button" class="btn btn-sm btn-success">Create new task</button>
+        <input type="text" v-model.trim="newTask.name">
+        <button @click="createTask" type="button" class="btn btn-sm btn-success">Create new task</button>
 
         <div v-for="task in getAllTasks" :key="task.id">
-          {{task.taskName}}, {{task.createdOn}}
+          {{task.name}}, {{task.createdOn}}
         </div>
     </div>
 </template>
@@ -34,7 +34,9 @@ export default {
     return {
         key: '',
         project: {},
-        newTaskName: null,
+        newTask: {
+          name: '',
+        }
     }
   },
   computed: {
@@ -46,10 +48,10 @@ export default {
       load() {
           console.log(this.userProjects);
       },
-      newTask() {
+      createTask() {
       firebase.projectsCollection.doc(this.key).collection('tasks').add({
         createdOn: new Date(),
-        taskName: this.newTaskName
+        name: this.newTask.name
       })
     }
   },

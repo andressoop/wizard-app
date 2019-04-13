@@ -108,7 +108,7 @@ export default {
               email: this.email
             })
             .then(() => {
-              this.$store.dispatch("fetchUserProfile");
+              this.$store.dispatch("fetchUserProfile", credential.user);
               this.$router.push("/dashboard");
             })
             .catch(err => {
