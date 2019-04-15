@@ -57,7 +57,6 @@ export default {
           this.googleLoginResponse();
           this.$router.push("/dashboard");
         } else {
-          console.log(user)
           this.$store.commit('setCurrentUser', user);
           this.$store.dispatch('fetchUserProfile', user);
           this.$router.push("/dashboard");         

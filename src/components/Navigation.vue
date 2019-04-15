@@ -10,10 +10,12 @@
 <script>
 import firebase from '../helpers/firebaseConfig'
 import { mapState } from 'vuex'
-import { SidebarMenu } from "vue-sidebar-menu"
-import "vue-sidebar-menu/dist/vue-sidebar-menu.css"
-import "@fortawesome/fontawesome-free/css/all.css"
-import MenuSeparator from '../components/ui/MenuSeparator.vue'
+import { SidebarMenu } from 'vue-sidebar-menu'
+import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
+import '@fortawesome/fontawesome-free/css/all.css'
+import MenuSeparator from '../components/ui/MenuSeparator'
+import MenuProfilePicture from '../components/ui/MenuProfilePicture'
+import { setTimeout } from 'timers'
 
 export default {
   name: 'Navigation',
@@ -21,17 +23,16 @@ export default {
     SidebarMenu,
   },
   data() {
-    return {
-    };
+    return {}
   },
   computed: {
-    ...mapState(['currentUser', 'userProfile']),
-    menu: function(){
+    ...mapState(['userProfile']),
+    menu: function() {
       return [
         {
-          /* header: true, */
-          title: this.userProfile.name,
-          icon: "fa fa-user"
+          header: true,
+          component: MenuProfilePicture,
+          visibleOnCollapse: true
         },
         {
           href: "/dashboard",
@@ -62,10 +63,17 @@ export default {
   },
   methods: {
     onCollapse (collapsed) {
-      this.$emit('onCollapse', collapsed);
+      this.$emit('onCollapse', collapsed)
+      let avatarTitleElement = document.getElementById('avatar-title')
+      if(collapsed === true) {
+        avatarTitleElement.style.display = 'none'
+      } else {
+        setTimeout(() => {avatarTitleElement.style.display = 'inline-block'}, 100)
+        
+      }
     },
     onItemClick (event, item) {
-      if (item.title === "Sign Out") {
+      if (item.title === 'Sign Out') {
         this.logout()
       }
     },
@@ -73,17 +81,23 @@ export default {
       firebase.auth
         .signOut()
         .then(() => {
-          this.$store.dispatch("clearData");
-          this.$router.push("/login");
+          this.$store.dispatch('clearData')
+          this.$router.push('/login')
         })
         .catch(err => {
-          console.log(err);
-        });
+          console.log(err)
+        })
     }
   }
 }
 </script>
 
 <style>
+.v-sidebar-menu {
+  z-index: 10;
+}
 
+.v-sidebar-menu .collapse-btn {
+  outline: none;
+}
 </style>

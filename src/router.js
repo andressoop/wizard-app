@@ -1,9 +1,10 @@
 import Vue from 'vue'
-import firebase from 'firebase';
+import firebase from 'firebase'
 import Router from 'vue-router'
-import Dashboard from './views/Dashboard.vue'
-import Kanban from './views/Kanban.vue'
-import Login from './views/Login.vue'
+import Dashboard from './views/Dashboard'
+import Kanban from './views/Kanban'
+import Login from './views/Login'
+import Profile from './views/Profile'
 
 Vue.use(Router)
 
@@ -18,6 +19,14 @@ const router = new Router({
     path: '/login',
     name: 'Login',
     component: Login
+  },
+  {
+    path: '/profile',
+    name: 'Profile',
+    component: Profile,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/dashboard',
