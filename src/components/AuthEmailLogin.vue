@@ -39,9 +39,6 @@
       class="btn btn-lg btn-primary btn-block btn-login text-uppercase font-weight-bold mb-2"
       type="button"
     >Sign in</button>
-    <div class="text-center">
-      <a class="small text-muted" href="#">Forgot password?</a>
-    </div>
   </form>
 </template>
 

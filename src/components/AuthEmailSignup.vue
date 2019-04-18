@@ -1,77 +1,101 @@
 <template>
-  <form autocomplete="off">
-    <div v-if="firebaseError" class="firebase-error">
-      {{ firebaseError }}
-    </div>
-    <div class="form-label-group" :class="{invalid: $v.name.$error}">
-      <input
-        v-model.trim="name"
-        @blur="$v.name.$touch()" 
-        name="inputFullName"
-        type="text" 
-        class="form-control" 
-        placeholder="Full name"
-        id="name" 
-      >
-      <label for="inputFullName">Full name <span>*</span></label>
-      <p class="small text-danger ml-1 mt-2" v-if="!$v.name.minLength">Name must be at least 4 characters</p>
+  <div>
+
+    <form autocomplete="off">
+      <div v-if="firebaseError" class="firebase-error">
+        {{ firebaseError }}
+      </div>
+      <div class="form-label-group" :class="{invalid: $v.name.$error}">
+        <input
+          v-model.trim="name"
+          @blur="$v.name.$touch()" 
+          name="inputFullName"
+          type="text" 
+          class="form-control" 
+          placeholder="Full name"
+          id="name" 
+        >
+        <label for="inputFullName">Full name <span>*</span></label>
+        <p class="small text-danger ml-1 mt-2" v-if="!$v.name.minLength">Name must be at least 4 characters</p>
+      </div>
+
+      <div class="form-label-group" :class="{invalid: $v.email.$error}">
+        <input
+          v-model.trim="email" 
+          @blur="$v.email.$touch()" 
+          name="inputEmail"
+          type="email" 
+          class="form-control" 
+          id="email" 
+          placeholder="Email address"
+          autocomplete="new-email"
+        >
+        <label for="inputEmail">Email address <span>*</span></label>
+        <p class="small text-danger ml-1 mt-2" v-if="!$v.email.email">Please provide valid email address.</p>
+      </div>
+
+      <div class="form-label-group" :class="{invalid: $v.password.$error}">
+        <input
+          v-model.trim="password" 
+          @blur="$v.password.$touch()" 
+          name="inputPassword"
+          type="password" 
+          class="form-control" 
+          id="password" 
+          placeholder="Password"
+          autocomplete="new-password"
+        >
+        <label for="inputPassword">Password <span>*</span></label>
+        <p class="small text-danger ml-1 mt-2" v-if="!$v.password.minLength">Password should be at least 6 characters</p>
+      </div>
+
+      <div class="form-label-group" :class="{invalid: $v.confirmPassword.$error}">
+        <input
+          v-model.trim="confirmPassword"
+          @blur="$v.confirmPassword.$touch()"
+          name="inputConfirmPassword"
+          type="password"
+          class="form-control"
+          id="confirm-password"
+          placeholder="Confirm password"
+          autocomplete="new-password"
+        >
+        <label for="inputConfirmPassword">Confirm password <span>*</span></label>
+        <p class="small text-danger ml-1 mt-2" v-if="!$v.confirmPassword.sameAs">Passwords don't match.</p>
+      </div>
+
+      <div class="custom-control custom-checkbox mb-3" :class="{invalid: $v.terms.$invalid}">
+        <input type="checkbox" class="custom-control-input" id="terms" @change="$v.terms.$touch()" v-model="terms">
+        <label class="custom-control-label small" for="terms">I agree to the <strong class="cursor-pointer" data-toggle="modal" data-target="#privacy-policy-modal">terms of service and privacy policy</strong></label>
+      </div>
+      <button
+        @click="signup"
+        class="btn btn-lg btn-primary btn-block btn-login text-uppercase font-weight-bold mb-2"
+        type="button" :disabled="$v.$invalid"
+      >Create account</button>
+    </form>
+
+    <!-- Modal -->
+    <div class="modal fade" id="privacy-policy-modal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modal-title">Terms of Service and Privacy Policy</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <small class="muted">We take all your money and soul</small>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="form-label-group" :class="{invalid: $v.email.$error}">
-      <input
-        v-model.trim="email" 
-        @blur="$v.email.$touch()" 
-        name="inputEmail"
-        type="email" 
-        class="form-control" 
-        id="email" 
-        placeholder="Email address"
-        autocomplete="new-email"
-      >
-      <label for="inputEmail">Email address <span>*</span></label>
-      <p class="small text-danger ml-1 mt-2" v-if="!$v.email.email">Please provide valid email address.</p>
-    </div>
-
-    <div class="form-label-group" :class="{invalid: $v.password.$error}">
-      <input
-        v-model.trim="password" 
-        @blur="$v.password.$touch()" 
-        name="inputPassword"
-        type="password" 
-        class="form-control" 
-        id="password" 
-        placeholder="Password"
-        autocomplete="new-password"
-      >
-      <label for="inputPassword">Password <span>*</span></label>
-      <p class="small text-danger ml-1 mt-2" v-if="!$v.password.minLength">Password should be at least 6 characters</p>
-    </div>
-
-    <div class="form-label-group" :class="{invalid: $v.confirmPassword.$error}">
-      <input
-        v-model.trim="confirmPassword"
-        @blur="$v.confirmPassword.$touch()"
-        name="inputConfirmPassword"
-        type="password"
-        class="form-control"
-        id="confirm-password"
-        placeholder="Confirm password"
-        autocomplete="new-password"
-      >
-      <label for="inputConfirmPassword">Confirm password <span>*</span></label>
-      <p class="small text-danger ml-1 mt-2" v-if="!$v.confirmPassword.sameAs">Passwords don't match.</p>
-    </div>
-
-    <div class="custom-control custom-checkbox mb-3" :class="{invalid: $v.terms.$invalid}">
-      <input type="checkbox" class="custom-control-input" id="terms" @change="$v.terms.$touch()" v-model="terms">
-      <label class="custom-control-label small" for="terms">I agree to the terms of service and privacy policy</label>
-    </div>
-    <button
-      @click="signup"
-      class="btn btn-lg btn-primary btn-block btn-login text-uppercase font-weight-bold mb-2"
-      type="button" :disabled="$v.$invalid"
-    >Create account</button>
-  </form>
+  </div>
 </template>
 
 <script>
@@ -79,15 +103,15 @@ import { required, email, minLength, sameAs } from 'vuelidate/lib/validators'
 import firebase from '../helpers/firebaseConfig'
 
 export default {
-  name: "AuthEmailSignup",
+  name: 'AuthEmailSignup',
   data() {
     return {
-      name: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
+      name: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
       terms: false,
-      firebaseError: "",
+      firebaseError: '',
     };
   },
   validations: {
@@ -118,7 +142,7 @@ export default {
           this.password
         )
         .then(credential => {
-          this.$store.commit("setCurrentUser", credential.user);
+          this.$store.commit('setCurrentUser', credential.user);
 
           // create user object
           firebase.usersCollection
@@ -128,8 +152,8 @@ export default {
               email: this.email
             })
             .then(() => {
-              this.$store.dispatch("fetchUserProfile", credential.user);
-              this.$router.push("/dashboard");
+              this.$store.dispatch('fetchUserProfile', credential.user);
+              this.$router.push('/dashboard');
             })
             .catch(err => {
               this.firebaseError = err.message
@@ -173,6 +197,10 @@ export default {
 
 button:disabled {
   cursor: not-allowed;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 
 </style>
