@@ -56,6 +56,7 @@ export const store = new Vuex.Store({
             commit('setCurrentUser', null)
             commit('setUserProfile', {})
             commit('setUserProjects', null)
+            commit('setSelectedProjectTasks', [])
         },
         fetchUserProfile({ commit }, user) {
             firebase.usersCollection.doc(user.uid).get().then(res => {

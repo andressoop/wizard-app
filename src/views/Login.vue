@@ -16,10 +16,10 @@
                 <h3 class="login-heading mb-4" v-else>You can sign up via</h3>
                 <AuthGoogle/>
                 <div class="text-center mt-5" v-if="showLoginForm">
-                <p class="font-weight-light" @click="toggleForm">Or create an account</p>
+                  <p class="font-weight-light clickable-text" @click="toggleForm">Or create an account</p>
                 </div>
                 <div class="text-center mt-5" v-else>
-                  <p class="font-weight-light" @click="toggleForm">Back to login</p>
+                  <p class="font-weight-light clickable-text" @click="toggleForm">Back to login</p>
                 </div>
             </div>
           </div>
@@ -191,6 +191,10 @@ export default {
   padding-bottom: calc(var(--input-padding-y) / 3);
   font-size: 12px;
   color: #777;
+}
+
+.clickable-text {
+  cursor: pointer;
 }
 
 </style>

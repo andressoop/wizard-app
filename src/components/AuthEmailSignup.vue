@@ -5,25 +5,43 @@
     </div>
     <div class="form-label-group" :class="{invalid: $v.name.$error}">
       <input
-        type="text" class="form-control" id="name" @blur="$v.name.$touch()" v-model.trim="name"
+        v-model.trim="name"
+        @blur="$v.name.$touch()" 
+        name="inputFullName"
+        type="text" 
+        class="form-control" 
+        placeholder="Full name"
+        id="name" 
       >
-      <label for="inputEmail">Full name <span>*</span></label>
+      <label for="inputFullName">Full name <span>*</span></label>
       <p class="small text-danger ml-1 mt-2" v-if="!$v.name.minLength">Name must be at least 4 characters</p>
-      <p class="small text-muted ml-1 mt-2" v-if="!$v.name.required">This field must not be empty</p>
     </div>
 
     <div class="form-label-group" :class="{invalid: $v.email.$error}">
       <input
-        type="email" class="form-control" id="email" @blur="$v.email.$touch()" v-model.trim="email" autocomplete="new-email"
+        v-model.trim="email" 
+        @blur="$v.email.$touch()" 
+        name="inputEmail"
+        type="email" 
+        class="form-control" 
+        id="email" 
+        placeholder="Email address"
+        autocomplete="new-email"
       >
       <label for="inputEmail">Email address <span>*</span></label>
       <p class="small text-danger ml-1 mt-2" v-if="!$v.email.email">Please provide valid email address.</p>
-      <p class="small text-muted ml-1 mt-2" v-if="!$v.email.required">This field must not be empty</p>
     </div>
 
     <div class="form-label-group" :class="{invalid: $v.password.$error}">
       <input
-        type="password" class="form-control" id="password" @blur="$v.password.$touch()" v-model.trim="password" autocomplete="new-password"
+        v-model.trim="password" 
+        @blur="$v.password.$touch()" 
+        name="inputPassword"
+        type="password" 
+        class="form-control" 
+        id="password" 
+        placeholder="Password"
+        autocomplete="new-password"
       >
       <label for="inputPassword">Password <span>*</span></label>
       <p class="small text-danger ml-1 mt-2" v-if="!$v.password.minLength">Password should be at least 6 characters</p>
@@ -31,14 +49,16 @@
 
     <div class="form-label-group" :class="{invalid: $v.confirmPassword.$error}">
       <input
+        v-model.trim="confirmPassword"
+        @blur="$v.confirmPassword.$touch()"
+        name="inputConfirmPassword"
         type="password"
         class="form-control"
         id="confirm-password"
-        @blur="$v.confirmPassword.$touch()"
-        v-model.trim="confirmPassword"
+        placeholder="Confirm password"
         autocomplete="new-password"
       >
-      <label for="inputPassword">Confirm password <span>*</span></label>
+      <label for="inputConfirmPassword">Confirm password <span>*</span></label>
       <p class="small text-danger ml-1 mt-2" v-if="!$v.confirmPassword.sameAs">Passwords don't match.</p>
     </div>
 
@@ -123,7 +143,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 
 .invalid label {
   color: red!important;
@@ -145,6 +165,14 @@ export default {
   color: #a94442;
   background: #F3DEDE;
   border-radius: 4px;
+}
+
+.form-label-group > label {
+  pointer-events: none;
+}
+
+button:disabled {
+  cursor: not-allowed;
 }
 
 </style>

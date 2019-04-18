@@ -7,6 +7,7 @@
       <input
         v-model.trim="email"
         @blur="$v.email.$touch()"
+        name="inputEmail"
         type="email"
         class="form-control"
         placeholder="Email address"
@@ -20,6 +21,7 @@
       <input
         v-model.trim="password"
         @blur="$v.password.$touch()"
+        name="inputPassword"
         type="password"
         class="form-control"
         placeholder="Password"
@@ -29,7 +31,7 @@
     </div>
 
     <div class="custom-control custom-checkbox mb-3">
-      <input type="checkbox" class="custom-control-input" id="customCheck1">
+      <input type="checkbox" class="custom-control-input" id="customCheck1" v-model="rememberPassword">
       <label class="custom-control-label" for="customCheck1">Remember password</label>
     </div>
     <button
@@ -54,6 +56,7 @@ export default {
         email: '',
         password: '',
         firebaseError: '',
+        rememberPassword: false,
     }
   },
   validations: {
@@ -68,16 +71,19 @@ export default {
   },
   methods: {
     login() {
-      firebase.auth
-        .signInWithEmailAndPassword(
-          this.email,
-          this.password
-        )
-        .then(user => {
-          this.$store.commit('setCurrentUser', user.user);
-          this.$store.dispatch('fetchUserProfile', user.user);                     
-        })
-        .catch(err => {
+      let authSession = this.rememberPassword ? firebase.persistanceState.LOCAL : firebase.persistanceState.SESSION;
+      firebase.auth.setPersistence(authSession)
+        .then( () => {
+          firebase.auth
+            .signInWithEmailAndPassword(
+              this.email,
+              this.password
+            )
+            .then(user => {
+              this.$store.commit('setCurrentUser', user.user);
+              this.$store.dispatch('fetchUserProfile', user.user);                     
+            })
+        }).catch(err => {
           this.firebaseError = err.message
         });
     },
@@ -104,4 +110,7 @@ export default {
   border-radius: 4px;
 }
 
+.form-label-group > label {
+  pointer-events: none;
+}
 </style>

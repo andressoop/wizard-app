@@ -17,6 +17,7 @@ const googleProvider = new firebase.auth.GoogleAuthProvider()
 const db = firebase.firestore()
 const auth = firebase.auth()
 const currentUser = auth.currentUser
+const persistanceState = firebase.auth.Auth.Persistence
 
 // firebase collections
 const usersCollection = db.collection('users')
@@ -28,5 +29,6 @@ export default {
     currentUser,
     googleProvider,
     usersCollection,
-    projectsCollection
+    projectsCollection,
+    persistanceState
 }
