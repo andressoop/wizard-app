@@ -32,7 +32,7 @@
 
     <div class="custom-control custom-checkbox mb-3">
       <input type="checkbox" class="custom-control-input" id="customCheck1" v-model="rememberPassword">
-      <label class="custom-control-label" for="customCheck1">Remember password</label>
+      <label class="custom-control-label" for="customCheck1">Stay signed in</label>
     </div>
     <button
       @click="login"
@@ -71,7 +71,7 @@ export default {
   },
   methods: {
     login() {
-      let authSession = this.rememberPassword ? firebase.persistanceState.LOCAL : firebase.persistanceState.SESSION;
+      let authSession = this.rememberPassword ? firebase.persistenceState.LOCAL : firebase.persistenceState.SESSION;
       firebase.auth.setPersistence(authSession)
         .then( () => {
           firebase.auth
