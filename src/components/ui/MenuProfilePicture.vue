@@ -43,11 +43,10 @@ export default {
 
 .avatar-icon {
   display: inline-block;
-  max-width: 40px;
-  max-height: 40px;
+  width: 30px;
+  height: 30px;
   overflow: hidden;
-  margin-bottom: 6px;
-  margin-right: 10px;
+  margin: 10px;
 }
 
 #avatar-title {
