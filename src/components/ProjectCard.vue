@@ -18,31 +18,9 @@
           class="btn btn-primary btn-sm mt-2 mr-2"
           @click="loadProject(projectId)"
         >View Project</button>
-        <button type="button" class="btn btn-outline-danger btn-sm mt-2" data-toggle="modal" data-target="#delete-confirm-modal">
+        <button type="button" class="btn btn-outline-danger btn-sm mt-2" @click="deleteProject(projectId)" onclick="return confirm('Are you sure you want to delete this item?');">
           Delete Project
         </button>
-      </div>
-    </div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="delete-confirm-modal" tabindex="-1" role="dialog" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="modal-title">Delete project</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <p>Your project will be deleted from the database.</p>
-            <small class="muted">Please note that project cannot be restored.</small>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-danger" @click="deleteProject(projectId)" data-dismiss="modal">Yes, I'm sure</button>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -50,7 +28,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapActions } from 'vuex'
 import moment from 'moment'
 import firebase from '../helpers/firebaseConfig'
 
@@ -64,17 +42,14 @@ export default {
   data() {
     return {}
   },
-  computed: {
-    ...mapState(['userProfile', 'currentUser', 'userProjects'])
-  },
   methods: {
-    ...mapActions(['fetchSelectedProjectTasks']),
+    ...mapActions(['fetchProjectKanbanLists']),
     loadProject(projectId) {
-      this.fetchSelectedProjectTasks(projectId)
+      this.fetchProjectKanbanLists(projectId)
       this.$router.push('/project/' + projectId)
     },
-    deleteProject() {
-      firebase.projectsCollection.doc(this.projectId).delete().then(function () {
+    deleteProject(projectId) {
+      firebase.projectsCollection.doc(projectId).delete().then(function () {
         console.log("Document successfully deleted!");
       }).catch(function (error) {
         console.error("Error removing document: ", error);

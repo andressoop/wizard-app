@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import firebase from './helpers/firebaseConfig'
-import moment from 'moment'
 
 Vue.use(Vuex)
 
@@ -36,19 +35,19 @@ export const store = new Vuex.Store({
         currentUser: null,
         userProfile: {},
         userProjects: [],
-        SelectedProjectTasks: [],
+        projectKanbanLists: [],
+        projectKanbanTasks: [],
     },
     getters: {
         isLoggedIn: state => !!state.currentUser,
         getAllTasks(state) {
-            let allTasks = state.SelectedProjectTasks;
-            allTasks.forEach( task => {
-                if (!task.createdOn) { task.createdOn = '-' } else {
-                    let date = task.createdOn.toDate()
-                    task.createdOn = moment(date).fromNow()
-                }                
-            })
-            return allTasks
+            return state.projectKanbanTasks
+        },
+        getListTasks: (state) => (listId) => {
+            return state.projectKanbanTasks.filter(task => task.listID === listId)
+        },
+        getAllLists(state) {
+            return state.projectKanbanLists
         }
     },
     actions: {
@@ -56,7 +55,8 @@ export const store = new Vuex.Store({
             commit('setCurrentUser', null)
             commit('setUserProfile', {})
             commit('setUserProjects', null)
-            commit('setSelectedProjectTasks', [])
+            commit('projectKanbanLists', [])
+            commit('projectKanbanTasks', [])
         },
         fetchUserProfile({ commit }, user) {
             firebase.usersCollection.doc(user.uid).get().then(res => {
@@ -65,21 +65,28 @@ export const store = new Vuex.Store({
                 console.log(err)
             })
         },
-        fetchSelectedProjectTasks({ commit }, projectId) {
+        fetchProjectKanbanTasks({ commit }, projectId) {
             firebase.db.collection('projects/' + projectId + '/tasks').onSnapshot(tasksSnapshot => {
                 let projectTasksArray = []
-                tasksSnapshot.forEach((subDoc) => {
+                tasksSnapshot.forEach(subDoc => {
                     let task = subDoc.data()
                     task.id = subDoc.id
                     projectTasksArray.push(task)
-                    console.log(subDoc.data());
                 })
-                commit('setSelectedProjectTasks', projectTasksArray)
+                commit('setProjectKanbanTasks', projectTasksArray)
           })
         },
-        toggleSidebarCollapsed({ commit }, collapsed) {
-            commit('setSidebarCollapsed', collapsed)
-        }
+        fetchProjectKanbanLists({ commit }, projectId){
+            firebase.db.collection('projects/' + projectId + '/lists').onSnapshot(listsSnapshot => {
+                let projectListsArray = []
+                listsSnapshot.forEach(subDoc => {
+                    let list = subDoc.data()
+                    list.id = subDoc.id
+                    projectListsArray.push(list)
+                })
+                commit('setProjectKanbanLists', projectListsArray)
+            })
+        },
     }, 
     mutations: {
         setCurrentUser(state, val) {
@@ -91,8 +98,11 @@ export const store = new Vuex.Store({
         setUserProjects(state, val) {
             state.userProjects = val
         },
-        setSelectedProjectTasks(state, val) {
-            state.SelectedProjectTasks = val
+        setProjectKanbanTasks(state, val) {
+            state.projectKanbanTasks = val
+        },
+        setProjectKanbanLists(state, val) {
+            state.projectKanbanLists = val
         }
     },
     

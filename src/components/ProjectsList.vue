@@ -16,7 +16,7 @@
     <div class="d-flex flex-wrap" v-if="Object.keys(userProjects).length > 0">
       <div class="" v-for="project in userProjects" :key="project.id">
         <ProjectCard :projectName="project.name" :projectId="project.id" :projectCreatedOn="project.createdOn" />
-    </div>
+      </div>
     </div>
     <div class="d-flex flex wrap" v-else>
       <h3 class="text-muted">You have no projects</h3>
