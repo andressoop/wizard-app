@@ -1,15 +1,14 @@
 <template>
   <div class="container-fluid pl-5 mt-4">
-    <div class="row">
-      <div class="d-flex flex-row mr-5">
+      <div class="">
         <form @submit.prevent>
           <input type="text" v-model.trim="newList.name">
           <button @click="createList" type="button" class="btn btn-sm btn-success">Create new List</button>
         </form>
       </div>
       <hr>
-      <div class="d-flex flex-wrap" v-if="Object.keys(getAllLists).length > 0">
-        <div class="" v-for="list in getAllLists" :key="list.id">
+      <div class="d-flex flex-row mr-5" v-if="Object.keys(getAllLists).length > 0">
+        <div v-for="list in getAllLists" :key="list.id">
           <KanbanList :listName="list.name" :listId="list.id" />
         </div>
       </div>
@@ -17,7 +16,6 @@
         <h3 class="text-muted">You have no lists</h3>
       </div>
     </div>
-  </div>
 </template>
 
 <script>

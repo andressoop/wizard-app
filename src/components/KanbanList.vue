@@ -6,7 +6,7 @@
         <h5 class="card-title">{{ listName }}</h5>
         <p class="small">List ID: {{ listId }}</p>
         <draggable class="drag-area" :id="listId" v-model="listTasks" group="tasks" :move="onTaskMove" @end="updateTaskDoc">
-          <div class="bg-light" v-for="listTask in listTasks" :key="listTask.id">
+          <div v-for="listTask in listTasks" :key="listTask.id">
             <KanbanTask :listTask="listTask"></KanbanTask>
           </div>
         </draggable>  
