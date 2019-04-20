@@ -5,9 +5,11 @@
       <div class="card-body">
         <h5 class="card-title">{{ listName }}</h5>
         <p class="small">List ID: {{ listId }}</p>
-        <p class="card-text" v-for="listTask in getListTasks(listId)" :key="listTask.id">
-          {{ listTask.name }} | {{ listTask.createdOn | formatDate }}
-          </p>
+        <draggable class="drag-area" :id="listId" v-model="listTasks" group="tasks" :move="onTaskMove">
+          <div class="bg-light" v-for="listTask in listTasks" :key="listTask.id">
+            <KanbanTask :listTask="listTask"></KanbanTask>
+          </div>
+        </draggable>  
       </div>
       <div class="card-footer">
         <input type="text" v-model.trim="newTask.name">
@@ -25,10 +27,15 @@
 <script>
 import firebase from '../helpers/firebaseConfig'
 import { mapGetters } from 'vuex'
-import moment from 'moment'
+import Draggable from 'vuedraggable'
+import KanbanTask from './KanbanTask.vue'
 
 export default {
   name: 'KanbanList',
+  components: {
+    KanbanTask,
+    Draggable
+  },
   props: [
     'listName',
     'listId',
@@ -37,13 +44,32 @@ export default {
     return {
       newTask: {
         name: '',
+      },
+      updateTask: {
+        taskId: '',
+        targetListId: '',
       }
     }
   },
   computed: {
-    ...mapGetters(['getListTasks'])
+    ...mapGetters(['getListTasks']),
+    listTasks: {
+      get() {
+        return this.getListTasks(this.listId)
+      },
+      set() {
+        console.log(this.updateTask.taskId, this.updateTask.targetListId)
+        firebase.projectsCollection.doc(this.$route.params.id).collection('tasks')
+          .doc(this.updateTask.taskId)
+          .update({listID: this.updateTask.targetListId})
+      }
+    }
   },
   methods: {
+    onTaskMove(evt) {
+      this.updateTask.taskId = evt.draggedContext.element.id
+      this.updateTask.targetListId = evt.to.id
+    },
     createTask(listId) {
       firebase.projectsCollection.doc(this.$route.params.id).collection('tasks').add({
         createdOn: new Date(),
@@ -57,13 +83,6 @@ export default {
       }).catch(function (error) {
         console.error("Error removing document: ", error);
       });
-    }
-  },
-  filters: {
-    formatDate(val) {
-      if (!val) { return '-' }
-      let date = val.toDate()
-      return moment(date).fromNow()
     }
   }
 }
@@ -83,5 +102,10 @@ export default {
 
 .container {
   padding: 2px 16px;
+}
+
+.drag-area {
+  min-height: 50px;
+  min-width: 100%;
 }
 </style>

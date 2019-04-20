@@ -37,6 +37,10 @@ export default {
 </script>
 
 <style>
+* {
+  font-family: 'Montserrat', sans-serif;
+}
+
 .content-area {
   padding-left: 250px;
   transition: all 0.4s ease;
