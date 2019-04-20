@@ -5,7 +5,7 @@
       <div class="card-body">
         <h5 class="card-title">{{ listName }}</h5>
         <p class="small">List ID: {{ listId }}</p>
-        <draggable class="drag-area" :id="listId" v-model="listTasks" group="tasks" :move="onTaskMove">
+        <draggable class="drag-area" :id="listId" v-model="listTasks" group="tasks" :move="onTaskMove" @end="updateTaskDoc">
           <div class="bg-light" v-for="listTask in listTasks" :key="listTask.id">
             <KanbanTask :listTask="listTask"></KanbanTask>
           </div>
@@ -47,6 +47,7 @@ export default {
       },
       updateTask: {
         taskId: '',
+        currentListId: '',
         targetListId: '',
       }
     }
@@ -58,17 +59,25 @@ export default {
         return this.getListTasks(this.listId)
       },
       set() {
-        console.log(this.updateTask.taskId, this.updateTask.targetListId)
-        firebase.projectsCollection.doc(this.$route.params.id).collection('tasks')
-          .doc(this.updateTask.taskId)
-          .update({listID: this.updateTask.targetListId})
+       
       }
     }
   },
   methods: {
     onTaskMove(evt) {
       this.updateTask.taskId = evt.draggedContext.element.id
+      this.updateTask.currentListId = evt.draggedContext.element.listID
       this.updateTask.targetListId = evt.to.id
+    },
+    updateTaskDoc() {
+      if(this.updateTask.currentListId != this.updateTask.targetListId) {
+        firebase.projectsCollection.doc(this.$route.params.id).collection('tasks')
+        .doc(this.updateTask.taskId)
+        .update({listID: this.updateTask.targetListId})
+      }      
+      this.updateTask.taskId = ''
+      this.updateTask.currentListId = ''
+      this.updateTask.targetListId = ''
     },
     createTask(listId) {
       firebase.projectsCollection.doc(this.$route.params.id).collection('tasks').add({
