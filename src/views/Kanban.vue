@@ -7,11 +7,11 @@
         </form>
       </div>
       <hr>
-      <div class="d-flex flex-row mr-5" v-if="Object.keys(getAllLists).length > 0">
-        <div v-for="list in getAllLists" :key="list.id">
-          <KanbanList :listName="list.name" :listId="list.id" />
-        </div>
-      </div>
+        <draggable tag="div" class="d-flex flex-row mr-5" v-model="lists" group="lists" v-if="Object.keys(getAllLists).length > 0">
+          <div v-for="list in getAllLists" :key="list.id">
+            <KanbanList :listName="list.name" :listId="list.id" />
+          </div>
+        </draggable> 
       <div class="d-flex flex wrap" v-else>
         <h3 class="text-muted">You have no lists</h3>
       </div>
@@ -22,6 +22,7 @@
 import firebase from '@/helpers/firebaseConfig'
 import KanbanList from '../components/KanbanList.vue'
 import { mapGetters, mapActions } from 'vuex'
+import Draggable from 'vuedraggable'
 
 export default {
   name: 'Kanban',
@@ -33,16 +34,34 @@ export default {
     }
   },
   components: {
-    KanbanList
+    KanbanList,
+    Draggable
   },
   computed: {
-    ...mapGetters(['getAllLists'])
+    ...mapGetters(['getAllLists']),
+    lists: {
+      get() {
+        return this.getAllLists
+      },
+      set(data) {
+        this.updateListDoc(data)        
+      }
+    }
   },
   methods: {
     ...mapActions(['fetchProjectKanbanLists', 'fetchProjectKanbanTasks']),
+    updateListDoc(data) {
+      const firebaseCollection = firebase.projectsCollection.doc(this.key).collection('lists')
+
+      data.forEach((element, index) => {
+        firebaseCollection.doc(element.id).update({ listOrder: index })
+      });
+    },
     createList() {
+      let getListOrder = this.getAllLists.length
       firebase.projectsCollection.doc(this.key).collection('lists').add({
         createdOn: new Date(),
+        listOrder: getListOrder,
         name: this.newList.name
       }).catch(err => {
         console.log(err)

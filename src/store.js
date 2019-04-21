@@ -67,7 +67,7 @@ export const store = new Vuex.Store({
         },
         fetchProjectKanbanTasks({ commit }, projectId) {
             firebase.db.collection('projects/' + projectId + '/tasks')
-                .orderBy('listID').orderBy('listOrder', 'asc')
+                .orderBy('listID').orderBy('taskOrder')
                 .onSnapshot(tasksSnapshot => {
                     let projectTasksArray = []
                     tasksSnapshot.forEach(subDoc => {
@@ -79,7 +79,7 @@ export const store = new Vuex.Store({
           })
         },
         fetchProjectKanbanLists({ commit }, projectId){
-            firebase.db.collection('projects/' + projectId + '/lists').onSnapshot(listsSnapshot => {
+            firebase.db.collection('projects/' + projectId + '/lists').orderBy('listOrder').onSnapshot(listsSnapshot => {
                 let projectListsArray = []
                 listsSnapshot.forEach(subDoc => {
                     let list = subDoc.data()

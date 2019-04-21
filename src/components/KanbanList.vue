@@ -79,15 +79,15 @@ export default {
       this.updateTask.targetListId = ''
 
       data.forEach((element, index) => {
-        firebaseCollection.doc(element.id).update({ listOrder: index })
+        firebaseCollection.doc(element.id).update({ taskOrder: index })
       });
     },
     createTask(listId) {
-      let getListOrder = this.getListTasks(listId).length
+      let getTaskOrder = this.getListTasks(listId).length
       firebase.projectsCollection.doc(this.$route.params.id).collection('tasks').add({
         createdOn: new Date(),
         listID: listId,
-        listOrder: getListOrder,
+        taskOrder: getTaskOrder,
         name: this.newTask.name
       })
         this.newTask.name = ''
