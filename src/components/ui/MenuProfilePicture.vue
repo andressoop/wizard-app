@@ -23,7 +23,7 @@ export default {
     getUserPicture: function() {
       if (this.userProfile.photoURL) {
         let photoURL = this.userProfile.photoURL
-        return `<img src="${photoURL}" height="40", width="40">`
+        return `<img src="${photoURL}" height="30", width="30" style="border-radius: 3px">`
       } else {
         let options = {};
         let avatar = new Avatars(sprites(options))

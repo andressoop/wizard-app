@@ -1,6 +1,5 @@
 <template>
   <div class="card-deck">
-    
     <div class="card mr-5 mb-5">
       <img class="card-img-top" src="../assets/images/placeholder.png" alt="Card image cap">
       <div class="card-body">
@@ -18,12 +17,12 @@
           class="btn btn-primary btn-sm mt-2 mr-2"
           @click="loadProject(projectId)"
         >View Project</button>
-        <button type="button" class="btn btn-outline-danger btn-sm mt-2" @click="deleteProject(projectId)" onclick="return confirm('Are you sure you want to delete this item?');">
+        <!-- <button type="button" class="btn btn-outline-danger btn-sm mt-2" @click="deleteProject(projectId)" onclick="return confirm('Are you sure you want to delete this item?');">
           Delete Project
-        </button>
+        </button>-->
+        <button class="btn btn-outline-danger btn-sm mt-2" @click="deleteProject(projectId)">Delete</button>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -31,6 +30,7 @@
 import { mapActions } from 'vuex'
 import moment from 'moment'
 import firebase from '../helpers/firebaseConfig'
+import Swal from 'sweetalert2'
 
 export default {
   name: 'ProjectCard',
@@ -49,11 +49,29 @@ export default {
       this.$router.push('/project/' + projectId)
     },
     deleteProject(projectId) {
-      firebase.projectsCollection.doc(projectId).delete().then(function () {
-        console.log("Document successfully deleted!");
-      }).catch(function (error) {
-        console.error("Error removing document: ", error);
-      });
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#28A745',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.value) {
+          console.log(projectId);
+          firebase.projectsCollection.doc(projectId).delete().then(function () {
+            console.log("Document successfully deleted!");
+          }).catch(function (error) {
+            console.error("Error removing document: ", error);
+          });
+          Swal.fire(
+            'Deleted!',
+            'Your file has been deleted.',
+            'success'
+          )
+        }
+      })
     }
   },
   filters: {

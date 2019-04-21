@@ -15,9 +15,7 @@
         <input type="text" v-model.trim="newTask.name" @keyup.enter="createTask(listId)">
         <button @click="createTask(listId)" type="button" class="btn btn-sm btn-success">Create new task</button>
         <hr>
-        <button type="button" class="btn btn-outline-danger btn-sm mt-2" @click="deleteKanbanList(listId)" onclick="return confirm('Are you sure you want to delete this item?');">
-          Delete List
-        </button>
+        <button class="btn btn-outline-danger btn-sm mt-2" @click="deleteKanbanList(listId)">Delete</button>
       </div>
     </div>
 
@@ -29,6 +27,7 @@ import firebase from '../helpers/firebaseConfig'
 import { mapGetters } from 'vuex'
 import Draggable from 'vuedraggable'
 import KanbanTask from './KanbanTask.vue'
+import Swal from 'sweetalert2'
 
 export default {
   name: 'KanbanList',
@@ -88,11 +87,28 @@ export default {
         this.newTask.name = ''
     },
     deleteKanbanList(listId) {
-      firebase.db.collection('projects/' + this.$route.params.id + '/lists').doc(listId).delete().then(function () {
-        console.log("Document successfully deleted!");
-      }).catch(function (error) {
-        console.error("Error removing document: ", error);
-      });
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#28A745',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then((result) => {
+        if (result.value) {
+          firebase.db.collection('projects/' + this.$route.params.id + '/lists').doc(listId).delete().then(function () {
+            console.log("Document successfully deleted!");
+          }).catch(function (error) {
+            console.error("Error removing document: ", error);
+          });
+          Swal.fire(
+            'Deleted!',
+            'Your file has been deleted.',
+            'success'
+          )
+        }
+      })
     }
   }
 }
