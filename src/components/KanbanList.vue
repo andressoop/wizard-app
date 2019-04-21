@@ -12,7 +12,7 @@
         </draggable>  
       </div>
       <div class="card-footer">
-        <input type="text" v-model.trim="newTask.name">
+        <input type="text" v-model.trim="newTask.name" @keyup.enter="createTask(listId)">
         <button @click="createTask(listId)" type="button" class="btn btn-sm btn-success">Create new task</button>
         <hr>
         <button type="button" class="btn btn-outline-danger btn-sm mt-2" @click="deleteKanbanList(listId)" onclick="return confirm('Are you sure you want to delete this item?');">
@@ -85,6 +85,7 @@ export default {
         listID: listId,
         name: this.newTask.name
       })
+        this.newTask.name = ''
     },
     deleteKanbanList(listId) {
       firebase.db.collection('projects/' + this.$route.params.id + '/lists').doc(listId).delete().then(function () {

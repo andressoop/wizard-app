@@ -8,7 +8,7 @@
     </div>
     <div class="d-flex flex-row mr-5">
       <form @submit.prevent>
-      <input type="text" v-model.trim="newProject.name">
+      <input type="text" v-model.trim="newProject.name" @keyup.enter="createProject">
       <button @click="createProject" type="button" class="btn btn-sm btn-success">Create new project</button>
     </form>
     </div>
@@ -53,6 +53,7 @@ export default {
       }).catch(err => {
         console.log(err)
       });
+      this.newProject.name = ''
     }
   }
 };

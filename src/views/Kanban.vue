@@ -2,7 +2,7 @@
   <div class="container-fluid pl-5 mt-4">
       <div class="">
         <form @submit.prevent>
-          <input type="text" v-model.trim="newList.name">
+          <input type="text" v-model.trim="newList.name" @keyup.enter="createList">
           <button @click="createList" type="button" class="btn btn-sm btn-success">Create new List</button>
         </form>
       </div>
@@ -47,6 +47,7 @@ export default {
       }).catch(err => {
         console.log(err)
       });
+      this.newList.name = ''
     }
   },
   created() {
