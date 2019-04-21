@@ -66,14 +66,16 @@ export const store = new Vuex.Store({
             })
         },
         fetchProjectKanbanTasks({ commit }, projectId) {
-            firebase.db.collection('projects/' + projectId + '/tasks').onSnapshot(tasksSnapshot => {
-                let projectTasksArray = []
-                tasksSnapshot.forEach(subDoc => {
-                    let task = subDoc.data()
-                    task.id = subDoc.id
-                    projectTasksArray.push(task)
-                })
-                commit('setProjectKanbanTasks', projectTasksArray)
+            firebase.db.collection('projects/' + projectId + '/tasks')
+                .orderBy('listID').orderBy('listOrder', 'asc')
+                .onSnapshot(tasksSnapshot => {
+                    let projectTasksArray = []
+                    tasksSnapshot.forEach(subDoc => {
+                        let task = subDoc.data()
+                        task.id = subDoc.id
+                        projectTasksArray.push(task)
+                    })
+                    commit('setProjectKanbanTasks', projectTasksArray)
           })
         },
         fetchProjectKanbanLists({ commit }, projectId){

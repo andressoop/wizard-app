@@ -5,7 +5,7 @@
       <div class="card-body">
         <h5 class="card-title">{{ listName }}</h5>
         <p class="small">List ID: {{ listId }}</p>
-        <draggable class="drag-area" :id="listId" v-model="listTasks" group="tasks" :move="onTaskMove" @end="updateTaskDoc">
+        <draggable class="drag-area" :id="listId" v-model="listTasks" group="tasks" :move="onTaskMove">
           <div v-for="listTask in listTasks" :key="listTask.id">
             <KanbanTask :listTask="listTask"></KanbanTask>
           </div>
@@ -57,31 +57,37 @@ export default {
       get() {
         return this.getListTasks(this.listId)
       },
-      set() {
-       
+      set(data) {
+        this.updateTaskDoc(data)        
       }
     }
   },
   methods: {
-    onTaskMove(evt) {
-      this.updateTask.taskId = evt.draggedContext.element.id
-      this.updateTask.currentListId = evt.draggedContext.element.listID
-      this.updateTask.targetListId = evt.to.id
+    onTaskMove(event) {
+      this.updateTask.taskId = event.draggedContext.element.id
+      this.updateTask.currentListId = event.draggedContext.element.listID
+      this.updateTask.targetListId = event.to.id
     },
-    updateTaskDoc() {
+    updateTaskDoc(data) {
+      const firebaseCollection = firebase.projectsCollection.doc(this.$route.params.id).collection('tasks')
+
       if(this.updateTask.currentListId != this.updateTask.targetListId) {
-        firebase.projectsCollection.doc(this.$route.params.id).collection('tasks')
-        .doc(this.updateTask.taskId)
-        .update({listID: this.updateTask.targetListId})
-      }      
+        firebaseCollection.doc(this.updateTask.taskId).update({listID: this.updateTask.targetListId})
+      }
       this.updateTask.taskId = ''
       this.updateTask.currentListId = ''
       this.updateTask.targetListId = ''
+
+      data.forEach((element, index) => {
+        firebaseCollection.doc(element.id).update({ listOrder: index })
+      });
     },
     createTask(listId) {
+      let getListOrder = this.getListTasks(listId).length
       firebase.projectsCollection.doc(this.$route.params.id).collection('tasks').add({
         createdOn: new Date(),
         listID: listId,
+        listOrder: getListOrder,
         name: this.newTask.name
       })
         this.newTask.name = ''
