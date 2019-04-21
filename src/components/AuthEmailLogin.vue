@@ -79,7 +79,9 @@ export default {
             .then(user => {
               this.$store.commit('setCurrentUser', user.user);
               this.$store.dispatch('fetchUserProfile', user.user);                     
-            })
+            }).catch(err => {
+              this.firebaseError = err.message
+            });
         }).catch(err => {
           this.firebaseError = err.message
         });
