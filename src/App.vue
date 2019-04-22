@@ -41,9 +41,15 @@ export default {
   font-family: 'Montserrat', sans-serif;
 }
 
+body {
+  overflow-x: hidden;
+}
+
 .content-area {
   padding-left: 250px;
   transition: all 0.4s ease;
+  overflow: auto;
+  height: 100vh;
 }
 
 .content-area.collapsed {

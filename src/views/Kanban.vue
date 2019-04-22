@@ -1,21 +1,37 @@
 <template>
   <div class="container-fluid pl-5 mt-4">
-      <div class="">
-        <form @submit.prevent>
-          <input type="text" v-model.trim="newList.name" @keyup.enter="createList">
-          <button @click="createList" type="button" class="btn btn-sm btn-success">Create new List</button>
-        </form>
+
+    <draggable 
+      tag="div" class="d-flex flex-row mr-5" 
+      group="lists"
+      v-model="lists" 
+      handle=".draggable-item" 
+      filter=".not-draggable-item"
+    >
+      <div v-for="list in getAllLists" :key="list.id">
+        <KanbanList :listName="list.name" :listId="list.id" />
       </div>
-      <hr>
-        <draggable tag="div" class="d-flex flex-row mr-5" v-model="lists" group="lists" v-if="Object.keys(getAllLists).length > 0">
-          <div v-for="list in getAllLists" :key="list.id">
-            <KanbanList :listName="list.name" :listId="list.id" />
+
+      <div slot="footer"> 
+        <div class="card mr-5 mb-5">
+          <div class="card-header" @click="newList.inputActive = true">
+            <h5 class="card-title text-muted" v-if="newList.inputActive === false">Add new list</h5>
+            <input type="text" placeholder="Insert list name"
+              v-if="newList.inputActive === true" 
+              v-model.trim="newList.name" 
+              v-focus="true"
+              @keyup.enter="createList()"
+              @keyup.esc="newList.name = ''; newList.inputActive = false"
+              v-on:blur="newList.inputActive = false"
+            >
           </div>
-        </draggable> 
-      <div class="d-flex flex wrap" v-else>
-        <h3 class="text-muted">You have no lists</h3>
+        </div>        
       </div>
-    </div>
+
+    </draggable>
+        
+
+  </div>
 </template>
 
 <script>
@@ -29,6 +45,7 @@ export default {
   data() {
     return {
       newList: {
+        inputActive: false,
         name: '',
       }
     }
@@ -58,15 +75,19 @@ export default {
       });
     },
     createList() {
-      let getListOrder = this.getAllLists.length
-      firebase.projectsCollection.doc(this.key).collection('lists').add({
-        createdOn: new Date(),
-        listOrder: getListOrder,
-        name: this.newList.name
-      }).catch(err => {
-        console.log(err)
-      });
-      this.newList.name = ''
+      if (this.newList.name.length !== 0) {
+        let getListOrder = this.getAllLists.length
+        firebase.projectsCollection.doc(this.key).collection('lists').add({
+          createdOn: new Date(),
+          listOrder: getListOrder,
+          name: this.newList.name
+        }).catch(err => {
+          console.error("Error creating new list: ", err);
+        });
+        this.newList.name = ''
+      } else {
+        return
+      } 
     }
   },
   created() {
@@ -78,15 +99,23 @@ export default {
       } else {
         alert("No such document!");
       }
-    })
+    });
   },
   mounted() {
-    this.fetchProjectKanbanLists(this.$route.params.id)
-    this.fetchProjectKanbanTasks(this.$route.params.id)
-  }
+    this.fetchProjectKanbanLists(this.$route.params.id);
+    this.fetchProjectKanbanTasks(this.$route.params.id);
+  },
 }
 </script>
 
 <style>
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+  width: 300px;
+}
 
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
 </style>

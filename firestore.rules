@@ -15,8 +15,9 @@ service cloud.firestore {
       }
 
       match /lists/{list} {
-      	allow read, update, delete;
+      	allow read, delete;
       	allow create: if request.auth.uid != null && request.resource.data.name != null && request.resource.data.name != '';
+        allow update: if request.auth.uid != null && request.resource.data.name != null && request.resource.data.name != '';
       }
     }
 

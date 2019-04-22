@@ -1,24 +1,41 @@
 <template>
-  <div class="card-deck">
-    
+  <div class="card-deck">    
     <div class="card mr-5 mb-5">
-      <div class="card-body">
-        <h5 class="card-title">{{ listName }}</h5>
+
+      <div class="card-header draggable-item" @dblclick="editList.inputActive = true">
+        <h5 class="card-title" v-if="editList.inputActive === false">{{ listName }}</h5>        
+        <input class="not-draggable-item" type="text" 
+          v-if="editList.inputActive === true" 
+          v-model.trim="editList.name" 
+          v-focus="true"
+          @keyup.enter="editKanbanListName()"
+          @keyup.esc="editList.name = listName; editList.inputActive = false"
+          v-on:blur="editList.inputActive = false"
+        >
         <p class="small">List ID: {{ listId }}</p>
+      </div>
+      <div class="card-body">        
         <draggable class="drag-area" :id="listId" v-model="listTasks" group="tasks" :move="onTaskMove">
           <div v-for="listTask in listTasks" :key="listTask.id">
             <KanbanTask :listTask="listTask"></KanbanTask>
           </div>
-        </draggable>  
+        </draggable>
       </div>
-      <div class="card-footer">
-        <input type="text" v-model.trim="newTask.name" @keyup.enter="createTask(listId)">
-        <button @click="createTask(listId)" type="button" class="btn btn-sm btn-success">Create new task</button>
-        <hr>
-        <button class="btn btn-outline-danger btn-sm mt-2" @click="deleteKanbanList(listId)">Delete</button>
-      </div>
-    </div>
 
+      <div class="card-footer" @click="newTask.inputActive = true">
+        <p class="small text-muted" v-if="newTask.inputActive === false">Add new task</p>
+        <input type="text" placeholder="Insert task name"
+          v-if="newTask.inputActive === true"
+          v-model.trim="newTask.name"
+          v-focus="true"
+          @keyup.enter="createTask(listId); newTask.inputActive = false"
+          @keyup.esc="newTask.name = ''; newTask.inputActive = false"
+          v-on:blur="newTask.inputActive = false"
+        >
+      </div>
+      <button class="btn btn-outline-danger btn-sm mt-2" @click="deleteKanbanList(listId)">Delete</button>
+    
+    </div>
   </div>
 </template>
 
@@ -41,7 +58,12 @@ export default {
   ],
   data() {
     return {
+      editList: {
+        inputActive: false,
+        name: this.listName
+      },
       newTask: {
+        inputActive: false,
         name: '',
       },
       updateTask: {
@@ -72,7 +94,9 @@ export default {
       const firebaseCollection = firebase.projectsCollection.doc(this.$route.params.id).collection('tasks')
 
       if(this.updateTask.currentListId != this.updateTask.targetListId) {
-        firebaseCollection.doc(this.updateTask.taskId).update({listID: this.updateTask.targetListId})
+        firebaseCollection.doc(this.updateTask.taskId).update({
+          listID: this.updateTask.targetListId
+          })
       }
       this.updateTask.taskId = ''
       this.updateTask.currentListId = ''
@@ -83,14 +107,32 @@ export default {
       });
     },
     createTask(listId) {
-      let getTaskOrder = this.getListTasks(listId).length
-      firebase.projectsCollection.doc(this.$route.params.id).collection('tasks').add({
-        createdOn: new Date(),
-        listID: listId,
-        taskOrder: getTaskOrder,
-        name: this.newTask.name
-      })
-        this.newTask.name = ''
+      if (this.newTask.name.length !== 0) {
+        let getTaskOrder = this.getListTasks(listId).length
+        firebase.projectsCollection.doc(this.$route.params.id).collection('tasks').add({
+          createdOn: new Date(),
+          listID: listId,
+          taskOrder: getTaskOrder,
+          name: this.newTask.name
+        }).catch(err => {
+          console.error("Error creating new task: ", err);
+        });
+          this.newTask.name = '';
+      } else {
+        return
+      }      
+    },
+    editKanbanListName() {
+      if (this.editList.name.length !== 0) {
+        firebase.projectsCollection.doc(this.$route.params.id).collection('lists').doc(this.listId).update({
+        name: this.editList.name
+        }).catch(err => {
+          console.error("Error editing Kanban list name: ", err);
+        });
+        this.editList.inputActive = false
+      } else {
+        return
+      }      
     },
     deleteKanbanList(listId) {
       Swal.fire({
@@ -124,7 +166,6 @@ export default {
 .card {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   transition: 0.3s;
-  /* margin: 20px; */
   width: 300px;
 }
 

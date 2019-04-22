@@ -6,11 +6,16 @@ import { store } from './store.js'
 import firebase from './helpers/firebaseConfig'
 import Swal from 'sweetalert2'
 
+// Global custom directives
+Vue.directive('focus', {
+  inserted: function (el) {
+    el.focus()
+  }
+})
+
+// Init plugins
 window.Swal = Swal;
-
-// Init plugin
 Vue.use(Vuelidate)
-
 Vue.config.productionTip = false
 
 let app
