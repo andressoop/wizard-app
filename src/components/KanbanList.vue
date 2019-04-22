@@ -28,7 +28,7 @@
           v-if="newTask.inputActive === true"
           v-model.trim="newTask.name"
           v-focus="true"
-          @keyup.enter="createTask(listId); newTask.inputActive = false"
+          @keyup.enter="createTask(listId)"
           @keyup.esc="newTask.name = ''; newTask.inputActive = false"
           v-on:blur="newTask.inputActive = false"
         >
