@@ -1,21 +1,50 @@
 <template>
-  <div class="card-deck">    
+  <div class="card-deck">
     <div class="card mr-5 mb-5">
+      <div class="card-header draggable-item">
+        <div class="d-flex justify-content-between">
+          <div class="d-flex justify-content-start" @click="editList.inputActive = true">
+            <h5 class="card-title" v-if="editList.inputActive === false">{{ listName }}</h5>
+            <input
+              class="form-control not-draggable-item"
+              type="text"
+              v-if="editList.inputActive === true"
+              v-model.trim="editList.name"
+              v-focus="true"
+              @keyup.enter="editKanbanListName()"
+              @keyup.esc="editList.name = listName; editList.inputActive = false"
+              v-on:blur="editKanbanListName()">
+          </div>
+          <div class="d-flex justify-content-start">
+            <div class="dropdown dropright">
+              <button
+                type="button"
+                id="dropdownMenuButton"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+                class="btn btn-link btn-dropdown">
+                <i class="fas fa-ellipsis-v text-muted h5 pt-1"></i>
+              </button>
 
-      <div class="card-header draggable-item" @dblclick="editList.inputActive = true">
-        <h5 class="card-title" v-if="editList.inputActive === false">{{ listName }}</h5>        
-        <input class="not-draggable-item" type="text" 
-          v-if="editList.inputActive === true" 
-          v-model.trim="editList.name" 
-          v-focus="true"
-          @keyup.enter="editKanbanListName()"
-          @keyup.esc="editList.name = listName; editList.inputActive = false"
-          v-on:blur="editList.inputActive = false"
-        >
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item text-danger" href="#" @click="deleteKanbanList(listId)">
+                  <i class="far fa-trash-alt mr-1"></i> Delete
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <p class="small">List ID: {{ listId }}</p>
       </div>
-      <div class="card-body">        
-        <draggable class="drag-area" :id="listId" v-model="listTasks" group="tasks" :move="onTaskMove">
+      <div class="card-body">
+        <draggable
+          class="drag-area"
+          :id="listId"
+          v-model="listTasks"
+          group="tasks"
+          :move="onTaskMove">
           <div v-for="listTask in listTasks" :key="listTask.id">
             <KanbanTask :listTask="listTask"></KanbanTask>
           </div>
@@ -24,17 +53,17 @@
 
       <div class="card-footer" @click="newTask.inputActive = true">
         <p class="small text-muted" v-if="newTask.inputActive === false">Add new task</p>
-        <input type="text" placeholder="Insert task name"
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Insert task name"
           v-if="newTask.inputActive === true"
           v-model.trim="newTask.name"
           v-focus="true"
           @keyup.enter="createTask(listId)"
           @keyup.esc="newTask.name = ''; newTask.inputActive = false"
-          v-on:blur="newTask.inputActive = false"
-        >
+          v-on:blur="createTask(listId)">
       </div>
-      <button class="btn btn-outline-danger btn-sm mt-2" @click="deleteKanbanList(listId)">Delete</button>
-    
     </div>
   </div>
 </template>
@@ -80,7 +109,7 @@ export default {
         return this.getListTasks(this.listId)
       },
       set(data) {
-        this.updateTaskDoc(data)        
+        this.updateTaskDoc(data)
       }
     }
   },
@@ -93,10 +122,10 @@ export default {
     updateTaskDoc(data) {
       const firebaseCollection = firebase.projectsCollection.doc(this.$route.params.id).collection('tasks')
 
-      if(this.updateTask.currentListId != this.updateTask.targetListId) {
+      if (this.updateTask.currentListId != this.updateTask.targetListId) {
         firebaseCollection.doc(this.updateTask.taskId).update({
           listID: this.updateTask.targetListId
-          })
+        })
       }
       this.updateTask.taskId = ''
       this.updateTask.currentListId = ''
@@ -117,22 +146,22 @@ export default {
         }).catch(err => {
           console.error("Error creating new task: ", err);
         });
-          this.newTask.name = '';
+        this.newTask.name = '';
       } else {
-        return
-      }      
+        this.newTask.inputActive = false;
+      }
     },
     editKanbanListName() {
       if (this.editList.name.length !== 0) {
         firebase.projectsCollection.doc(this.$route.params.id).collection('lists').doc(this.listId).update({
-        name: this.editList.name
+          name: this.editList.name
         }).catch(err => {
           console.error("Error editing Kanban list name: ", err);
         });
         this.editList.inputActive = false
       } else {
         return
-      }      
+      }
     },
     deleteKanbanList(listId) {
       Swal.fire({
@@ -180,5 +209,9 @@ export default {
 .drag-area {
   min-height: 50px;
   min-width: 100%;
+}
+
+.btn-dropdown {
+  padding: 0;
 }
 </style>

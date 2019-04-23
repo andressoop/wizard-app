@@ -16,7 +16,7 @@
         <div class="card mr-5 mb-5">
           <div class="card-header" @click="newList.inputActive = true">
             <h5 class="card-title text-muted" v-if="newList.inputActive === false">Add new list</h5>
-            <input type="text" placeholder="Insert list name"
+            <input type="text" class="form-control" placeholder="Insert list name"
               v-if="newList.inputActive === true" 
               v-model.trim="newList.name" 
               v-focus="true"
