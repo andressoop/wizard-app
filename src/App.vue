@@ -13,9 +13,9 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import { FadeTransition } from 'vue2-transitions'
 import Navigation from './components/Navigation'
+import firebase from '@/helpers/firebaseConfig'
 
 export default {
   components: {
@@ -24,14 +24,26 @@ export default {
   },
   data() {
     return {
-      sidebarCollapsed: false
+      sidebarCollapsed: false,
+      isLoggedIn: false
     }
   },
-  computed: mapGetters(['isLoggedIn']),
   methods: {
     onCollapse(collapsed) {
       this.sidebarCollapsed = collapsed
     }
+  },
+  created() {
+    firebase.auth.onAuthStateChanged(user => {
+      if (user) { 
+        this.isLoggedIn = true;
+        this.$store.commit('setCurrentUser', user);
+        this.$store.dispatch('fetchUserProfile');
+        this.$store.dispatch('fetchProjects');
+      } else {
+        this.isLoggedIn = false;
+      }
+    })
   }
 }
 </script>
