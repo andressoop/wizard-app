@@ -38,7 +38,7 @@ export default {
       if (user) { 
         this.isLoggedIn = true;
         this.$store.commit('setCurrentUser', user);
-        this.$store.dispatch('fetchUserProfile');
+        this.$store.dispatch('fetchUserProfile', user);
         this.$store.dispatch('fetchProjects');
       } else {
         this.isLoggedIn = false;

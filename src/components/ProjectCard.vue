@@ -12,14 +12,7 @@
       <div class="card-footer">
         <small class="text-muted">Project created {{ projectCreatedOn | formatDate }}</small>
         <br>
-        <button
-          type="button"
-          class="btn btn-primary btn-sm mt-2 mr-2"
-          @click="loadProject(projectId)"
-        >View Project</button>
-        <!-- <button type="button" class="btn btn-outline-danger btn-sm mt-2" @click="deleteProject(projectId)" onclick="return confirm('Are you sure you want to delete this item?');">
-          Delete Project
-        </button>-->
+        <button type="button" class="btn btn-primary btn-sm mt-2 mr-2" @click="viewProject(projectId)">View Project</button>
         <button class="btn btn-outline-danger btn-sm mt-2" @click="deleteProject(projectId)">Delete</button>
       </div>
     </div>
@@ -27,9 +20,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
 import moment from 'moment'
-import firebase from '../helpers/firebaseConfig'
 import Swal from 'sweetalert2'
 
 export default {
@@ -43,9 +34,7 @@ export default {
     return {}
   },
   methods: {
-    ...mapActions(['fetchProjectKanbanLists']),
-    loadProject(projectId) {
-      this.fetchProjectKanbanLists(projectId)
+    viewProject(projectId) {
       this.$router.push('/project/' + projectId)
     },
     deleteProject(projectId) {
@@ -59,12 +48,7 @@ export default {
         confirmButtonText: 'Yes, delete it!'
       }).then((result) => {
         if (result.value) {
-          console.log(projectId);
-          firebase.projectsCollection.doc(projectId).delete().then(function () {
-            console.log("Document successfully deleted!");
-          }).catch(function (error) {
-            console.error("Error removing document: ", error);
-          });
+          this.$store.dispatch('deleteProject', projectId)
           Swal.fire(
             'Deleted!',
             'Your file has been deleted.',

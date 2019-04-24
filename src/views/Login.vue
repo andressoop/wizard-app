@@ -71,17 +71,17 @@ export default {
       authComponent: '',
     }
   },
-  beforeCreate: function() {
+  beforeCreate() {
     firebase.auth.onAuthStateChanged(user => {
       if (user) {
 
         if (user.providerData[0].providerId == 'google.com'){
-          this.googleLoginResponse();
+          this.updateGmailData();
           this.$router.push('/dashboard');
         } else {
           this.$store.commit('setCurrentUser', user);
-          this.$store.dispatch('fetchUserProfile', user);
-          this.$router.push('/dashboard');         
+          this.$store.dispatch('fetchUserProfile', user)
+          this.$router.push('/dashboard');
         }
         
       } else {
@@ -90,27 +90,6 @@ export default {
     });
   },
   methods: {
-    googleLoginResponse() {
-      firebase.auth
-        .getRedirectResult()
-        .then(credential => {
-          this.$store.commit('setCurrentUser', credential.user);
-
-          firebase.usersCollection
-            .doc(credential.user.uid)
-            .set({})
-            .then(() => {
-              this.$store.dispatch('fetchUserProfile', credential.user);
-              this.updateGmailData();
-            })
-            .catch(err => {
-              console.log(err);
-            });
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
     updateGmailData() {
       this.user = firebase.auth.currentUser;
       firebase.usersCollection.doc(this.user.uid).set({

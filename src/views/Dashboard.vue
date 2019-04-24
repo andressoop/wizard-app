@@ -13,8 +13,8 @@
     </form>
     </div>
     <hr>
-    <div class="d-flex flex-wrap" v-if="Object.keys(userProjects).length > 0">
-      <div v-for="project in userProjects" :key="project.id">
+    <div class="d-flex flex-wrap" v-if="Object.keys(getAllProjects).length > 0">
+      <div v-for="project in getAllProjects" :key="project.id">
         <ProjectCard :projectName="project.name" :projectId="project.id" :projectCreatedOn="project.createdOn" />
       </div>
     </div>
@@ -25,9 +25,8 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 import ProjectCard from '../components/ProjectCard.vue'
-import firebase from '../helpers/firebaseConfig'
 
 export default {
   name: 'Dashboard',
@@ -42,17 +41,11 @@ export default {
     };
   },
   computed: {
-    ...mapState(['userProfile', 'currentUser', 'userProjects'])
+    ...mapGetters(['getAllProjects'])
   },
   methods: {
     createProject() {
-      firebase.projectsCollection.add({
-        createdOn: new Date(),
-        uid: this.currentUser.uid,
-        name: this.newProject.name
-      }).catch(err => {
-        console.log(err)
-      });
+      this.$store.dispatch('createNewProject', this.newProject)
       this.newProject.name = ''
     }
   }

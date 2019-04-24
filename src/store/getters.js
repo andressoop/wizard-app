@@ -1,5 +1,8 @@
 export default {
   isLoggedIn: state => !!state.currentUser,
+  getAllProjects(state) {
+    return state.userProjects
+  },
   getAllTasks(state) {
     return state.projectKanbanTasks
   },

@@ -8,6 +8,9 @@ export default {
   setUserProjects(state, val) {
     state.userProjects = val
   },
+  setActiveProjectId(state, val) {
+    state.activeProjectId = val
+  },
   setProjectKanbanTasks(state, val) {
     state.projectKanbanTasks = val
   },

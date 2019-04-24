@@ -11,9 +11,9 @@
               v-if="editList.inputActive === true"
               v-model.trim="editList.name"
               v-focus="true"
-              @keyup.enter="editKanbanListName()"
+              @keyup.enter="editListName()"
               @keyup.esc="editList.name = listName; editList.inputActive = false"
-              v-on:blur="editKanbanListName()">
+              v-on:blur="editListName()">
           </div>
           <div class="d-flex justify-content-start">
             <div class="dropdown dropright">
@@ -69,8 +69,6 @@
 </template>
 
 <script>
-import firebase from '../helpers/firebaseConfig'
-import { mapGetters } from 'vuex'
 import Draggable from 'vuedraggable'
 import KanbanTask from './KanbanTask.vue'
 import Swal from 'sweetalert2'
@@ -89,10 +87,13 @@ export default {
     return {
       editList: {
         inputActive: false,
+        listId: this.listId,
         name: this.listName
       },
       newTask: {
         inputActive: false,
+        listId: this.listId,
+        taskOrder: '',
         name: '',
       },
       updateTask: {
@@ -103,13 +104,18 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getListTasks']),
     listTasks: {
       get() {
-        return this.getListTasks(this.listId)
+        return this.$store.getters.getListTasks(this.listId)
       },
       set(data) {
-        this.updateTaskDoc(data)
+        this.$store.commit('setProjectKanbanTasks', data)
+
+        if (this.updateTask.currentListId != this.updateTask.targetListId) {
+          this.$store.dispatch('changeTaskListId', this.updateTask)
+        }
+        this.updateTask = {taskId: '', currentListId: '', targetListId: ''}
+        this.$store.dispatch('updateTaskOrder', data)
       }
     }
   },
@@ -119,45 +125,19 @@ export default {
       this.updateTask.currentListId = event.draggedContext.element.listID
       this.updateTask.targetListId = event.to.id
     },
-    updateTaskDoc(data) {
-      const firebaseCollection = firebase.projectsCollection.doc(this.$route.params.id).collection('tasks')
-
-      if (this.updateTask.currentListId != this.updateTask.targetListId) {
-        firebaseCollection.doc(this.updateTask.taskId).update({
-          listID: this.updateTask.targetListId
-        })
-      }
-      this.updateTask.taskId = ''
-      this.updateTask.currentListId = ''
-      this.updateTask.targetListId = ''
-
-      data.forEach((element, index) => {
-        firebaseCollection.doc(element.id).update({ taskOrder: index })
-      });
-    },
-    createTask(listId) {
+    createTask() {
       if (this.newTask.name.length !== 0) {
-        let getTaskOrder = this.getListTasks(listId).length
-        firebase.projectsCollection.doc(this.$route.params.id).collection('tasks').add({
-          createdOn: new Date(),
-          listID: listId,
-          taskOrder: getTaskOrder,
-          name: this.newTask.name
-        }).catch(err => {
-          console.error("Error creating new task: ", err);
-        });
-        this.newTask.name = '';
+        this.newTask.taskOrder = this.listTasks.length
+        this.$store.dispatch('createNewTask', this.newTask)
+        this.newTask.taskOrder = ''
+        this.newTask.name = ''
       } else {
-        this.newTask.inputActive = false;
+        this.newTask.inputActive = false
       }
     },
-    editKanbanListName() {
+    editListName() {
       if (this.editList.name.length !== 0) {
-        firebase.projectsCollection.doc(this.$route.params.id).collection('lists').doc(this.listId).update({
-          name: this.editList.name
-        }).catch(err => {
-          console.error("Error editing Kanban list name: ", err);
-        });
+        this.$store.dispatch('editKanbanListName', this.editList)
         this.editList.inputActive = false
       } else {
         return
@@ -174,11 +154,7 @@ export default {
         confirmButtonText: 'Yes, delete it!'
       }).then((result) => {
         if (result.value) {
-          firebase.db.collection('projects/' + this.$route.params.id + '/lists').doc(listId).delete().then(function () {
-            console.log("Document successfully deleted!");
-          }).catch(function (error) {
-            console.error("Error removing document: ", error);
-          });
+          this.$store.dispatch('deleteKanbanList', listId)
           Swal.fire(
             'Deleted!',
             'Your file has been deleted.',

@@ -10,6 +10,7 @@ const state =  {
   currentUser: null,
   userProfile: {},
   userProjects: [],
+  activeProjectId: '',
   projectKanbanLists: [],
   projectKanbanTasks: []
 }

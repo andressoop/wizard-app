@@ -4,11 +4,11 @@
     <draggable 
       tag="div" class="d-flex flex-row mr-5" 
       group="lists"
-      v-model="lists" 
+      v-model="projectLists" 
       handle=".draggable-item" 
       filter=".not-draggable-item"
     >
-      <div v-for="list in getAllLists" :key="list.id">
+      <div v-for="list in projectLists" :key="list.id">
         <KanbanList :listName="list.name" :listId="list.id" />
       </div>
 
@@ -35,9 +35,7 @@
 </template>
 
 <script>
-import firebase from '@/helpers/firebaseConfig'
 import KanbanList from '../components/KanbanList.vue'
-import { mapGetters, mapActions } from 'vuex'
 import Draggable from 'vuedraggable'
 
 export default {
@@ -47,6 +45,7 @@ export default {
       newList: {
         inputActive: false,
         name: '',
+        listOrder: '',
       }
     }
   },
@@ -55,56 +54,33 @@ export default {
     Draggable
   },
   computed: {
-    ...mapGetters(['getAllLists']),
-    lists: {
+    projectLists: {
       get() {
-        return this.getAllLists
+        return this.$store.getters.getAllLists
       },
       set(data) {
-        this.updateListDoc(data)        
+        this.$store.commit('setProjectKanbanLists', data)
+        this.$store.dispatch('updateKanbanListOrder', data) 
       }
     }
   },
   methods: {
-    ...mapActions(['fetchProjectKanbanLists', 'fetchProjectKanbanTasks']),
-    updateListDoc(data) {
-      const firebaseCollection = firebase.projectsCollection.doc(this.key).collection('lists')
-
-      data.forEach((element, index) => {
-        firebaseCollection.doc(element.id).update({ listOrder: index })
-      });
-    },
     createList() {
       if (this.newList.name.length !== 0) {
-        let getListOrder = this.getAllLists.length
-        firebase.projectsCollection.doc(this.key).collection('lists').add({
-          createdOn: new Date(),
-          listOrder: getListOrder,
-          name: this.newList.name
-        }).catch(err => {
-          console.error("Error creating new list: ", err);
-        });
+        this.newList.listOrder = this.projectLists.length
+        this.$store.dispatch('createNewKanbanList', this.newList)
         this.newList.name = ''
+        this.newList.listOrder = ''
       } else {
         return
       } 
     }
   },
   created() {
-    const ref = firebase.projectsCollection.doc(this.$route.params.id)
-    ref.get().then((doc) => {
-      if (doc.exists) {
-        this.key = doc.id;
-        this.project = doc.data();
-      } else {
-        alert("No such document!");
-      }
-    });
-  },
-  mounted() {
-    this.fetchProjectKanbanLists(this.$route.params.id);
-    this.fetchProjectKanbanTasks(this.$route.params.id);
-  },
+    this.$store.commit('setActiveProjectId', this.$route.params.id)
+    this.$store.dispatch('fetchKanbanLists', this.$route.params.id)
+    this.$store.dispatch('fetchKanbanTasks', this.$route.params.id)
+  }
 }
 </script>
 
