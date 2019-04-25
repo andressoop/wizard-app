@@ -88,14 +88,19 @@ export default {
       console.error("Error deleting Kanban list: ", err);
     })
   },
-  updateKanbanListOrder({ state }, data) {
+  editKanbanListOrder({ commit, state }, data) {
+    let updatedList = []
     data.forEach((element, index) => {
-      firebase.projectsCollection.doc(state.activeProjectId).collection('lists').doc(element.id).update({ listOrder: index })
+      element.listOrder = index.toString()
+      updatedList.push(element)
+      firebase.projectsCollection.doc(state.activeProjectId).collection('lists').doc(element.id).update({ listOrder: element.listOrder })
     })
+    commit('setProjectKanbanLists', updatedList)
   },
-  editKanbanListName({ state }, editList) {
-    firebase.projectsCollection.doc(state.activeProjectId).collection('lists').doc(editList.listId).update({
-      name: editList.name
+  editKanbanListName({ commit, state }, editedList) {
+    commit('updateKanbanListName', editedList)
+    firebase.projectsCollection.doc(state.activeProjectId).collection('lists').doc(editedList.listId).update({
+      name: editedList.name
     }).catch(err => {
       console.error("Error editing Kanban list name: ", err);
     })
@@ -126,9 +131,10 @@ export default {
       listID: updateTask.targetListId
     })
   },
-  updateTaskOrder({ state }, data) {
+  editTaskOrder({ state }, data) {
     data.forEach((element, index) => {
-      firebase.projectsCollection.doc(state.activeProjectId).collection('tasks').doc(element.id).update({ taskOrder: index })
+      element.index = index.toString()
+      firebase.projectsCollection.doc(state.activeProjectId).collection('tasks').doc(element.id).update({ taskOrder: element.index })
     })
   }
 }

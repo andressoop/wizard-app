@@ -44,7 +44,10 @@
           :id="listId"
           v-model="listTasks"
           group="tasks"
-          :move="onTaskMove">
+          :move="onTaskMove"
+          animation=200
+          ghostClass="ghost"
+        >
           <div v-for="listTask in listTasks" :key="listTask.id">
             <KanbanTask :listTask="listTask"></KanbanTask>
           </div>
@@ -80,6 +83,7 @@ export default {
     Draggable
   },
   props: [
+    'listIndex',
     'listName',
     'listId',
   ],
@@ -87,6 +91,7 @@ export default {
     return {
       editList: {
         inputActive: false,
+        index: this.listIndex,
         listId: this.listId,
         name: this.listName
       },
@@ -109,13 +114,11 @@ export default {
         return this.$store.getters.getListTasks(this.listId)
       },
       set(data) {
-        this.$store.commit('setProjectKanbanTasks', data)
-
         if (this.updateTask.currentListId != this.updateTask.targetListId) {
           this.$store.dispatch('changeTaskListId', this.updateTask)
         }
         this.updateTask = {taskId: '', currentListId: '', targetListId: ''}
-        this.$store.dispatch('updateTaskOrder', data)
+        this.$store.dispatch('editTaskOrder', data)
       }
     }
   },
@@ -127,7 +130,7 @@ export default {
     },
     createTask() {
       if (this.newTask.name.length !== 0) {
-        this.newTask.taskOrder = this.listTasks.length
+        this.newTask.taskOrder = this.listTasks.length ? this.listTasks.length.toString() : '0'
         this.$store.dispatch('createNewTask', this.newTask)
         this.newTask.taskOrder = ''
         this.newTask.name = ''

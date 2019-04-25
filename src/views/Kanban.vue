@@ -7,9 +7,11 @@
       v-model="projectLists" 
       handle=".draggable-item" 
       filter=".not-draggable-item"
+      animation=200
+      ghostClass="ghost"
     >
-      <div v-for="list in projectLists" :key="list.id">
-        <KanbanList :listName="list.name" :listId="list.id" />
+      <div v-for="(list, index) in projectLists" :key="list.id">
+        <KanbanList :listIndex="index" :listName="list.name" :listId="list.id" />
       </div>
 
       <div slot="footer"> 
@@ -59,15 +61,14 @@ export default {
         return this.$store.getters.getAllLists
       },
       set(data) {
-        this.$store.commit('setProjectKanbanLists', data)
-        this.$store.dispatch('updateKanbanListOrder', data) 
+        this.$store.dispatch('editKanbanListOrder', data)
       }
     }
   },
   methods: {
     createList() {
       if (this.newList.name.length !== 0) {
-        this.newList.listOrder = this.projectLists.length
+        this.newList.listOrder = this.projectLists.length ? this.projectLists.length.toString() : '0'
         this.$store.dispatch('createNewKanbanList', this.newList)
         this.newList.name = ''
         this.newList.listOrder = ''
@@ -80,11 +81,20 @@ export default {
     this.$store.commit('setActiveProjectId', this.$route.params.id)
     this.$store.dispatch('fetchKanbanLists', this.$route.params.id)
     this.$store.dispatch('fetchKanbanTasks', this.$route.params.id)
+  },
+  destroyed() {
+    this.$store.commit('setActiveProjectId', '')
+    this.$store.commit('setProjectKanbanLists', [])
+    this.$store.commit('setProjectKanbanTasks', [])
   }
 }
 </script>
 
 <style>
+.ghost {
+  opacity: 0.5;
+}
+
 .card {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   transition: 0.3s;

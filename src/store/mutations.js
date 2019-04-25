@@ -16,5 +16,11 @@ export default {
   },
   setProjectKanbanLists(state, val) {
     state.projectKanbanLists = val
+  },
+  updateKanbanListName(state, editedList) {
+    state.projectKanbanLists[editedList.index].name = editedList.name
+  },
+  updateKanbanListOrder(state, updatedList) {
+    state.projectKanbanLists[updatedList.listOrder].listOrder = updatedList.index
   }
 }

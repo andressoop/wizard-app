@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 export default {
   isLoggedIn: state => !!state.currentUser,
   getAllProjects(state) {
@@ -10,6 +12,7 @@ export default {
     return state.projectKanbanTasks.filter(task => task.listID === listId)
   },
   getAllLists(state) {
-    return state.projectKanbanLists
+    const listArray = _.orderBy(state.projectKanbanLists, ['listOrder'], ['asc']) 
+    return listArray
   }
 }
