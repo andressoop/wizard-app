@@ -13,8 +13,8 @@
     </form>
     </div>
     <hr>
-    <div class="d-flex flex-wrap" v-if="Object.keys(getAllProjects).length > 0">
-      <div v-for="project in getAllProjects" :key="project.id">
+    <div class="d-flex flex-wrap" v-if="Object.keys(userProjects).length > 0">
+      <div v-for="project in userProjects" :key="project.id">
         <ProjectCard :projectName="project.name" :projectId="project.id" :projectCreatedOn="project.createdOn" />
       </div>
     </div>
@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 import ProjectCard from '../components/ProjectCard.vue'
 
 export default {
@@ -41,7 +41,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['getAllProjects'])
+    ...mapState(['userProjects'])
   },
   methods: {
     createProject() {

@@ -58,7 +58,7 @@ export default {
   computed: {
     projectLists: {
       get() {
-        return this.$store.getters.getAllLists
+        return this.$store.state.projectKanbanLists
       },
       set(data) {
         this.$store.dispatch('editKanbanListOrder', data)

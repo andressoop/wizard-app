@@ -111,14 +111,14 @@ export default {
   computed: {
     listTasks: {
       get() {
-        return this.$store.getters.getListTasks(this.listId)
+        return this.$store.state.projectKanbanTasks.filter(task => task.listID == this.listId)
       },
       set(data) {
-        if (this.updateTask.currentListId != this.updateTask.targetListId) {
-          this.$store.dispatch('changeTaskListId', this.updateTask)
-        }
-        this.updateTask = {taskId: '', currentListId: '', targetListId: ''}
-        this.$store.dispatch('editTaskOrder', data)
+        // if (this.updateTask.currentListId != this.updateTask.targetListId) {
+        //   this.$store.dispatch('changeTaskListId', this.updateTask)
+        // } 
+        this.$store.dispatch('editTaskOrder', {data: data, listId: this.listId})
+        this.updateTask = {taskId: '', currentListId: '', targetListId: ''}        
       }
     }
   },

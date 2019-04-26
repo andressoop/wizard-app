@@ -35,10 +35,8 @@ export default {
           userProjectsArray.push(project)
         }
         if (change.type === "removed") {
-          project = change.doc.data()
-          project.id = change.doc.id
-          _.remove(userProjectsArray, function(i) {
-            return i.id == project.id;
+          _.remove(userProjectsArray, function(i, index) {
+            return [index] == change.oldIndex;
           });
         }
       })
@@ -62,15 +60,35 @@ export default {
       console.error("Error deleting project: ", err);
     })
   },
-  fetchKanbanLists({ commit }, projectId) {
+  fetchKanbanLists({ commit, state }, projectId) {
     firebase.projectsCollection.doc(projectId).collection('lists').orderBy('listOrder').onSnapshot(querySnapshot => {
-      let listsArray = []
-      querySnapshot.forEach(subDoc => {
-        let list = subDoc.data()
-        list.id = subDoc.id
-        listsArray.push(list)
+      let kanbanListsArray = state.projectKanbanLists
+      
+      querySnapshot.docChanges().forEach(change => {
+        let list = {}
+
+        if (change.type === "added") {
+          list = change.doc.data()
+          list.id = change.doc.id
+          kanbanListsArray.push(list)
+        }
+        if (change.type === "modified") {
+          list = change.doc.data()
+          list.id = change.doc.id
+          _.remove(kanbanListsArray, function(i) {
+            return i.id == list.id
+          });
+          kanbanListsArray.push(list)
+        }
+        if (change.type === "removed") {
+          _.remove(kanbanListsArray, function(i, index) {
+            return [index] == change.oldIndex
+          });
+        }
       })
-      commit('setProjectKanbanLists', listsArray)        
+      
+      let orderedKanbanListsArray = _.orderBy(kanbanListsArray, ['listOrder'], ['asc']);
+      commit('setProjectKanbanLists', orderedKanbanListsArray)        
     })
   },
   createNewKanbanList({ state }, newList) {
@@ -88,6 +106,14 @@ export default {
       console.error("Error deleting Kanban list: ", err);
     })
   },
+  editKanbanListName({ commit, state }, editedList) {
+    commit('updateKanbanListName', editedList)
+    firebase.projectsCollection.doc(state.activeProjectId).collection('lists').doc(editedList.listId).update({
+      name: editedList.name
+    }).catch(err => {
+      console.error("Error editing Kanban list name: ", err);
+    })
+  },
   editKanbanListOrder({ commit, state }, data) {
     let updatedList = []
     data.forEach((element, index) => {
@@ -97,23 +123,35 @@ export default {
     })
     commit('setProjectKanbanLists', updatedList)
   },
-  editKanbanListName({ commit, state }, editedList) {
-    commit('updateKanbanListName', editedList)
-    firebase.projectsCollection.doc(state.activeProjectId).collection('lists').doc(editedList.listId).update({
-      name: editedList.name
-    }).catch(err => {
-      console.error("Error editing Kanban list name: ", err);
-    })
-  },
-  fetchKanbanTasks({ commit }, projectId) {
+  fetchKanbanTasks({ commit, state }, projectId) {
     firebase.projectsCollection.doc(projectId).collection('tasks').orderBy('listID').orderBy('taskOrder').onSnapshot(querySnapshot => {
-      let tasksArray = []
-      querySnapshot.forEach(subDoc => {
-        let task = subDoc.data()
-        task.id = subDoc.id
-        tasksArray.push(task)
+      let kanbanTasksArray = state.projectKanbanTasks
+
+      querySnapshot.docChanges().forEach(change => {
+          let task = {}
+
+          if (change.type === "added") {
+            task = change.doc.data()
+            task.id = change.doc.id
+            kanbanTasksArray.push(task)
+          }
+          if (change.type === "modified") {
+            task = change.doc.data()
+            task.id = change.doc.id
+            _.remove(kanbanTasksArray, function(i) {
+              return i.id == task.id
+            });
+            kanbanTasksArray.push(task)
+          }
+          if (change.type === "removed") {
+            _.remove(kanbanTasksArray, function(i, index) {
+              return [index] == change.oldIndex
+            });
+          }
       })
-      commit('setProjectKanbanTasks', tasksArray)        
+      
+      let orderedKanbanTasksArray = _.orderBy(kanbanTasksArray, ['taskOrder'], ['asc']);
+      commit('setProjectKanbanTasks', orderedKanbanTasksArray)        
     })
   },
   createNewTask({ state }, newTask) {
@@ -126,15 +164,20 @@ export default {
       console.error("Error creating new task: ", err)
     });
   },
-  changeTaskListId({ state }, updateTask) {
-    firebase.projectsCollection.doc(state.activeProjectId).collection('tasks').doc(updateTask.taskId).update({
-      listID: updateTask.targetListId
-    })
-  },
-  editTaskOrder({ state }, data) {
+  editTaskOrder({ commit, state }, {data, listId}) {
+    let updatedtasksArray = state.projectKanbanTasks
+    let batch = firebase.db.batch()
+
     data.forEach((element, index) => {
-      element.index = index.toString()
-      firebase.projectsCollection.doc(state.activeProjectId).collection('tasks').doc(element.id).update({ taskOrder: element.index })
+      element.taskOrder = index.toString()
+      element.listID = listId.toString()
+      _.remove(updatedtasksArray, function(i) {
+        return i.id == element.id
+      })
+      updatedtasksArray.push(element)
+      batch.update(firebase.projectsCollection.doc(state.activeProjectId).collection('tasks').doc(element.id), { taskOrder: element.taskOrder, listID: element.listID })
     })
+    batch.commit()
+    commit('setProjectKanbanTasks', updatedtasksArray)
   }
 }
