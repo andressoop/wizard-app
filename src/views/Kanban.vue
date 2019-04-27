@@ -11,7 +11,7 @@
       ghostClass="ghost"
     >
       <div v-for="(list, index) in projectLists" :key="list.id">
-        <KanbanList :listIndex="index" :listName="list.name" :listId="list.id" />
+        <KanbanList :listIndex="index" :listName="list.name" :listId="list.id" @showModal="showModal" />
       </div>
 
       <div slot="footer"> 
@@ -32,18 +32,24 @@
 
     </draggable>
         
+    <sweet-modal ref="modal" blocking>
+      <EditTaskModal :openTask="openTask"></EditTaskModal>
+    </sweet-modal>
 
   </div>
 </template>
 
 <script>
+import { SweetModal } from 'sweet-modal-vue'
 import KanbanList from '../components/KanbanList.vue'
 import Draggable from 'vuedraggable'
+import EditTaskModal from '@/components/ui/EditTaskModal'
 
 export default {
   name: 'Kanban',
   data() {
     return {
+      openTask: {},
       newList: {
         inputActive: false,
         name: '',
@@ -53,7 +59,9 @@ export default {
   },
   components: {
     KanbanList,
-    Draggable
+    Draggable,
+    SweetModal,
+    EditTaskModal
   },
   computed: {
     projectLists: {
@@ -75,6 +83,11 @@ export default {
       } else {
         return
       } 
+    },
+    showModal({listTask, listTaskIndex}) {
+      this.openTask = listTask
+      this.openTask.index = listTaskIndex
+      this.$refs.modal.open()
     }
   },
   created() {

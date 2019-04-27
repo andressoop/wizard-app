@@ -179,5 +179,13 @@ export default {
     })
     batch.commit()
     commit('setProjectKanbanTasks', updatedtasksArray)
+  },
+  editTaskName({state, commit}, editedData) {
+    commit('updateKanbanListName', editedData)
+    firebase.projectsCollection.doc(state.activeProjectId).collection('tasks').doc(editedData.id).update({
+      name: editedData.name
+    }).catch(err => {
+      console.error("Error editing Kanban list name: ", err);
+    })
   }
 }

@@ -48,7 +48,7 @@
           animation=200
           ghostClass="ghost"
         >
-          <div v-for="listTask in listTasks" :key="listTask.id">
+          <div v-for="(listTask, index) in listTasks" :key="listTask.id" @click="$emit('showModal', { listTask: listTask, listTaskIndex: index})">
             <KanbanTask :listTask="listTask"></KanbanTask>
           </div>
         </draggable>
@@ -114,9 +114,6 @@ export default {
         return this.$store.state.projectKanbanTasks.filter(task => task.listID == this.listId)
       },
       set(data) {
-        // if (this.updateTask.currentListId != this.updateTask.targetListId) {
-        //   this.$store.dispatch('changeTaskListId', this.updateTask)
-        // } 
         this.$store.dispatch('editTaskOrder', {data: data, listId: this.listId})
         this.updateTask = {taskId: '', currentListId: '', targetListId: ''}        
       }

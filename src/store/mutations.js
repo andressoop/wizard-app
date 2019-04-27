@@ -22,5 +22,8 @@ export default {
   },
   updateKanbanListOrder(state, updatedList) {
     state.projectKanbanLists[updatedList.listOrder].listOrder = updatedList.index
+  },
+  updateKanbanTaskName(state, updatedTask) {
+    state.projectKanbanTasks[updatedTask.index].name = updatedTask.name
   }
 }
