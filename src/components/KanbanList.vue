@@ -3,7 +3,7 @@
     <div class="card mr-5 mb-5">
       <div class="card-header draggable-item">
         <div class="d-flex justify-content-between">
-          <div class="d-flex justify-content-start" @click="editList.inputActive = true">
+          <div class="d-flex justify-content-start full-width" @click="editList.inputActive = true">
             <h5 class="card-title" v-if="editList.inputActive === false">{{ listName }}</h5>
             <input
               class="form-control not-draggable-item"
@@ -12,8 +12,9 @@
               v-model.trim="editList.name"
               v-focus="true"
               @keyup.enter="editListName()"
+              @blur="editListName()"
               @keyup.esc="editList.name = listName; editList.inputActive = false"
-              v-on:blur="editListName()">
+            >
           </div>
           <div class="d-flex justify-content-start">
             <div class="dropdown dropright">
@@ -35,8 +36,6 @@
             </div>
           </div>
         </div>
-
-        <p class="small">List ID: {{ listId }}</p>
       </div>
       <div class="card-body">
         <draggable
@@ -63,9 +62,11 @@
           v-if="newTask.inputActive === true"
           v-model.trim="newTask.name"
           v-focus="true"
+          @keydown.tab.prevent="createTask(listId)"
           @keyup.enter="createTask(listId)"
+          @blur="createTask(listId)"
           @keyup.esc="newTask.name = ''; newTask.inputActive = false"
-          v-on:blur="createTask(listId)">
+        >
       </div>
     </div>
   </div>
@@ -172,10 +173,26 @@ export default {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   transition: 0.3s;
   width: 300px;
+  max-height: 90vh;
 }
 
 .card:hover {
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.card-header {
+  padding: .75rem .75rem .75rem 1.25rem;
+  cursor: pointer;
+}
+
+.card-body {
+  padding: 10px 10px 0 10px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.card-footer {
+  cursor: pointer;
 }
 
 .container {
@@ -188,6 +205,10 @@ export default {
 }
 
 .btn-dropdown {
-  padding: 0;
+  padding: 0 .5rem 0 .5rem;
+}
+
+.full-width {
+  width: 100%;
 }
 </style>

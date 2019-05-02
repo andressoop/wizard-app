@@ -22,9 +22,10 @@
               v-if="newList.inputActive === true" 
               v-model.trim="newList.name" 
               v-focus="true"
+              @keydown.tab.prevent="createList()"
               @keyup.enter="createList()"
+              @blur="createList()"
               @keyup.esc="newList.name = ''; newList.inputActive = false"
-              v-on:blur="newList.inputActive = false"
             >
           </div>
         </div>        
@@ -81,7 +82,7 @@ export default {
         this.newList.name = ''
         this.newList.listOrder = ''
       } else {
-        return
+        this.newList.inputActive = false
       } 
     },
     showModal({listTask, listTaskIndex}) {
@@ -103,7 +104,15 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.container-fluid {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
 .ghost {
   opacity: 0.5;
 }
@@ -117,4 +126,9 @@ export default {
 .card:hover {
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 }
+
+.card-header {
+  cursor: pointer;
+}
+
 </style>

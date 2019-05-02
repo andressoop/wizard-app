@@ -14,7 +14,7 @@ Vue.directive('focus', {
 })
 
 // Init plugins
-window.Swal = Swal;
+window.Swal = Swal
 Vue.use(Vuelidate)
 Vue.config.productionTip = false
 

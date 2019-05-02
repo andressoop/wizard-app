@@ -53,15 +53,15 @@ export default {
   font-family: 'Montserrat', sans-serif;
 }
 
-body {
+html, body {
   overflow-x: hidden;
+  margin: 0;
 }
 
 .content-area {
   padding-left: 250px;
   transition: all 0.4s ease;
-  overflow: auto;
-  height: 100vh;
+  height: calc(100vh - 24px); 
 }
 
 .content-area.collapsed {
