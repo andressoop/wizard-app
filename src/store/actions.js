@@ -181,11 +181,27 @@ export default {
     commit('setProjectKanbanTasks', updatedtasksArray)
   },
   editTaskName({state, commit}, editedData) {
-    commit('updateKanbanListName', editedData)
+    commit('updateKanbanTaskName', editedData)
     firebase.projectsCollection.doc(state.activeProjectId).collection('tasks').doc(editedData.id).update({
       name: editedData.name
     }).catch(err => {
-      console.error("Error editing Kanban list name: ", err);
+      console.error("Error editing Kanban task name: ", err);
+    })
+  },
+  editTaskDescription({state, commit}, editedData) {
+    commit('updateKanbanTaskDescription', editedData)
+    firebase.projectsCollection.doc(state.activeProjectId).collection('tasks').doc(editedData.id).update({
+      description: editedData.description
+    }).catch(err => {
+      console.error("Error editing Kanban task description: ", err);
+    })
+  },
+  editTaskDueDate({state, commit}, editedData) {
+    commit('updateKanbanTaskDueDate', editedData)
+    firebase.projectsCollection.doc(state.activeProjectId).collection('tasks').doc(editedData.id).update({
+      dueDate: editedData.dueDate
+    }).catch(err => {
+      console.error("Error editing Kanban task due date: ", err);
     })
   }
 }
