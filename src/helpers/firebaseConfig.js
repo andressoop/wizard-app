@@ -14,6 +14,9 @@ firebase.initializeApp(config)
 
 // firebase utils
 const googleProvider = new firebase.auth.GoogleAuthProvider()
+googleProvider.setCustomParameters({
+    prompt: 'select_account'
+  });
 const db = firebase.firestore()
 const auth = firebase.auth()
 const currentUser = auth.currentUser
