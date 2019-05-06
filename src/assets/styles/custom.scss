@@ -40,6 +40,10 @@ h1, h2, h3, h4, h5, h6 {
     padding: 0.8rem 1rem;
   }
 
+.swal2-styled.swal2-confirm {
+  background-color: $blue;
+}
+
 // Forms & Inputs
   
   .form-label-group {
@@ -102,6 +106,10 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 12px;
     color: #777;
   }
+
+  .form-label-group > label {
+    pointer-events: none;
+  }
   
   .clickable-text {
     cursor: pointer;
@@ -113,3 +121,20 @@ h1, h2, h3, h4, h5, h6 {
     transition: 0.4s;
 }
 
+// Errors & Messages
+.firebase-error, .firebase-success {
+  margin-bottom: 12px;
+  font-size: 12px;
+  padding: 10px 16px;
+  border-radius: 4px;
+}
+
+.firebase-error {
+  color: #a94442;
+  background: #F3DEDE;
+}
+
+.firebase-success {
+  color: #3c763d;
+  background: #DEF3DE;
+}
