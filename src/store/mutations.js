@@ -28,8 +28,5 @@ export default {
   },
   updateKanbanTaskDescription(state, updatedTask) {
     state.projectKanbanTasks[updatedTask.index].description = updatedTask.description
-  },
-  updateKanbanTaskDueDate(state, updatedTask) {
-    state.projectKanbanTasks[updatedTask.index].dueDate = updatedTask.dueDate
   }
 }

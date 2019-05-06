@@ -31,16 +31,14 @@
         <label for="dueDate">Due date</label>
         <datepicker name="dueDate" input-class="date-field date-input text-muted"
           placeholder="no deadline" 
-          format="dd.MM.yy"
+          format="dd.MM.yyyy"
           monday-first 
           bootstrap-styling
           clear-button
           clear-button-icon="far fa-trash-alt"
-          v-model="dueDate"
-          @selected="task.inputField = 'editDueDate'; task.data = openTask"
-          @closed="editTaskDueDate()"
+          :value="dueDate"
+          @selected="editDueDate"
         ></datepicker>
-        {{ openTask.dueDate }}
       </div>
     </div>
     <div class="form-row">
@@ -100,10 +98,18 @@ export default {
       return moment(date).format("DD.MM.YYYY - HH:mm")
     },
     dueDate() {
-      const val = this.openTask.dueDate
-      if (!val) { return }
-      let date = val.toDate()
-      return moment(date).format("DD.MM.YYYY")
+        const val = this.openTask.dueDate
+        if (!val) { return }
+        let date
+        if (val instanceof Date) {
+          date = val
+        } else {
+          date = val.toDate()
+        }
+        let year = moment(date).format("YYYY")
+        let month = parseInt( moment(date).format("M") ) - 1
+        let day = parseInt( moment(date).format("D") )
+        return new Date(year, month,  day)
     }
   },
   methods: {
@@ -122,14 +128,26 @@ export default {
         return
       }
     },
-    editTaskDueDate() {
+    editDueDate(data) {
+      let newDate = null
+      if(data) { 
+        newDate = new Date(data) 
+      }
+      this.task.inputField = 'editDueDate'
+      this.task.data = this.openTask
+      this.task.data.dueDate = newDate
       this.$store.dispatch('editTaskDueDate', this.task.data)
     }
   },
   filters: {
     formatDate(val) {
       if (!val) { return '-' }
-      let date = val.toDate()
+      let date
+      if (val instanceof Date) {
+          date = val
+        } else {
+          date = val.toDate()
+      }
       return moment(date).format("DD.MM.YYYY - HH:mm")
     }
   }

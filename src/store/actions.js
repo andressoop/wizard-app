@@ -196,8 +196,7 @@ export default {
       console.error("Error editing Kanban task description: ", err);
     })
   },
-  editTaskDueDate({state, commit}, editedData) {
-    commit('updateKanbanTaskDueDate', editedData)
+  editTaskDueDate({state}, editedData) {
     firebase.projectsCollection.doc(state.activeProjectId).collection('tasks').doc(editedData.id).update({
       dueDate: editedData.dueDate
     }).catch(err => {
