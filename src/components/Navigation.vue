@@ -95,7 +95,24 @@ export default {
 <style>
 .v-sidebar-menu {
   z-index: 10;
+  background: #1E272E;
 }
+
+.v-sidebar-menu .router-link-active {
+  box-shadow: inset 3px 0 0 0 #6C63FF!important;
+}
+
+.v-sidebar-menu .vsm-mobile-bg {
+  background: #6C63FF;
+}
+
+/* .vsm-icon {
+  background: #323145!important;
+}
+
+.collapse-btn {
+  background: #323145!important;
+} */
 
 .v-sidebar-menu .collapse-btn {
   outline: none;

@@ -32,7 +32,7 @@
 
     <div class="custom-control custom-checkbox mb-3">
       <input type="checkbox" class="custom-control-input" id="customCheck1" v-model="rememberPassword">
-      <label class="custom-control-label" for="customCheck1">Stay signed in</label>
+      <label class="custom-control-label small" for="customCheck1">Stay signed in</label>
     </div>
     <button
       @click="login"
@@ -107,5 +107,9 @@ export default {
 
 .form-label-group > label {
   pointer-events: none;
+}
+
+label {
+  padding-top: 2px;
 }
 </style>

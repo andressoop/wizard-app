@@ -48,7 +48,10 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+@import './assets/styles/custom.scss';
+@import '../node_modules/bootstrap/scss/bootstrap.scss';
+
 * {
   font-family: 'Montserrat', sans-serif;
 }
@@ -56,6 +59,7 @@ export default {
 html, body {
   overflow-x: hidden;
   margin: 0;
+  background: #F1F2F6;
 }
 
 .content-area {

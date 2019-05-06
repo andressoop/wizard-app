@@ -24,8 +24,8 @@
                 data-toggle="dropdown"
                 aria-haspopup="true"
                 aria-expanded="false"
-                class="btn btn-link btn-dropdown">
-                <i class="fas fa-ellipsis-v text-muted h5 pt-1"></i>
+                class="btn btn-link btn-dropdown text-muted">
+                <i class="fas fa-ellipsis-v"></i>
               </button>
 
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">

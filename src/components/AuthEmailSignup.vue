@@ -203,5 +203,9 @@ button:disabled {
   cursor: pointer;
 }
 
+label {
+  padding-top: 2px;
+}
+
 </style>
 
