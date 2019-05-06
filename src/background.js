@@ -1,5 +1,9 @@
 'use strict'
 
+// Express localhost server is required to bypass location.protocol issue with Firebase
+require('./server');
+var path = require('path')
+
 import { app, protocol, BrowserWindow } from 'electron'
 import {
   createProtocol,
@@ -15,7 +19,7 @@ let win
 protocol.registerStandardSchemes(['app'], { secure: true })
 function createWindow () {
   // Create the browser window.
-  win = new BrowserWindow({ width: 1800, height: 1000 })
+  win = new BrowserWindow({ width: 1800, height: 1000, icon: path.join(__dirname, 'assets/icon.png') })
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
@@ -24,7 +28,9 @@ function createWindow () {
   } else {
     createProtocol('app')
     // Load the index.html when not in development
-    win.loadURL('app://./index.html')
+    win.loadURL('http://localhost:3007');
+    // Not needed in production. Only needed for debugging
+    win.webContents.openDevTools()
   }
 
   win.on('closed', () => {

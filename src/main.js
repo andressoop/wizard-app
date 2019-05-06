@@ -5,6 +5,8 @@ import router from './router'
 import store from './store'
 import firebase from './helpers/firebaseConfig'
 import Swal from 'sweetalert2'
+import 'bootstrap'; 
+import './assets/styles/custom.scss';
 
 // Global custom directives
 Vue.directive('focus', {
