@@ -69,7 +69,7 @@ export default {
         avatarTitleElement.style.display = 'none'
       } else {
         setTimeout(() => {avatarTitleElement.style.display = 'inline-block'}, 100)
-        
+        avatarTitleElement.style.display = 'inline-block'
       }
     },
     onItemClick (event, item) {
@@ -105,14 +105,6 @@ export default {
 .v-sidebar-menu .vsm-mobile-bg {
   background: #6C63FF;
 }
-
-/* .vsm-icon {
-  background: #323145!important;
-}
-
-.collapse-btn {
-  background: #323145!important;
-} */
 
 .v-sidebar-menu .collapse-btn {
   outline: none;

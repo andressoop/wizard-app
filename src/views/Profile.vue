@@ -10,7 +10,7 @@
       <div class="avatar-icon ml-0" v-html="getUserPicture"></div>
       <h4 class="ml-3 mt-4">{{userProfile.name}}</h4>
     </div>
-    <div class="d-flex flex-column col-6 pl-0">
+    <div class="d-flex flex-column col-12 pl-0">
       <div>
         <p>Account was created: <strong v-if="currentUser">{{currentUser.metadata.creationTime}}</strong></p>
       </div>
@@ -26,11 +26,11 @@
       <div>
         <button
             type="button"
-            class="btn btn-confirm btn-primary text-uppercase font-weight-bold mb-2"
+            class="btn btn-confirm btn-primary text-uppercase font-weight-bold mb-2 mr-3"
           >Request new password</button>
            <button
             type="button"
-            class="btn btn-confirm btn-outline-danger text-uppercase font-weight-bold mb-2 ml-2"
+            class="btn btn-confirm btn-outline-danger text-uppercase font-weight-bold mb-2"
           >Request account closure</button>
       </div>
     </div>
