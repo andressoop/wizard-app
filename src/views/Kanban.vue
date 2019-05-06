@@ -44,7 +44,7 @@
 import { SweetModal } from 'sweet-modal-vue'
 import KanbanList from '../components/KanbanList.vue'
 import Draggable from 'vuedraggable'
-import EditTaskModal from '@/components/ui/EditTaskModal'
+import EditTaskModal from '@/components/EditTaskModal'
 
 export default {
   name: 'Kanban',

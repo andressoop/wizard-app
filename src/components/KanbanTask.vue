@@ -2,7 +2,9 @@
     <div class="d-flex flex-column bg-light task-card">
       <p class="lead"> {{ listTask.name }}</p>
       <hr>
-      <span class="text-muted small d-flex justify-content-end align-items-center"><i class="far fa-clock d-flex mr-1"></i> {{ listTask.createdOn | formatDate }} </span>
+      <span class="text-muted small d-flex justify-content-end align-items-center">
+        <i class="far fa-clock d-flex mr-1" v-if="listTask.dueDate"></i> <span v-if="listTask.dueDate"> {{ listTask.dueDate | formatDate }} </span>
+      </span>
     </div>
 </template>
 
@@ -17,7 +19,12 @@ export default {
   filters: {
     formatDate(val) {
       if (!val) { return '-' }
-      let date = val.toDate()
+      let date
+      if (val instanceof Date) {
+          date = val
+        } else {
+          date = val.toDate()
+      }
       return moment(date).fromNow()
     }
   }
