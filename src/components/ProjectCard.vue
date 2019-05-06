@@ -12,8 +12,8 @@
       <div class="card-footer">
         <small class="text-muted">Project created {{ projectCreatedOn | formatDate }}</small>
         <br>
-        <button type="button" class="btn btn-primary btn-sm mt-2 mr-2" @click="viewProject(projectId)">View Project</button>
-        <button class="btn btn-outline-danger btn-sm mt-2" @click="deleteProject(projectId)">Delete</button>
+        <button type="button" class="btn btn-primary btn-block mt-2 mr-2" @click="viewProject(projectId)">View Project</button>
+        <button class="btn btn-outline-danger btn-block mt-2" @click="deleteProject(projectId)">Delete</button>
       </div>
     </div>
   </div>
@@ -38,21 +38,30 @@ export default {
       this.$router.push('/project/' + projectId)
     },
     deleteProject(projectId) {
-      Swal.fire({
+      const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+          confirmButton: 'btn btn-success mr-2',
+          cancelButton: 'btn btn-danger'
+        },
+        buttonsStyling: false,
+      })
+
+
+      swalWithBootstrapButtons.fire({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
         type: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#28A745',
-        cancelButtonColor: '#d33',
+        confirmButtonColor: '#20bf6b',
+        cancelButtonColor: '#D63031',
         confirmButtonText: 'Yes, delete it!'
       }).then((result) => {
         if (result.value) {
           this.$store.dispatch('deleteProject', projectId)
           Swal.fire(
             'Deleted!',
-            'Your file has been deleted.',
-            'success'
+            'Project has been deleted.',
+            'success',
           )
         }
       })
