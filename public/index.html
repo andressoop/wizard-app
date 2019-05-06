@@ -4,19 +4,93 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700" rel="stylesheet">
     <link rel="icon" href="<%= BASE_URL %>favicon.png">
     <title>Wizard App</title>
+
+    <style>
+      .spinner {
+        margin: 100px auto;
+        width: 40px;
+        height: 40px;
+        position: relative;
+        text-align: center;
+
+        -webkit-animation: sk-rotate 2.0s infinite linear;
+        animation: sk-rotate 2.0s infinite linear;
+        }
+
+        .dot1, .dot2 {
+        width: 60%;
+        height: 60%;
+        display: inline-block;
+        position: absolute;
+        top: 0;
+        background-color: #6C63FF;
+        border-radius: 100%;
+
+        -webkit-animation: sk-bounce 2.0s infinite ease-in-out;
+        animation: sk-bounce 2.0s infinite ease-in-out;
+        }
+
+        .dot2 {
+        top: auto;
+        bottom: 0;
+        -webkit-animation-delay: -1.0s;
+        animation-delay: -1.0s;
+        }
+
+        @-webkit-keyframes sk-rotate { 100% { -webkit-transform: rotate(360deg) }}
+        @keyframes sk-rotate { 100% { transform: rotate(360deg); -webkit-transform: rotate(360deg) }}
+
+        @-webkit-keyframes sk-bounce {
+        0%, 100% { -webkit-transform: scale(0.0) }
+        50% { -webkit-transform: scale(1.0) }
+        }
+
+        @keyframes sk-bounce {
+        0%, 100% {
+          transform: scale(0.0);
+          -webkit-transform: scale(0.0);
+        } 50% {
+          transform: scale(1.0);
+          -webkit-transform: scale(1.0);
+        }
+        }
+    </style>
+
   </head>
   <body>
+    <script>
+      function checkReadiness() {
+  
+        setTimeout(function() {
+          document.getElementById('container').style.display = 'block';
+          document.getElementById('loader').style.display = 'none';
+        }, 3000);
+
+      }
+      checkReadiness();
+    </script>
 
      
 
-      <noscript>
-        <strong>We're sorry but wizard-app doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-      </noscript>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
+    <noscript>
+      <strong>We're sorry but wizard-app doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    </noscript>
+
+    <div id="loader" style="display: block; background-color: #F1F2F6; height:100vh; width:100vw; display:flex; justify-content: center; align-items:center;">
+        <!-- <img src="loading.gif" width="100px"> -->        
+        <div class="spinner">
+          <div class="dot1"></div>
+          <div class="dot2"></div>
+        </div>
+    </div>
+
+    <div id="container" style="display: none;">
+      <div id="app"></div>
+      <!-- built files will be auto injected -->
+    </div>
+
   </body>
 </html>
