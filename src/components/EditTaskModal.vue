@@ -155,7 +155,7 @@ export default {
       }
     },
     editTaskDescription() {
-      if (this.task.data.description.length !== 0) {
+      if (this.task.data.description) {
         this.$store.dispatch('editTaskDescription', this.task.data)
       } else {
         return
