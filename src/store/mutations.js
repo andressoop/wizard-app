@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 export default {
   setCurrentUser(state, val) {
     state.currentUser = val
@@ -28,5 +30,16 @@ export default {
   },
   updateKanbanTaskDescription(state, updatedTask) {
     state.projectKanbanTasks[updatedTask.index].description = updatedTask.description
-  }
+  },
+  updateKanbanTaskLabelsList(state, newLabel) {
+    const projectIndex = _.findIndex(state.userProjects, function(o) { return o.id == state.activeProjectId; });
+    const projectToUpdate = state.userProjects[projectIndex]
+    if(!projectToUpdate.labelsForTasks) { 
+      projectToUpdate.labelsForTasks = [ {name: newLabel.name, code: newLabel.code} ] 
+    } 
+    projectToUpdate.labelsForTasks.push(newLabel)
+  },
+  updateKanbanTaskLabels(state, updatedTask) {
+    state.projectKanbanTasks[updatedTask.index].labels = updatedTask.labels
+  },
 }

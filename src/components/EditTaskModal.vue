@@ -44,7 +44,17 @@
     <div class="form-row">
       <div class="form-group col-md-12">
         <label for="taskLabels">Labels</label>
-        <input type="text" class="form-control">
+        <multiselect 
+          v-model="taskLabels" 
+          tag-placeholder="Add this as new tag" 
+          placeholder="Search or add a tag" 
+          label="name" 
+          track-by="code" 
+          :options="projectLabels" 
+          :multiple="true" 
+          :taggable="true" 
+          @tag="addLabel"
+        ></multiselect>
       </div>
     </div>
     <hr>
@@ -71,6 +81,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import Multiselect from 'vue-multiselect'
 import Datepicker from 'vuejs-datepicker'
 import moment from 'moment'
 
@@ -80,17 +92,28 @@ export default {
     'openTask'
   ],
   components: {
-    Datepicker
+    Datepicker,
+    Multiselect
   },
   data() {
     return {
       task: {
         inputField: null,
         data: {}
-      }      
+      }
     }
   },
   computed: {
+    ...mapGetters(['projectLabels']),
+    taskLabels: {
+      get() {
+        return this.openTask.labels
+      }, 
+      set(data) {
+        this.openTask.labels = data 
+        this.$store.dispatch('editLabelsOnTask', this.openTask)
+      }
+    },
     createdOn() {
       const val = this.openTask.createdOn
       if (!val) { return '-' }
@@ -113,6 +136,16 @@ export default {
     }
   },
   methods: {
+    addLabel (newTag) {
+      const tag = {
+        name: newTag,
+        code: newTag.substring(0, 2) + Math.floor((Math.random() * 10000000))
+      }
+      this.$store.dispatch('addNewTaskLabel', tag)
+
+      this.openTask.labels.push(tag)
+      this.$store.dispatch('editLabelsOnTask', this.openTask)
+    },
     editTaskName() {
       if (this.task.data.name.length !== 0) {
         this.$store.dispatch('editTaskName', this.task.data)
@@ -154,7 +187,7 @@ export default {
 }
 </script>
 
-<style>
+<style src="vue-multiselect/dist/vue-multiselect.min.css">
 .modal-h3, .date-input {
   cursor: pointer;
 }

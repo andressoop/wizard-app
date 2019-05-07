@@ -159,7 +159,8 @@ export default {
       createdOn: new Date(),
       listID: newTask.listId,
       taskOrder: newTask.taskOrder,
-      name: newTask.name
+      name: newTask.name,
+      labels: []
     }).catch(err => {
       console.error("Error creating new task: ", err)
     });
@@ -201,6 +202,33 @@ export default {
       dueDate: editedData.dueDate
     }).catch(err => {
       console.error("Error editing Kanban task due date: ", err);
+    })
+  },
+  addNewTaskLabel({commit, state}, label) {
+    let project = _.find(state.userProjects, function(o) { return o.id == state.activeProjectId; })
+    if(!project.labelsForTasks) {
+      project.labelsForTasks = [
+        {
+          name: label.name,
+          code: label.code
+        }
+      ]
+    } else {
+      project.labelsForTasks.push(label)
+    }
+    firebase.projectsCollection.doc(state.activeProjectId).update({
+      labelsForTasks: project.labelsForTasks
+    }).catch(err => {
+      console.error("Error editing Kanban labelsForTasks: ", err);
+    })
+    commit('updateKanbanTaskLabelsList', label)
+  },
+  editLabelsOnTask({state, commit}, editedData) {
+    commit('updateKanbanTaskLabels', editedData)
+    firebase.projectsCollection.doc(state.activeProjectId).collection('tasks').doc(editedData.id).update({
+      labels: editedData.labels
+    }).catch(err => {
+      console.error("Error editing Kanban task labels: ", err);
     })
   }
 }
