@@ -42,6 +42,53 @@
       </div>
     </div>
     <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="difficulty">Difficulty</label>
+        <div id="difficulty" class="input-group">
+          <div class="custom-control custom-radio custom-control-inline">
+            <input type="radio" id="difficulty1" name="difficulty" class="custom-control-input" value="1" v-model="taskDifficulty">
+            <label class="custom-control-label" for="difficulty1">1</label>
+          </div>
+          <div class="custom-control custom-radio custom-control-inline">
+            <input type="radio" id="difficulty2" name="difficulty" class="custom-control-input" value="2" v-model="taskDifficulty">
+            <label class="custom-control-label" for="difficulty2">2</label>
+          </div>
+          <div class="custom-control custom-radio custom-control-inline">
+            <input type="radio" id="difficulty3" name="difficulty" class="custom-control-input" value="3" v-model="taskDifficulty">
+            <label class="custom-control-label" for="difficulty3">3</label>
+          </div>
+          <div class="custom-control custom-radio custom-control-inline">
+            <input type="radio" id="difficulty4" name="difficulty" class="custom-control-input" value="4" v-model="taskDifficulty">
+            <label class="custom-control-label" for="difficulty4">4</label>
+          </div>
+          <div class="custom-control custom-radio custom-control-inline">
+            <input type="radio" id="difficulty5" name="difficulty" class="custom-control-input" value="5" v-model="taskDifficulty">
+            <label class="custom-control-label" for="difficulty5">5</label>
+          </div>
+          <div>
+            <i class="far fa-trash-alt" @click="taskDifficulty = '0'"></i>           
+          </div>
+        </div>
+      </div>
+      <div class="form-group col-md-6">
+        <label for="duration">Duration</label>
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <div class="input-group-text">minutes</div>
+          </div>
+          <input type="text" class="form-control" id="duration" 
+            v-on:keypress="isNumber"
+            v-model.trim="openTask.duration"
+            @click="task.inputField = 'editDuration'; task.data = openTask"
+            @blur="editTaskDuration()"
+          >
+          <div class="input-group-append" @click="deleteTaskDuration()">
+            <div class="input-group-text"><i class="far fa-trash-alt"></i></div>            
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
       <div class="form-group col-md-12">
         <label for="taskLabels">Labels</label>
         <multiselect 
@@ -105,6 +152,15 @@ export default {
   },
   computed: {
     ...mapGetters(['projectLabels']),
+    taskDifficulty: {
+      get() {
+        return this.openTask.difficulty
+      },
+      set(data) {
+        this.openTask.difficulty = data
+        this.$store.dispatch('editDifficultyOnTask', this.openTask)
+      }
+    },
     taskLabels: {
       get() {
         return this.openTask.labels
@@ -161,6 +217,18 @@ export default {
         return
       }
     },
+    editTaskDuration() {
+      if (this.task.data.duration) {
+        this.$store.dispatch('editTaskDuration', this.task.data)
+      } else {
+        return
+      }
+    },
+    deleteTaskDuration() {
+      let data = this.openTask
+      data.duration = null
+      this.$store.dispatch('editTaskDuration', data)
+    },
     editDueDate(data) {
       let newDate = null
       if(data) { 
@@ -170,6 +238,15 @@ export default {
       this.task.data = this.openTask
       this.task.data.dueDate = newDate
       this.$store.dispatch('editTaskDueDate', this.task.data)
+    },
+    isNumber: function(evt) {
+      evt = (evt) ? evt : window.event
+      var charCode = (evt.which) ? evt.which : evt.keyCode
+      if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46) {
+        evt.preventDefault()
+      } else {
+        return true;
+      }
     }
   },
   filters: {

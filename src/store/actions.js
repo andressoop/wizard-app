@@ -197,6 +197,22 @@ export default {
       console.error("Error editing Kanban task description: ", err);
     })
   },
+  editTaskDuration({state, commit}, editedData) {
+    commit('updateKanbanTaskduration', editedData)
+    firebase.projectsCollection.doc(state.activeProjectId).collection('tasks').doc(editedData.id).update({
+      duration: editedData.duration
+    }).catch(err => {
+      console.error("Error editing Kanban task duration: ", err);
+    })
+  },
+  editDifficultyOnTask({state, commit}, editedData) {
+    commit('updateKanbanTaskDifficulty', editedData)
+    firebase.projectsCollection.doc(state.activeProjectId).collection('tasks').doc(editedData.id).update({
+      difficulty: editedData.difficulty
+    }).catch(err => {
+      console.error("Error editing Kanban task difficulty: ", err);
+    })
+  },
   editTaskDueDate({state}, editedData) {
     firebase.projectsCollection.doc(state.activeProjectId).collection('tasks').doc(editedData.id).update({
       dueDate: editedData.dueDate

@@ -31,6 +31,12 @@ export default {
   updateKanbanTaskDescription(state, updatedTask) {
     state.projectKanbanTasks[updatedTask.index].description = updatedTask.description
   },
+  updateKanbanTaskduration(state, updatedTask) {
+    state.projectKanbanTasks[updatedTask.index].duration = updatedTask.duration
+  },
+  updateKanbanTaskDifficulty(state, updatedTask) {
+    state.projectKanbanTasks[updatedTask.index].difficulty = updatedTask.difficulty
+  },
   updateKanbanTaskLabelsList(state, newLabel) {
     const projectIndex = _.findIndex(state.userProjects, function(o) { return o.id == state.activeProjectId; });
     const projectToUpdate = state.userProjects[projectIndex]
