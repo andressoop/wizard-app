@@ -102,7 +102,6 @@
 <script>
 import firebase from '../helpers/firebaseConfig'
 import { mapState } from 'vuex'
-import Swal from 'sweetalert2'
 import Avatars from '@dicebear/avatars'
 import sprites from '@dicebear/avatars-gridy-sprites'
 import { required, sameAs } from 'vuelidate/lib/validators'
@@ -156,7 +155,9 @@ export default {
       var user = firebase.auth.currentUser;
       user.delete().then(function () {
         this.$store.dispatch('clearData')
-        this.$router.push('/login')
+        this.location.reload(true); 
+        // this.$router.push('/login')
+        return true;
       }).catch(err => {
         this.firebaseDeleteError = err.message
       });
