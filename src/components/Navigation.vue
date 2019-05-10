@@ -50,11 +50,6 @@ export default {
           icon: "fa fa-user-edit"
         },
         {
-          href: "/settings",
-          title: "Settings",
-          icon: "fa fa-cog"
-        },
-        {
           title: "Sign Out",
           icon: "fa fa-sign-out-alt"
         },
