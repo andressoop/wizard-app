@@ -246,5 +246,13 @@ export default {
     }).catch(err => {
       console.error("Error editing Kanban task labels: ", err);
     })
+  },
+  editTaskTodos({commit, state}, editedData) {
+    commit('updateTaskTodos', editedData)
+    firebase.projectsCollection.doc(state.activeProjectId).collection('tasks').doc(editedData.id).update({
+      todo: editedData.todo
+    }).catch(err => {
+      console.error("Error editing Kanban task Todo list: ", err);
+    })
   }
 }

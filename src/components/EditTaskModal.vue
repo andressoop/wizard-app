@@ -111,24 +111,49 @@
       </div>
     </div>
     <div class="form-row d-flex flex-row">
-      <div class="d-flex justify-content-start">
-        <h1>1</h1>
+      <div class="d-flex justify-content-start col-md-12">
+        <input type="text" name="add-todo" id="add-todo" class="form-control" placeholder="Add new todo" v-model.trim="newTodo" @keyup.enter="createTodoItem">
       </div>
-      <div class="d-flex justify-content-end">
-        <h2>2</h2>
+    </div>
+    <div class="form-row d-flex flex-row todo-list">
+      <div class="d-flex flex-column bg-light col-md-12">
+        <draggable
+          class="drag-area"
+          v-model="openTask.todo"
+          group="todo"
+          @change="changeTodoList"
+          animation=200
+          ghostClass="ghost"
+          handle=".draggable-item" 
+        >        
+          <div class="input-group todo-item" v-for="(todo, index) in openTask.todo" v-bind:key="index">
+            <div class="input-group-prepend">
+              <div class="input-group-text">
+                <i class="fa fa-grip-vertical todo-handle draggable-item"></i>
+                <input type="checkbox" class="todo-checkbox" v-model="todo.checked" @click="changeTodoList">
+              </div>
+            </div>          
+            <input type="text" class="form-control text-muted" :class="[{'line-through' : todo.checked}]" disabled v-model="todo.name">
+            <div class="input-group-append">
+              <div class="input-group-text" @click="deleteTodoItem(index)"><i class="far fa-trash-alt"></i></div>
+            </div>
+          </div>
+        </draggable>
+
       </div>
+    </div>
+    
       <!-- <button type="submit" class="btn btn-primary mr-2"><i class="fas fa-save"></i> Save</button>
       <button type="submit" class="btn btn-outline-warning mr-2"><i class="fas fa-archive"></i> Archive</button>
       <button type="submit" class="btn btn-outline-danger mr-2"><i class="fas fa-trash-alt"></i> Delete</button>
       <button type="submit" class="btn btn-outline-secondary mr-2"><i class="fas fa-window-close"></i> Cancel</button> -->
-    </div>
-    
     
   </form>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import Draggable from 'vuedraggable'
 import Multiselect from 'vue-multiselect'
 import Datepicker from 'vuejs-datepicker'
 import moment from 'moment'
@@ -140,10 +165,12 @@ export default {
   ],
   components: {
     Datepicker,
-    Multiselect
+    Multiselect,
+    Draggable
   },
   data() {
     return {
+      newTodo: '',
       task: {
         inputField: null,
         data: {}
@@ -239,6 +266,22 @@ export default {
       this.task.data.dueDate = newDate
       this.$store.dispatch('editTaskDueDate', this.task.data)
     },
+    createTodoItem() {
+      if(this.newTodo == '') { return }
+      this.task.data = this.openTask      
+      this.task.data.todo.push( {checked: false, name: this.newTodo} )
+      this.$store.dispatch('editTaskTodos', this.task.data)
+      this.newTodo = ''
+    },
+    changeTodoList() {
+      this.task.data = this.openTask
+      this.$store.dispatch('editTaskTodos', this.task.data)
+    },
+    deleteTodoItem(todoIndex) {
+      this.task.data = this.openTask
+      this.task.data.todo.splice(todoIndex, 1)
+      this.$store.dispatch('editTaskTodos', this.task.data)
+    },
     isNumber: function(evt) {
       evt = (evt) ? evt : window.event
       var charCode = (evt.which) ? evt.which : evt.keyCode
@@ -264,7 +307,8 @@ export default {
 }
 </script>
 
-<style src="vue-multiselect/dist/vue-multiselect.min.css">
+<style>
+@import '../../node_modules/vue-multiselect/dist/vue-multiselect.min.css';
 .modal-h3, .date-input {
   cursor: pointer;
 }
@@ -278,5 +322,25 @@ export default {
 .vdp-datepicker__clear-button > .input-group-text {
   background-color: #fff;
   border: 0;
+}
+
+.todo-item {
+  margin-top: 5px;
+}
+
+.todo-handle {
+  cursor: move;
+}
+
+.todo-checkbox {
+  margin-left: 10px;
+}
+
+.line-through {
+  text-decoration: line-through;
+}
+
+.ghost {
+  opacity: 0.5;
 }
 </style>
