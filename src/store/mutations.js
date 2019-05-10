@@ -48,4 +48,7 @@ export default {
   updateKanbanTaskLabels(state, updatedTask) {
     state.projectKanbanTasks[updatedTask.index].labels = updatedTask.labels
   },
+  updateTaskTodos(state, updatedTask) {
+    state.projectKanbanTasks[updatedTask.index].todo = updatedTask.todo
+  }
 }

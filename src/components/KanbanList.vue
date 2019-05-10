@@ -211,4 +211,8 @@ export default {
 .full-width {
   width: 100%;
 }
+
+.ghost {
+  opacity: 0.5;
+}
 </style>
