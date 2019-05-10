@@ -268,8 +268,12 @@ export default {
     },
     createTodoItem() {
       if(this.newTodo == '') { return }
-      this.task.data = this.openTask      
-      this.task.data.todo.push( {checked: false, name: this.newTodo} )
+      this.task.data = this.openTask
+      if(!this.task.data.todo) {
+        this.task.data.todo = [{checked: false, name: this.newTodo}]
+      } else {
+        this.task.data.todo.push( {checked: false, name: this.newTodo} )
+      }
       this.$store.dispatch('editTaskTodos', this.task.data)
       this.newTodo = ''
     },
