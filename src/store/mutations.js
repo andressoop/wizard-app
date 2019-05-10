@@ -26,16 +26,20 @@ export default {
     state.projectKanbanLists[updatedList.listOrder].listOrder = updatedList.index
   },
   updateKanbanTaskName(state, updatedTask) {
-    state.projectKanbanTasks[updatedTask.index].name = updatedTask.name
+    const taskIndex = _.findIndex(state.projectKanbanTasks, function(o) { return o.id == updatedTask.id; })
+    state.projectKanbanTasks[taskIndex].name = updatedTask.name
   },
   updateKanbanTaskDescription(state, updatedTask) {
-    state.projectKanbanTasks[updatedTask.index].description = updatedTask.description
+    const taskIndex = _.findIndex(state.projectKanbanTasks, function(o) { return o.id == updatedTask.id; })
+    state.projectKanbanTasks[taskIndex].description = updatedTask.description
   },
   updateKanbanTaskduration(state, updatedTask) {
-    state.projectKanbanTasks[updatedTask.index].duration = updatedTask.duration
+    const taskIndex = _.findIndex(state.projectKanbanTasks, function(o) { return o.id == updatedTask.id; })
+    state.projectKanbanTasks[taskIndex].duration = updatedTask.duration
   },
   updateKanbanTaskDifficulty(state, updatedTask) {
-    state.projectKanbanTasks[updatedTask.index].difficulty = updatedTask.difficulty
+    const taskIndex = _.findIndex(state.projectKanbanTasks, function(o) { return o.id == updatedTask.id; })
+    state.projectKanbanTasks[taskIndex].difficulty = updatedTask.difficulty
   },
   updateKanbanTaskLabelsList(state, newLabel) {
     const projectIndex = _.findIndex(state.userProjects, function(o) { return o.id == state.activeProjectId; });
@@ -46,9 +50,11 @@ export default {
     projectToUpdate.labelsForTasks.push(newLabel)
   },
   updateKanbanTaskLabels(state, updatedTask) {
-    state.projectKanbanTasks[updatedTask.index].labels = updatedTask.labels
+    const taskIndex = _.findIndex(state.projectKanbanTasks, function(o) { return o.id == updatedTask.id; })
+    state.projectKanbanTasks[taskIndex].labels = updatedTask.labels
   },
   updateTaskTodos(state, updatedTask) {
-    state.projectKanbanTasks[updatedTask.index].todo = updatedTask.todo
+    const taskIndex = _.findIndex(state.projectKanbanTasks, function(o) { return o.id == updatedTask.id; })
+    state.projectKanbanTasks[taskIndex].todo = updatedTask.todo
   }
 }

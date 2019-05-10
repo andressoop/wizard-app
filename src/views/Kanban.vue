@@ -33,8 +33,8 @@
 
     </draggable>
         
-    <sweet-modal ref="modal" blocking>
-      <EditTaskModal :openTask="openTask"></EditTaskModal>
+    <sweet-modal ref="modal" blocking @close="closeModal()">
+      <EditTaskModal :openTask="openTask" ref="closeModal"></EditTaskModal>
     </sweet-modal>
 
   </div>
@@ -89,7 +89,10 @@ export default {
       this.openTask = listTask
       this.openTask.index = listTaskIndex
       this.$refs.modal.open()
-    }
+    },
+    closeModal() {
+     this.$refs.closeModal.closeModal()
+   }
   },
   created() {
     this.$store.commit('setActiveProjectId', this.$route.params.id)

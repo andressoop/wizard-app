@@ -294,7 +294,13 @@ export default {
       } else {
         return true;
       }
-    }
+    },
+    closeModal() {
+     this.task = {
+       inputField: null,
+       data: {}
+     }
+   }
   },
   filters: {
     formatDate(val) {
