@@ -144,11 +144,15 @@ export default {
         .then(credential => {
           this.$store.commit('setCurrentUser', credential.user);
 
+          String.prototype.capitalize = function() {
+              return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
+          };
+
           // create user object
           firebase.usersCollection
             .doc(credential.user.uid)
             .set({
-              name: this.name,
+              name: this.name.capitalize(),
               email: this.email
             })
             .then(() => {
