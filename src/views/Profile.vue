@@ -154,9 +154,9 @@ export default {
     deleteAccount() {
       var user = firebase.auth.currentUser;
       user.delete().then(function () {
-        this.$store.dispatch('clearData')
-        this.location.reload(true); 
-        // this.$router.push('/login')
+        // this.$store.dispatch('clearData')
+        // window.location.reload(true); 
+        this.$router.replace('/login')
         return true;
       }).catch(err => {
         this.firebaseDeleteError = err.message

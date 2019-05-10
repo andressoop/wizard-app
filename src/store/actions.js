@@ -12,7 +12,9 @@ export default {
   fetchUserProfile({ commit }, user) {
     firebase.usersCollection.doc(user.uid).get().then(res => {
       commit('setUserProfile', res.data())
-    })
+    }).catch(err => {
+      console.error("Error fetching user details: ", err)
+    });
   },
   fetchProjects({ commit, state }) {
     firebase.projectsCollection.where('uid', '==', state.currentUser.uid).orderBy('createdOn', 'desc').onSnapshot(querySnapshot => {
