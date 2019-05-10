@@ -12,40 +12,91 @@
     </div>
     <div class="d-flex flex-column col-12 pl-0">
       <div>
-        <p>Account was created: <strong v-if="currentUser">{{currentUser.metadata.creationTime}}</strong></p>
+        <p>
+          Account was created:
+          <strong v-if="currentUser">{{currentUser.metadata.creationTime}}</strong>
+        </p>
       </div>
       <div>
-        <p>Last login: <strong v-if="currentUser">{{currentUser.metadata.lastSignInTime}}</strong></p>
+        <p>
+          Last login:
+          <strong v-if="currentUser">{{currentUser.metadata.lastSignInTime}}</strong>
+        </p>
       </div>
       <div>
-        <p>Number of projects: <strong v-if="userProjects">{{userProjects.length}}</strong></p>
+        <p>
+          Number of projects:
+          <strong v-if="userProjects">{{userProjects.length}}</strong>
+        </p>
       </div>
     </div>
     <hr>
-    <div class="d-flex flex-column col-5 pl-0 pr-0">
-      <div v-if="firebaseError" class="firebase-error">
-      {{ firebaseError }}
-    </div>
-    <div v-if="firebaseSuccess" class="firebase-success">
-      {{ firebaseSuccess }}
-    </div>
+    <div class="d-flex flex-column col-4 pl-0 pr-0">
+      <div v-if="firebaseError" class="firebase-error">{{ firebaseError }}</div>
+      <div v-if="firebaseSuccess" class="firebase-success">{{ firebaseSuccess }}</div>
     </div>
     <div class="d-flex flex-column col-6 pl-0">
+      <h4 class="mb-4">Password Reset</h4>
       <div>
         <button
-            @click="resetPassword"
-            type="button"
-            class="btn btn-confirm btn-primary text-uppercase font-weight-bold mb-2 mr-3"
-          >Request password reset</button>
-           <button
-            @click="deleteAccount"
-            type="button"
-            class="btn btn-confirm btn-outline-danger text-uppercase font-weight-bold mb-2"
-          >Delete Account</button>
+          @click="resetPassword"
+          type="button"
+          class="btn btn-confirm btn-primary text-uppercase font-weight-bold mb-2 mr-3"
+        >Request password reset</button>
       </div>
     </div>
-   
+    <hr>
+    <div class="row">
+      <div class="col-lg-6">
+        <h4 class="mb-4">Delete Account</h4>
+        <p>
+          Please note that this is a permanent action that cannot be restored.
+          <span class="clickable-text text-danger" @click="show = !show">Click here to proceed</span>.
+        </p>
+        <transition name="fade">
+          <div class="deleteAccountForm" v-if="show">
+            <p>
+              In order to delete your account, please write
+              <span class="text-highlighted">Avada Kedavra</span> to the input below.
+            </p>
+            <div class="form-row">
+              <div class="form-label-group mr-2" :class="{invalid: $v.confirmInput.$error}">
+                <input
+                  v-model="confirmInput"
+                  @input="$v.confirmInput.$touch()"
+                  name="confirmInput"
+                  type="text"
+                  class="form-control"
+                  placeholder="Confirmation"
+                  autocomplete="off"
+                >
+                <label for="deleteAccount small">
+                  Confirmation
+                  <span class="text-danger">*</span>
+                </label>
+                <ul>
+                  <li class="small text-danger ml-1 mt-2" v-if="!$v.confirmInput.required">
+                    Magic spell is required.
+                  </li>
+                  <li class="small text-danger ml-1 mt-2" v-if="$v.confirmInput.$error">
+                    Magic spells don't match.
+                  </li>
+                </ul>
+              </div>
+              <div class="form-group">
+                <button
+                  @click="deleteAccount"
+                  type="button"
+                  class="btn btn-confirm btn-outline-danger text-uppercase font-weight-bold mb-2" :disabled="$v.$invalid"
+                >Delete Account</button>
+              </div>
+              <div v-if="firebaseDeleteError" class="firebase-error">{{ firebaseDeleteError }}</div>
+            </div>
+          </div>
+        </transition>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -54,20 +105,31 @@ import { mapState } from 'vuex'
 import Swal from 'sweetalert2'
 import Avatars from '@dicebear/avatars'
 import sprites from '@dicebear/avatars-gridy-sprites'
+import { required, sameAs } from 'vuelidate/lib/validators'
 
 
 export default {
   name: 'Profile',
   data() {
     return {
-        firebaseError: '',
-        firebaseSuccess: '',
-        confirmationStrign: null,
+      firebaseError: '',
+      firebaseDeleteError: '',
+      firebaseSuccess: '',
+      confirmationStrign: null,
+      show: false,
+      confirmStr: 'Avada Kedavra',
+      confirmInput: '',
     }
+  },
+  validations: {
+    confirmInput: {
+      required,
+      sameAs: sameAs('confirmStr')
+    },
   },
   computed: {
     ...mapState(['currentUser', 'userProfile', 'userProjects']),
-    getUserPicture: function() {
+    getUserPicture: function () {
       if (this.userProfile.photoURL) {
         let photoURL = this.userProfile.photoURL
         return `<img src="${photoURL}" height="50", width="50" style="border-radius: 3px">`
@@ -80,60 +142,25 @@ export default {
     }
   },
   methods: {
-      resetPassword() {
-        firebase.auth.sendPasswordResetEmail(this.userProfile.email)
-          .then(() => {
-            this.firebaseError = ''
-            this.firebaseSuccess = 'In a few moments, you will receive an email with a link to reset your password.'
-          }).catch(err => {
-            this.firebaseSuccess = ''
-            this.firebaseError = err.message
-          });
-      },
-      deleteAccount() {
-        console.log(this.firebaseError);
-        Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        type: 'error',
-        html:
-        'Please confirm the action by typing <span class="text-danger">Avada Kedavra</span> to the input below.<br/><br/>' +
-        '<input class="form-control" id="deleteConfirmation">',
-        showCancelButton: true,
-        confirmButtonColor: '#20bf6b',
-        cancelButtonColor: '#D63031',
-        confirmButtonText: 'Yes, delete it!'
-      }).then(() => {
-        const deleteInput = document.getElementById("deleteConfirmation").value          
-
-        if ( deleteInput === "Avada Kedavra" && this.delete(deleteInput)) {
-                    
-          Swal.fire(
-            'Deleted!',
-            'Your account has been deleted.',
-            'success'
-          )
-        } else {
-          Swal.fire(
-            'Cannot delete!',
-            'You did not provide a correct spell! <br><br> Also please be aware that this operation is sensitive and requires recent authentication. Log in again before retrying this request.',
-            'warning'
-          )
-        }
-      })
-        
-      },
-      delete(confirmation) {
-        if(confirmation != "Avada Kedavra") { return }
-        var user = firebase.auth.currentUser;
-            user.delete().then(function() {
-              this.$store.dispatch('clearData')
-              this.$router.push('/login')
-            }).catch(err => {
-              this.firebaseError = err.message
-            });
-            return true;     
-      }
+    resetPassword() {
+      firebase.auth.sendPasswordResetEmail(this.userProfile.email)
+        .then(() => {
+          this.firebaseError = ''
+          this.firebaseSuccess = 'In a few moments, you will receive an email with a link to reset your password.'
+        }).catch(err => {
+          this.firebaseSuccess = ''
+          this.firebaseError = err.message
+        });
+    },
+    deleteAccount() {
+      var user = firebase.auth.currentUser;
+      user.delete().then(function () {
+        this.$store.dispatch('clearData')
+        this.$router.push('/login')
+      }).catch(err => {
+        this.firebaseDeleteError = err.message
+      });
+    }
   }
 }
 </script>
@@ -152,7 +179,8 @@ img {
   margin: 10px;
 }
 
-.firebase-error, .firebase-success {
+.firebase-error,
+.firebase-success {
   margin-bottom: 12px;
   font-size: 12px;
   padding: 10px 18px;
@@ -161,7 +189,15 @@ img {
 
 .firebase-error {
   color: #a94442;
-  background: #F3DEDE;
+  background: #f3dede;
 }
 
+/* Transitions */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
 </style>
