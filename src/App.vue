@@ -53,7 +53,7 @@ export default {
 @import '../node_modules/bootstrap/scss/bootstrap.scss';
 
 * {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 html, body {

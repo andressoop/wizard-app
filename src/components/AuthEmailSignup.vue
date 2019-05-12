@@ -15,8 +15,9 @@
           placeholder="Full name"
           id="name" 
         >
-        <label for="inputFullName">Full name <span>*</span></label>
-        <p class="small text-danger ml-1 mt-2" v-if="!$v.name.minLength">Name must be at least 4 characters</p>
+        
+        <label for="inputFullName" class="text-danger" v-if="!$v.name.minLength">Name must be at least 4 characters</label>
+        <label for="inputFullName" v-else>Full name <span>*</span></label>
       </div>
 
       <div class="form-label-group" :class="{invalid: $v.email.$error}">
@@ -30,8 +31,8 @@
           placeholder="Email address"
           autocomplete="new-email"
         >
-        <label for="inputEmail">Email address <span>*</span></label>
-        <p class="small text-danger ml-1 mt-2" v-if="!$v.email.email">Please provide valid email address.</p>
+        <label for="inputEmail" class="text-danger" v-if="!$v.email.email">Please provide valid email address.</label>
+        <label for="inputEmail" v-else>Email address <span>*</span></label>
       </div>
 
       <div class="form-label-group" :class="{invalid: $v.password.$error}">
@@ -45,8 +46,8 @@
           placeholder="Password"
           autocomplete="new-password"
         >
-        <label for="inputPassword">Password <span>*</span></label>
-        <p class="small text-danger ml-1 mt-2" v-if="!$v.password.minLength">Password should be at least 6 characters</p>
+        <label for="inputPassword" class="text-danger" v-if="!$v.password.minLength">Password should be at least 6 characters</label>
+        <label for="inputPassword" v-else>Password <span>*</span></label>
       </div>
 
       <div class="form-label-group" :class="{invalid: $v.confirmPassword.$error}">
@@ -60,8 +61,8 @@
           placeholder="Confirm password"
           autocomplete="new-password"
         >
-        <label for="inputConfirmPassword">Confirm password <span>*</span></label>
-        <p class="small text-danger ml-1 mt-2" v-if="!$v.confirmPassword.sameAs">Passwords don't match.</p>
+        <label for="inputConfirmPassword" class="text-danger" v-if="!$v.confirmPassword.sameAs">Passwords don't match.</label>
+        <label for="inputConfirmPassword" v-else>Confirm password <span>*</span></label>
       </div>
 
       <div class="custom-control custom-checkbox mb-3" :class="{invalid: $v.terms.$invalid}">

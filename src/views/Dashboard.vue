@@ -19,8 +19,8 @@
             v-model.trim="newProject.name" 
             @keyup.enter="createProject"
           >
-          <label for="newProjectName small">Project name <span class="text-danger">*</span> </label>
-          <p class="small text-danger ml-1 mt-2" v-if="!$v.newProject.name.minLength">Project name must be at least 3 characters</p>
+          <label for="newProjectName" class="text-danger" v-if="!$v.newProject.name.minLength">Project name must be at least 3 characters</label>
+          <label for="newProjectName" v-else>Project name <span class="text-danger">*</span> </label>
         </div>
         <div class="form-group">
           <button

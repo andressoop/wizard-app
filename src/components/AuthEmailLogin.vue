@@ -13,8 +13,8 @@
         placeholder="Email address"
         required autofocus
       >
-      <label for="inputEmail small">Email address</label>
-      <p class="small text-danger ml-1 mt-2" v-if="!$v.email.email">Please provide valid email address.</p>
+      <label for="inputEmail" class="text-danger" v-if="!$v.email.email">Please provide valid email address.</label>
+      <label for="inputEmail" v-else>Email address</label>
     </div>
 
     <div class="form-label-group" :class="{invalid: $v.password.$error}">
@@ -26,8 +26,8 @@
         class="form-control"
         placeholder="Password"
       >
+      <label for="inputPassword" class="text-danger" v-if="!$v.password.minLength">Password should be at least 6 characters</label>
       <label for="inputPassword">Password</label>
-      <p class="small text-danger ml-1 mt-2" v-if="!$v.password.minLength">Password should be at least 6 characters</p>
     </div>
 
     <div class="custom-control custom-checkbox mb-3">
