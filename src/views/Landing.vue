@@ -16,12 +16,16 @@
             </p>
             <br>
             <div class="d-flex flex-row">
-              <button
-                class="btn btn-lg btn-light btn-login text-uppercase font-weight-bold mb-2 mr-2"
-                type="button"
-              >
-                <i class="fa fa-magic text-primary"></i> <router-link to="/login"> Login</router-link>
-              </button>
+              <router-link to="/login">
+                <button
+                  class="btn btn-lg btn-light btn-login text-uppercase font-weight-bold mb-2 mr-3"
+                  type="button"
+                >
+                  <i class="fa fa-magic text-primary"></i>
+                  <span class="text-primary" v-if="!isLoggedIn"> Sign In</span>
+                  <span class="text-primary" v-else> Go to Dashboard</span>
+                </button>
+              </router-link>
               <button
                 class="btn btn-lg btn-light btn-login text-uppercase font-weight-bold mb-2"
                 type="button"
@@ -32,7 +36,7 @@
             </div>
           </div>
           <div class="col-4 mt-1">
-              <img src="../assets/icon.png" alt="Wizard Logo" class="landing-logo">
+            <img src="../assets/icon.png" alt="Wizard Logo" class="landing-logo">
           </div>
         </div>
       </div>
@@ -236,12 +240,16 @@
             <p class="text-light lead">Download now and get started!</p>
           </div>
           <div class="align-items-center mt-5">
-            <button
-              class="btn btn-lg btn-light btn-login text-uppercase font-weight-bold mb-2"
-              type="button"
-            >
-              <i class="fa fa-magic text-primary"></i> <router-link to="/login"> Login</router-link>
-            </button>
+            <router-link to="/login">
+              <button
+                class="btn btn-lg btn-light btn-login text-uppercase font-weight-bold mb-2"
+                type="button"
+              >
+                <i class="fa fa-magic text-primary"></i>
+                <span class="text-primary" v-if="!isLoggedIn"> Sign In</span>
+                <span class="text-primary" v-else> Go to Dashboard</span>
+              </button>
+            </router-link>
             <span class="h4 text-light mx-3">or</span>
             <button
               class="btn btn-lg btn-light btn-login text-uppercase font-weight-bold mb-2"
@@ -258,35 +266,32 @@
 </template>
 
 <script>
-import firebase from '../helpers/firebaseConfig'
+import firebase from '@/helpers/firebaseConfig'
 
 export default {
   name: 'Landing',
-  beforeCreate() {
+  data() {
+    return {
+      isLoggedIn: null
+    }
+  },
+  created() {
     firebase.auth.onAuthStateChanged(user => {
       if (user) {
-
-        if (user.providerData[0].providerId == 'google.com'){
-          this.updateGmailData();
-          this.$router.push('/dashboard');
-        } else {
-          this.$store.commit('setCurrentUser', user);
-          this.$store.dispatch('fetchUserProfile', user)
-          this.$router.push('/dashboard');
-        }
-        
+        this.isLoggedIn = true;
       } else {
-        this.$router.push('/landing');
+        this.isLoggedIn = false;
       }
-    });
-  },
+    })
+  }
+
 }
 </script>
 
 <style scoped>
 .landing-logo {
-    border: 4px solid white;
-    border-radius: 50%;
+  border: 4px solid white;
+  border-radius: 50%;
 }
 
 .masthead {

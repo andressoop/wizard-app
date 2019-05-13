@@ -1,10 +1,10 @@
 <template>
   <div id="app">
 
-    <navigation v-if="isLoggedIn" @onCollapse="onCollapse"></navigation>
+    <navigation v-if="isLoggedIn && (this.$route.fullPath !== '/')" @onCollapse="onCollapse"></navigation>
 
     <fade-transition origin="center" mode="out-in" :duration="250">
-      <div :class="[{'collapsed' : sidebarCollapsed}, {'content-area' : isLoggedIn}]">
+      <div :class="[{'collapsed' : sidebarCollapsed}, {'content-area' : isLoggedIn && (this.$route.fullPath !== '/')}]">
         <router-view/>
       </div>
     </fade-transition>

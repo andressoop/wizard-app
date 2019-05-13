@@ -14,17 +14,13 @@ const router = new Router({
   routes: [
   {
     path: '/',
-    redirect: '/landing'
+    name: 'Landing',
+    component: Landing
   },
   {
     path: '/login',
     name: 'Login',
     component: Login
-  },
-  {
-    path: '/landing',
-    name: 'Landing',
-    component: Landing
   },
   {
     path: '/profile',
