@@ -1,12 +1,19 @@
 <template>
   <div class="card-deck">
     <div class="card mr-5 mb-5">
-      <img class="card-img-top" src="../assets/images/placeholder.png" alt="Card image cap">
+      <div class="card-header p-0">
+        <div class="wrapper m-0 col-10" style="padding: 0 1.25rem">
+          <h4 class="card-title mt-4" v-if="editProject.inputField !== 'editName'">{{ projectName }}</h4>
+          <input type="text" class="form-control" style="width: 104%;"
+            v-if="editProject.inputField === 'editName'"  
+          >
+        </div>
+        <jazzicon class="jazzicon" :seed="projectCreatedOn.seconds" :diameter="300" :colors="jazziconColors" />
+      </div>
       <div class="card-body">
-        <h5 class="card-title">{{ projectName }}</h5>
-        <p class="small">Project ID: {{ projectId }}</p>
-        <p
-          class="card-text"
+        <!-- <h5 class="card-title">{{ projectName }}</h5> -->
+        <p class="small text-muted"># {{ projectId }}</p>
+        <p class="card-text"
         >This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
       </div>
       <div class="card-footer">
@@ -22,17 +29,38 @@
 <script>
 import moment from 'moment'
 import Swal from 'sweetalert2'
+import Jazzicon from 'vue-jazzicon'
 
 export default {
   name: 'ProjectCard',
+  data() {
+    return {
+      editProject: {
+        inputField: null
+      },
+      jazziconColors: [
+        '#20bf6b', 
+        '#FC7500', 
+        '#485460', 
+        '#ff5e57', 
+        '#FC1960',
+        '#ff3f34',
+        '#ffdd59',
+        '#a29bfe',
+        '#6C63FF',
+        '#ffc048' 
+      ]
+    }
+  },
   props: [
     'projectName',
     'projectId',
     'projectCreatedOn'
   ],
-  data() {
-    return {}
+  components: {
+    Jazzicon
   },
+  
   methods: {
     viewProject(projectId) {
       this.$router.push('/project/' + projectId)
@@ -79,14 +107,25 @@ export default {
 
 <style scoped>
 .card {
-  /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); */
   transition: 0.3s;
-  /* margin: 20px; */
   width: 300px;
 }
 
-.card:hover {
-  /* box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2); */
+.card-header {
+  height: 150px;
+  overflow: hidden;
+}
+
+.card-header input[type=text] {
+  position: absolute;
+  margin: 1.25rem auto;
+}
+
+.card-title {
+  position: absolute;
+  color: white;
+  font-weight: 600;
+  text-shadow: 0 0 11px rgba(33,33,33,.4);
 }
 
 .container {

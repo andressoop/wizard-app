@@ -1,11 +1,5 @@
 <template>
   <div class="container-fluid pl-5 mt-4 pl-0">
-    <div class="row">
-      <div class="col-lg-6">
-        <h1>Your Account</h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tenetur, fugiat modi ex ipsum eos, architecto, eligendi dolores voluptatum doloribus veniam deserunt iure quisquam sunt assumenda totam culpa enim temporibus incidunt?</p>
-      </div>
-    </div>
     <div class="d-flex justify-content-start mb-4 pl-0">
       <div class="avatar-icon ml-0" v-html="getUserPicture"></div>
       <h4 class="ml-3 mt-4">{{userProfile.name}}</h4>

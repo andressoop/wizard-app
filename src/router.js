@@ -18,6 +18,10 @@ const router = new Router({
     component: Landing
   },
   {
+    path: '/landing',
+    redirect: '/'
+  },
+  {
     path: '/login',
     name: 'Login',
     component: Login

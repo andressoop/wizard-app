@@ -36,7 +36,7 @@ export default {
         },
         {
           href: "/dashboard",
-          title: "Dashboard",
+          title: "Projects",
           icon: "fa fa-home"
         },
         {
@@ -48,6 +48,11 @@ export default {
           href: "/profile",
           title: "Your Account",
           icon: "fa fa-user-edit"
+        },
+        {
+          href: "/landing",
+          title: "Introduction",
+          icon: "fas fa-info"
         },
         {
           title: "Sign Out",

@@ -15,6 +15,7 @@ Vue.directive('focus', {
   }
 })
 
+
 // Init plugins
 window.Swal = Swal
 Vue.use(Vuelidate)

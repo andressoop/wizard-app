@@ -1,18 +1,12 @@
 <template>
   <div class="container-fluid pl-5 mt-4">
-    <div class="row">
-      <div class="col-lg-6">
-        <h1>Projects</h1>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum autem magnam cumque, numquam sint distinctio aliquam dolores illo, libero placeat a et expedita iste. Quaerat, iusto quam? Alias, ullam possimus.Consectetur eos fuga deserunt a. Amet corrupti saepe reiciendis, doloremque eius aliquam rem, ipsum quaerat error odit fugit magnam sed modi alias nostrum quidem dolorem nobis nisi! Commodi, culpa repellat.</p>
-      </div>
-    </div>
-
     <div class="row pl-1">
-      <div class="col-lg-8">
+      <div class="col-lg-12">
         <div class="form-row">
         <div class="form-label-group mr-2" :class="{invalid: $v.newProject.name.$error}">
           <input
             name="newProjectName"
+            maxlength="50"
             type="text"
             class="form-control"
             placeholder="Project name"
