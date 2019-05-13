@@ -2,16 +2,26 @@
 $blue: #6C63FF;
 $red: #D63031;
 $green: #20bf6b;
+$yellow: #ffa801;
 
 $primary: $blue;
 $success: $green;
 $danger: $red;
+$warning: $yellow;
 
 
 :root {
     --input-padding-x: 1.5rem;
     --input-padding-y: 0.75rem;
   }
+
+.mt--200 {
+  margin-top: -160px;
+}
+
+a:hover {
+  text-decoration: none;
+}
 
 // Typography
 h1, h2, h3, h4, h5, h6 {

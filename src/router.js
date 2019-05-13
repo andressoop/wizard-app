@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import firebase from 'firebase'
 import Router from 'vue-router'
+import Landing from './views/Landing'
 import Dashboard from './views/Dashboard'
 import Kanban from './views/Kanban'
 import Login from './views/Login'
@@ -13,12 +14,17 @@ const router = new Router({
   routes: [
   {
     path: '/',
-    redirect: '/login'
+    redirect: '/landing'
   },
   {
     path: '/login',
     name: 'Login',
     component: Login
+  },
+  {
+    path: '/landing',
+    name: 'Landing',
+    component: Landing
   },
   {
     path: '/profile',
