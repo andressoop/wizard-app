@@ -44,7 +44,7 @@
     <div class="form-row">
       <div class="form-group col-md-6">
         <label for="difficulty">Difficulty</label>
-        <div id="difficulty" class="input-group">
+        <div id="difficulty" class="input-group d-flex align-items-center">
           <div class="custom-control custom-radio custom-control-inline">
             <input type="radio" id="difficulty1" name="difficulty" class="custom-control-input" value="1" v-model="taskDifficulty">
             <label class="custom-control-label" for="difficulty1">1</label>
@@ -66,7 +66,8 @@
             <label class="custom-control-label" for="difficulty5">5</label>
           </div>
           <div>
-            <i class="far fa-trash-alt" @click="taskDifficulty = '0'"></i>           
+            <button class="btn btn-outline-danger btn-sm" type="button" @click="taskDifficulty = '0'" style="border: 0;"><i class="far fa-trash-alt"></i></button>
+            <!-- <i class="far fa-trash-alt" @click="taskDifficulty = '0'"></i>            -->
           </div>
         </div>
       </div>

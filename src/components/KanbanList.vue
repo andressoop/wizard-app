@@ -17,23 +17,7 @@
             >
           </div>
           <div class="d-flex justify-content-start">
-            <div class="dropdown dropright">
-              <button
-                type="button"
-                id="dropdownMenuButton"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-                class="btn btn-link btn-dropdown text-muted">
-                <i class="fas fa-ellipsis-v"></i>
-              </button>
-
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item text-danger" href="#" @click="deleteKanbanList(listId)">
-                  <i class="far fa-trash-alt mr-1"></i> Delete
-                </a>
-              </div>
-            </div>
+            <button type="button" class="btn btn-outline-danger btn-sm" @click="deleteKanbanList(listId)"><i class="far fa-trash-alt"></i></button>
           </div>
         </div>
       </div>
@@ -191,6 +175,11 @@ export default {
   overflow-x: hidden;
 }
 
+.card-title {
+  padding-top: 5px;
+  margin-bottom: 0;
+}
+
 .card-footer {
   cursor: pointer;
 }
@@ -204,6 +193,10 @@ export default {
   min-width: 100%;
 }
 
+.btn-sm {
+  border: 0;
+}
+
 .btn-dropdown {
   padding: 0 .5rem 0 .5rem;
 }
@@ -214,5 +207,14 @@ export default {
 
 .ghost {
   opacity: 0.5;
+}
+
+.fa-trash-alt {
+  color: #6C757D;
+}
+
+.btn-sm:hover .fa-trash-alt {
+  color: white;
+  transition: 0.2s ease;
 }
 </style>

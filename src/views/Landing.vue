@@ -84,7 +84,7 @@
                 <div class="card">
                   <div class="card-body">
                     <div class="icon mb-4">
-                      <i class="fas fa-users text-danger rounded-circle-icon"></i>
+                      <i class="fas fa-user-friends text-danger rounded-circle-icon"></i>
                     </div>
                     <h5 class="card-title text-danger">CLIENT LIST</h5>
                     <p
@@ -128,7 +128,7 @@
                 </div>
                 <div>
                   <i
-                    class="fas fa-user-slash fa-sm text-light bg-primary rounded-circle-icon-sm mr-3 mb-3"
+                    class="fas fa-trash-alt fa-sm text-light bg-primary rounded-circle-icon-sm mr-3 mb-3"
                   ></i> Delete your data anytime
                 </div>
               </div>
@@ -187,7 +187,7 @@
           <div class="col-md-6 col-lg-5 mr-auto d-flex align-items-center mt-4 mt-md-0">
             <div>
               <div class="icon mb-4">
-                <i class="fas fa-clipboard-check text-light bg-primary rounded-circle-icon"></i>
+                <i class="fas fa-tasks text-light bg-primary rounded-circle-icon"></i>
               </div>
               <h3>Add Details to Tasks</h3>
               <p
@@ -196,7 +196,7 @@
               <div class="d-flex flex-column">
                 <div>
                   <i
-                    class="fas fa-clipboard fa-sm text-light bg-primary rounded-circle-icon-sm mr-3 mb-3"
+                    class="fas fa-pen-alt fa-sm text-light bg-primary rounded-circle-icon-sm mr-3 mb-3"
                   ></i> Write detailed descriptions
                 </div>
                 <div>
