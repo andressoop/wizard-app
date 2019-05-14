@@ -1,8 +1,17 @@
 import firebase from '@/helpers/firebaseConfig'
 import _ from 'lodash'
 
+let tasksListener = false;
+let listsListener = false;
+let projectsListener = false;
+
 export default {
   clearData({ commit }) {
+    // Detach all listeners
+    if (tasksListener) { tasksListener() }
+    if (listsListener) { listsListener() }
+    if (projectsListener) { projectsListener() }
+    // 
     commit('setCurrentUser', null)
     commit('setUserProfile', {})
     commit('setUserProjects', [])
@@ -17,7 +26,10 @@ export default {
     });
   },
   fetchProjects({ commit, state }) {
-    firebase.projectsCollection.where('uid', '==', state.currentUser.uid).orderBy('createdOn', 'desc').onSnapshot(querySnapshot => {
+    // Detach previous listner
+    if( projectsListener ) { projectsListener() }
+
+    projectsListener = firebase.projectsCollection.where('uid', '==', state.currentUser.uid).orderBy('createdOn', 'desc').onSnapshot(querySnapshot => {
       let userProjectsArray = state.userProjects
 
       querySnapshot.docChanges().forEach(change => {
@@ -63,7 +75,10 @@ export default {
     })
   },
   fetchKanbanLists({ commit, state }, projectId) {
-    firebase.projectsCollection.doc(projectId).collection('lists').orderBy('listOrder').onSnapshot(querySnapshot => {
+    // Detach previous listener
+    if (listsListener) { listsListener() }
+
+    listsListener = firebase.projectsCollection.doc(projectId).collection('lists').orderBy('listOrder').onSnapshot(querySnapshot => {
       let kanbanListsArray = state.projectKanbanLists
       
       querySnapshot.docChanges().forEach(change => {
@@ -126,7 +141,10 @@ export default {
     commit('setProjectKanbanLists', updatedList)
   },
   fetchKanbanTasks({ commit, state }, projectId) {
-    firebase.projectsCollection.doc(projectId).collection('tasks').orderBy('listID').orderBy('taskOrder').onSnapshot(querySnapshot => {
+    // Detach previous listener
+    if( tasksListener ) { tasksListener() }
+
+    tasksListener = firebase.projectsCollection.doc(projectId).collection('tasks').orderBy('listID').orderBy('taskOrder').onSnapshot(querySnapshot => {
       let kanbanTasksArray = state.projectKanbanTasks
 
       querySnapshot.docChanges().forEach(change => {
