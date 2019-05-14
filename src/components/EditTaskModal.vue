@@ -45,28 +45,32 @@
       <div class="form-group col-md-6">
         <label for="difficulty">Difficulty</label>
         <div id="difficulty" class="input-group d-flex align-items-center">
+          <div class="custom-control custom-radio custom-control-inline d-none">
+            <input type="radio" id="difficulty0" name="difficulty" class="custom-control-input" value="0" v-model="openTask.difficulty">
+            <label class="custom-control-label" for="difficulty0">0</label>
+          </div>
           <div class="custom-control custom-radio custom-control-inline">
-            <input type="radio" id="difficulty1" name="difficulty" class="custom-control-input" value="1" v-model="taskDifficulty">
+            <input type="radio" id="difficulty1" name="difficulty" class="custom-control-input" value="1" v-model="openTask.difficulty" @click="task.data = openTask; editTaskDifficulty(1)">
             <label class="custom-control-label" for="difficulty1">1</label>
           </div>
           <div class="custom-control custom-radio custom-control-inline">
-            <input type="radio" id="difficulty2" name="difficulty" class="custom-control-input" value="2" v-model="taskDifficulty">
+            <input type="radio" id="difficulty2" name="difficulty" class="custom-control-input" value="2" v-model="openTask.difficulty" @click="task.data = openTask; editTaskDifficulty(2)">
             <label class="custom-control-label" for="difficulty2">2</label>
           </div>
           <div class="custom-control custom-radio custom-control-inline">
-            <input type="radio" id="difficulty3" name="difficulty" class="custom-control-input" value="3" v-model="taskDifficulty">
+            <input type="radio" id="difficulty3" name="difficulty" class="custom-control-input" value="3" v-model="openTask.difficulty" @click="task.data = openTask; editTaskDifficulty(3)">
             <label class="custom-control-label" for="difficulty3">3</label>
           </div>
           <div class="custom-control custom-radio custom-control-inline">
-            <input type="radio" id="difficulty4" name="difficulty" class="custom-control-input" value="4" v-model="taskDifficulty">
+            <input type="radio" id="difficulty4" name="difficulty" class="custom-control-input" value="4" v-model="openTask.difficulty" @click="task.data = openTask; editTaskDifficulty(4)">
             <label class="custom-control-label" for="difficulty4">4</label>
           </div>
           <div class="custom-control custom-radio custom-control-inline">
-            <input type="radio" id="difficulty5" name="difficulty" class="custom-control-input" value="5" v-model="taskDifficulty">
+            <input type="radio" id="difficulty5" name="difficulty" class="custom-control-input" value="5" v-model="openTask.difficulty" @click="task.data = openTask; editTaskDifficulty(5)">
             <label class="custom-control-label" for="difficulty5">5</label>
           </div>
           <div>
-            <button class="btn btn-outline-danger btn-sm" type="button" @click="taskDifficulty = '0'" style="border: 0;"><i class="far fa-trash-alt"></i></button>
+            <button class="btn btn-outline-danger btn-sm" type="button" @click="task.data = openTask; editTaskDifficulty(0)" style="border: 0;"><i class="far fa-trash-alt"></i></button>
             <!-- <i class="far fa-trash-alt" @click="taskDifficulty = '0'"></i>            -->
           </div>
         </div>
@@ -180,15 +184,6 @@ export default {
   },
   computed: {
     ...mapGetters(['projectLabels']),
-    taskDifficulty: {
-      get() {
-        return this.openTask.difficulty
-      },
-      set(data) {
-        this.openTask.difficulty = data
-        this.$store.dispatch('editDifficultyOnTask', this.openTask)
-      }
-    },
     taskLabels: {
       get() {
         return this.openTask.labels
@@ -248,6 +243,14 @@ export default {
     editTaskDuration() {
       if (this.task.data.duration) {
         this.$store.dispatch('editTaskDuration', this.task.data)
+      } else {
+        return
+      }
+    },
+    editTaskDifficulty(value) {
+      if (this.task.data.difficulty) {
+        this.task.data.difficulty = value;
+        this.$store.dispatch('editDifficultyOnTask', this.task.data)
       } else {
         return
       }
@@ -353,5 +356,14 @@ export default {
 
 .ghost {
   opacity: 0.5;
+}
+
+.fa-trash-alt {
+  color: #6C757D;
+}
+
+.btn-sm:hover .fa-trash-alt {
+  color: white;
+  transition: 0.2s ease;
 }
 </style>
