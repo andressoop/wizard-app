@@ -6,6 +6,7 @@ export default {
     commit('setCurrentUser', null)
     commit('setUserProfile', {})
     commit('setUserProjects', [])
+    commit('setProjectNotes', {})
     commit('setProjectKanbanTasks', [])
     commit('setProjectKanbanLists', [])
   },
@@ -255,6 +256,33 @@ export default {
       todo: editedData.todo
     }).catch(err => {
       console.error("Error editing Kanban task Todo list: ", err);
+    })
+  },
+  createNewNote({state}) {
+    firebase.projectsCollection.doc(state.activeProjectId).collection('notes').add({
+      createdOn: new Date()
+    }).catch(err => {
+      console.error("Error creating new note: ", err)
+    });
+  },
+  fetchProjectNotes({commit}, projectId) {
+    firebase.projectsCollection.doc(projectId).collection('notes').onSnapshot(notesSnapshot => {
+      if(!notesSnapshot.empty) {
+        let notes = {}
+        notesSnapshot.forEach(subDoc => {
+          let note = subDoc.data()
+          note.id = subDoc.id
+          notes = note
+        })
+        commit('setProjectNotes', notes)
+      }     
+    })
+  },
+  updateNote({state}, editedNote) {
+    firebase.projectsCollection.doc(state.activeProjectId).collection('notes').doc(editedNote.id).update({
+      content: editedNote.content
+    }).catch(err => {
+      console.error("Error editing project notes: ", err);
     })
   }
 }

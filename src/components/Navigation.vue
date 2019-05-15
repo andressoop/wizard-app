@@ -8,14 +8,14 @@
 </template>
 
 <script>
-import firebase from '../helpers/firebaseConfig'
-import { mapState } from 'vuex'
-import { SidebarMenu } from 'vue-sidebar-menu'
 import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
 import '@fortawesome/fontawesome-free/css/all.css'
+import { mapState } from 'vuex'
+import { SidebarMenu } from 'vue-sidebar-menu'
+import { setTimeout } from 'timers'
+import firebase from '../helpers/firebaseConfig'
 import MenuSeparator from '../components/ui/MenuSeparator'
 import MenuProfilePicture from '../components/ui/MenuProfilePicture'
-import { setTimeout } from 'timers'
 
 export default {
   name: 'Navigation',
@@ -38,6 +38,27 @@ export default {
           href: "/dashboard",
           title: "Projects",
           icon: "fa fa-home"
+        },
+        {
+          header: true,
+          component: MenuSeparator,
+          visibleOnCollapse: true
+        },
+        {
+          header: true,
+          title: this.$store.getters.activeProjectName
+        },
+        {
+          href: `/project/${this.$store.state.activeProjectId}`,
+          title: "Kanban board",
+          icon: "fa fa-clipboard-check",
+          disabled: !this.$store.getters.hasActiveProject
+        },
+        {
+          href: `/project/notes/${this.$store.state.activeProjectId}`,
+          title: "Notes",
+          icon: "fa fa-sticky-note",
+          disabled: !this.$store.getters.hasActiveProject
         },
         {
           header: true,

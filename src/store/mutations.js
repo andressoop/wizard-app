@@ -10,6 +10,9 @@ export default {
   setUserProjects(state, val) {
     state.userProjects = val
   },
+  setProjectNotes(state, val) {
+    state.projectNotes = val
+  },
   setActiveProjectId(state, val) {
     state.activeProjectId = val
   },

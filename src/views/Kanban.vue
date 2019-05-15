@@ -100,7 +100,6 @@ export default {
     this.$store.dispatch('fetchKanbanTasks', this.$route.params.id)
   },
   destroyed() {
-    this.$store.commit('setActiveProjectId', '')
     this.$store.commit('setProjectKanbanLists', [])
     this.$store.commit('setProjectKanbanTasks', [])
   }

@@ -6,6 +6,7 @@ import Dashboard from './views/Dashboard'
 import Kanban from './views/Kanban'
 import Login from './views/Login'
 import Profile from './views/Profile'
+import Notes from './views/Notes'
 
 Vue.use(Router)
 
@@ -36,15 +37,23 @@ const router = new Router({
   },
   {
     path: '/dashboard',
-    name: 'dashboard',
+    name: 'Dashboard',
     component: Dashboard,
     meta: {
       requiresAuth: true
     }
   },
   {
+    path: '/project/notes/:id',
+    name: 'Notes',
+    component: Notes,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
     path: '/project/:id',
-    name: 'project',
+    name: 'Project',
     component: Kanban,
     meta: {
       requiresAuth: true

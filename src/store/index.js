@@ -12,7 +12,8 @@ const state =  {
   userProjects: [],
   activeProjectId: '',
   projectKanbanLists: [],
-  projectKanbanTasks: []
+  projectKanbanTasks: [],
+  projectNotes: {}
 }
 
 export default new Vuex.Store({
