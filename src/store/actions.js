@@ -280,7 +280,8 @@ export default {
   },
   createNewNote({state}) {
     firebase.projectsCollection.doc(state.activeProjectId).collection('notes').add({
-      createdOn: new Date()
+      createdOn: new Date(),
+      content: ''
     }).catch(err => {
       console.error("Error creating new note: ", err)
     });

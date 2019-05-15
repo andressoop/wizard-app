@@ -14,6 +14,10 @@ export default {
     return currentProject.name
   },
   projectNotes: (state) => {
-    return state.projectNotes
+    if(!state.projectNotes.id) { 
+      return null
+    } else {
+      return state.projectNotes
+    }    
   }
 }

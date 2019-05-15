@@ -17,15 +17,15 @@
         >Start taking notes</button>
       </div>
       <div v-else>
-        <Note :note="notes"></Note>
+        <Note></Note>
       </div>
-      </div>
+    </div>
 
   </div>
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex'
+import { mapGetters} from 'vuex'
 import Note from '../components/Note'
 import LoadingSpinner from '../components/ui/LoadingSpinner'
 
@@ -38,12 +38,11 @@ export default {
   data() {
     return {
       loaded: false,
-      notes: {}
+      hasNotes: false,
     }
   },
   computed: {
-    ...mapGetters(['activeProjectName']),
-    ...mapState(['projectNotes'])    
+    ...mapGetters(['activeProjectName', 'projectNotes']),
   },
   methods: {
     createNote() {
@@ -62,7 +61,7 @@ export default {
       }
       try {
         if(checkNotes) {
-          that.notes = checkNotes;
+          if(checkNotes.id) { that.hasNotes = true }
           that.loaded = true;
           ready = true;
         } else {

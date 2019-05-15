@@ -146,9 +146,6 @@ export default {
     EditorContent,
     EditorMenuBar
   },
-  props: [
-    'note'
-  ],
   data() {
     return {
       editedNote: {},
