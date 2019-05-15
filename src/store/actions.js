@@ -4,6 +4,7 @@ import _ from 'lodash'
 let tasksListener = false;
 let listsListener = false;
 let projectsListener = false;
+let notesListener = false;
 
 export default {
   clearData({ commit }) {
@@ -11,6 +12,7 @@ export default {
     if (tasksListener) { tasksListener() }
     if (listsListener) { listsListener() }
     if (projectsListener) { projectsListener() }
+    if (notesListener) { notesListener() }
     // 
     commit('setCurrentUser', null)
     commit('setUserProfile', {})
@@ -284,6 +286,9 @@ export default {
     });
   },
   fetchProjectNotes({commit}, projectId) {
+    // Detach previous listner
+    if( notesListener ) { notesListener() }
+
     firebase.projectsCollection.doc(projectId).collection('notes').onSnapshot(notesSnapshot => {
       if(!notesSnapshot.empty) {
         let notes = {}
