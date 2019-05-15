@@ -11,16 +11,18 @@
         <jazzicon class="jazzicon" :seed="projectCreatedOn.seconds" :diameter="300" :colors="jazziconColors" />
       </div>
       <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <p class="small text-muted mt-3"># {{ projectId }}</p>
+          <button type="button" class="btn btn-outline-danger btn-sm" @click="deleteProject(projectId)"><i class="far fa-trash-alt"></i></button>
+        </div>
         <!-- <h5 class="card-title">{{ projectName }}</h5> -->
-        <p class="small text-muted"># {{ projectId }}</p>
         <p class="card-text"
         >This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
       </div>
       <div class="card-footer">
         <small class="text-muted">Project created {{ projectCreatedOn | formatDate }}</small>
         <br>
-        <button type="button" class="btn btn-primary btn-block mt-2 mr-2" @click="viewProject(projectId)">View Project</button>
-        <button class="btn btn-outline-danger btn-block mt-2" @click="deleteProject(projectId)">Delete</button>
+        <button type="button" class="btn btn-primary btn-block mt-2 mr-2" @click="viewProject(projectId)">VIEW PROJECT</button>
       </div>
     </div>
   </div>
@@ -121,11 +123,28 @@ export default {
   margin: 1.25rem auto;
 }
 
+.card-body {
+  padding-top: 10px;
+}
+
 .card-title {
   position: absolute;
   color: white;
   font-weight: 600;
   text-shadow: 0 0 11px rgba(33,33,33,.4);
+}
+
+.fa-trash-alt {
+  color: #6C757D;
+}
+
+.btn-sm {
+  border: 0;
+}
+
+.btn-sm:hover .fa-trash-alt {
+  color: white;
+  transition: 0.2s ease;
 }
 
 .container {
