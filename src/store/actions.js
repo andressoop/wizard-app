@@ -322,7 +322,7 @@ export default {
   },
   fetchClientList({state, commit}) {
     // Detach previous listner
-    if( notesListener ) { notesListener() }
+    if( clientListListener ) { clientListListener() }
 
     firebase.clientListsCollection.where('uid', '==', state.currentUser.uid).onSnapshot(querySnapshot => {
       if(!querySnapshot.empty) {
@@ -339,16 +339,10 @@ export default {
   createNewClient({state}, newClient) {
     let clientList = state.clientList
     if(!clientList.clients) {
-      clientList.clients = [
-        {
-          createdOn: new Date(),
-          name: newClient.name
-        }
-      ]
-    } else {
-      newClient.createdOn = new Date()
-      clientList.clients.push(newClient)
+      clientList.clients = []
     }
+    clientList.clients.push(newClient)
+
     firebase.clientListsCollection.doc(clientList.id).update({
       clients: clientList.clients
     }).catch(err => {

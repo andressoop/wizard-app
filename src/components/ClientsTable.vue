@@ -94,6 +94,7 @@ export default {
         name: '',
         contactPerson: '',
         email: '',
+        createdOn: null,
       }
     };
   },
@@ -110,10 +111,12 @@ export default {
   },
   methods: {
     createClient() {
+      this.newClient.createdOn = new Date()
       this.$store.dispatch('createNewClient', this.newClient)
       this.newClient.name = ''
       this.newClient.contactPerson = ''
       this.newClient.email = ''
+      this.newClient.createdOn = null
     }
   }
 }
