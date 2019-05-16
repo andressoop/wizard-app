@@ -14,6 +14,15 @@
         padding: 0;
       }
 
+      .screen-overlay {
+        background-color: #F1F2F6; 
+        height:100vh; 
+        width:100vw;
+        display:flex; 
+        justify-content: 
+        center; align-items:center;
+      }
+
       .spinner {
         margin: 100px auto;
         width: 40px;
@@ -70,12 +79,17 @@
       function checkReadiness() {
   
         setTimeout(function() {
-          document.getElementById('container').style.display = 'block';
-          document.getElementById('loader').style.display = 'none';
+          if (window.innerWidth > 1024) {
+            document.getElementById('container').style.display = 'block';
+            document.getElementById('loader').style.display = 'none';
+          } else {
+            document.getElementById('mobile-alert').style.display = 'block';
+            document.getElementById('loader').style.display = 'none';
+          }
         }, 3000);
 
       }
-      checkReadiness();
+      checkReadiness();      
     </script>
 
      
@@ -90,6 +104,12 @@
           <div class="dot1"></div>
           <div class="dot2"></div>
         </div>
+    </div>
+
+    <div id="mobile-alert" style="display: none;">
+      <div class="screen-overlay">
+        <p>Mobile view not supported</p>
+      </div>
     </div>
 
     <div id="container" style="display: none;">
