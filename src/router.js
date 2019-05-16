@@ -7,6 +7,7 @@ import Kanban from './views/Kanban'
 import Login from './views/Login'
 import Profile from './views/Profile'
 import Notes from './views/Notes'
+import Clients from './views/Clients'
 
 Vue.use(Router)
 
@@ -31,6 +32,14 @@ const router = new Router({
     path: '/profile',
     name: 'Profile',
     component: Profile,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/clients',
+    name: 'Clients',
+    component: Clients,
     meta: {
       requiresAuth: true
     }

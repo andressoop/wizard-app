@@ -35,6 +35,11 @@ export default {
           visibleOnCollapse: true
         },
         {
+          href: "/clients",
+          title: "Clients",
+          icon: "fas fa-user-friends"
+        },
+        {
           href: "/dashboard",
           title: "Projects",
           icon: "fa fa-home"

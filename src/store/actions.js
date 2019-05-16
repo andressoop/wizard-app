@@ -5,6 +5,7 @@ let tasksListener = false;
 let listsListener = false;
 let projectsListener = false;
 let notesListener = false;
+let clientListListener = false;
 
 export default {
   clearData({ commit }) {
@@ -13,6 +14,7 @@ export default {
     if (listsListener) { listsListener() }
     if (projectsListener) { projectsListener() }
     if (notesListener) { notesListener() }
+    if (clientListListener) { clientListListener() }
     // 
     commit('setCurrentUser', null)
     commit('setUserProfile', {})
@@ -20,6 +22,7 @@ export default {
     commit('setProjectNotes', {})
     commit('setProjectKanbanTasks', [])
     commit('setProjectKanbanLists', [])
+    commit('setClientList', {})
   },
   fetchUserProfile({ commit }, user) {
     firebase.usersCollection.doc(user.uid).get().then(res => {
@@ -307,6 +310,49 @@ export default {
       content: editedNote.content
     }).catch(err => {
       console.error("Error editing project notes: ", err);
+    })
+  },
+  createNewClientList({state}) {
+    firebase.clientListsCollection.add({
+      createdOn: new Date(),
+      uid: state.currentUser.uid
+    }).catch(err => {
+      console.error("Error creating new client list: ", err)
+    });
+  },
+  fetchClientList({state, commit}) {
+    // Detach previous listner
+    if( notesListener ) { notesListener() }
+
+    firebase.clientListsCollection.where('uid', '==', state.currentUser.uid).onSnapshot(querySnapshot => {
+      if(!querySnapshot.empty) {
+        let clientList = {}
+        querySnapshot.forEach(subDoc => {
+          let list = subDoc.data()
+          list.id = subDoc.id
+          clientList = list
+        })
+        commit('setClientList', clientList)
+      }     
+    })
+  },
+  createNewClient({state}, newClient) {
+    let clientList = state.clientList
+    if(!clientList.clients) {
+      clientList.clients = [
+        {
+          createdOn: new Date(),
+          name: newClient.name
+        }
+      ]
+    } else {
+      newClient.createdOn = new Date()
+      clientList.clients.push(newClient)
+    }
+    firebase.clientListsCollection.doc(clientList.id).update({
+      clients: clientList.clients
+    }).catch(err => {
+      console.error("Error editing client list: ", err);
     })
   }
 }

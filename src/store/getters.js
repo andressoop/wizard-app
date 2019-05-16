@@ -19,5 +19,12 @@ export default {
     } else {
       return state.projectNotes
     }    
+  },
+  clientList: (state) => {
+    if(!state.clientList.id) { 
+      return null
+    } else {
+      return state.clientList
+    }    
   }
 }

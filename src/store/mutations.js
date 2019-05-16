@@ -13,6 +13,9 @@ export default {
   setProjectNotes(state, val) {
     state.projectNotes = val
   },
+  setClientList(state, val) {
+    state.clientList = val
+  },
   setActiveProjectId(state, val) {
     state.activeProjectId = val
   },

@@ -45,12 +45,10 @@ service cloud.firestore {
       }  
     }
 
-    match /clients/{client} {
+    match /client_lists/{client} {
       allow read, update, delete: if request.auth.uid == resource.data.uid;
       allow create: if 
-      	request.auth.uid != null && 
-        request.resource.data.name != null && 
-        request.resource.data.name != '';
+      	request.auth.uid != null
     }
 
   }

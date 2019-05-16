@@ -25,13 +25,15 @@ const persistenceState = firebase.auth.Auth.Persistence
 // firebase collections
 const usersCollection = db.collection('users')
 const projectsCollection = db.collection('projects')
+const clientListsCollection = db.collection('client_lists')
 
 export default {
     db,
     auth,
     currentUser,
     googleProvider,
+    persistenceState,
     usersCollection,
     projectsCollection,
-    persistenceState
+    clientListsCollection
 }
