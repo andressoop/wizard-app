@@ -13,6 +13,13 @@ export default {
     if(!currentProject || !currentProject.name) {return ""}
     return currentProject.name
   },
+  projectLists: (state) => {
+    return _.orderBy(state.projectKanbanLists, function (o) { return new Number(o.listOrder); }, ['asc'])
+  },
+  projectTasks: (state) => (listId) => {
+    const allTasks = _.orderBy(state.projectKanbanTasks, function (o) { return new Number(o.taskOrder); }, ['asc'])
+    return allTasks.filter(task => task.listID == listId)
+  },
   projectNotes: (state) => {
     if(!state.projectNotes.id) { 
       return null

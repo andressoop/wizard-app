@@ -96,7 +96,7 @@ export default {
   computed: {
     listTasks: {
       get() {
-        return this.$store.state.projectKanbanTasks.filter(task => task.listID == this.listId)
+        return this.$store.getters['projectTasks'](this.listId)
       },
       set(data) {
         this.$store.dispatch('editTaskOrder', {data: data, listId: this.listId})
