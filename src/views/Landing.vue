@@ -5,9 +5,10 @@
       <div class="container h-100">
         <div class="row h-100 align-items-center">
           <div class="col-8 text-left">
-            <h1 class="text-light">
-              <strong>Wizard App</strong>
-            </h1>
+            <div class="d-flex flex-row p-0">
+              <div><h1 class="text-light"><strong>Wizard App</strong></h1></div>
+              <div><span class="badge badge-warning ml-2 shadow-sm">BETA</span></div>
+            </div>
             <h1 class="text-light">Unleash your potential</h1>
             <br>
             <p class="text-light lead">
