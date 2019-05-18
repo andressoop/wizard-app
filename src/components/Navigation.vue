@@ -40,7 +40,7 @@ export default {
           icon: "fas fa-user-friends"
         },
         {
-          href: "/dashboard",
+          href: "/projects",
           title: "Projects",
           icon: "fa fa-home"
         },

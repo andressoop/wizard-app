@@ -48,7 +48,7 @@ import { required, minLength  } from 'vuelidate/lib/validators'
 import ProjectCard from '../components/ProjectCard.vue'
 
 export default {
-  name: 'Dashboard',
+  name: 'Projects',
   components: {
     ProjectCard
   },

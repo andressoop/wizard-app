@@ -2,7 +2,7 @@ import Vue from 'vue'
 import firebase from 'firebase'
 import Router from 'vue-router'
 import Landing from './views/Landing'
-import Dashboard from './views/Dashboard'
+import Projects from './views/Projects'
 import Kanban from './views/Kanban'
 import Login from './views/Login'
 import Profile from './views/Profile'
@@ -45,9 +45,9 @@ const router = new Router({
     }
   },
   {
-    path: '/dashboard',
-    name: 'Dashboard',
-    component: Dashboard,
+    path: '/projects',
+    name: 'Projects',
+    component: Projects,
     meta: {
       requiresAuth: true
     }

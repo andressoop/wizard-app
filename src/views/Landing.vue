@@ -24,7 +24,7 @@
                 >
                   <i class="fa fa-magic text-primary"></i>
                   <span class="text-primary" v-if="!isLoggedIn"> Sign In</span>
-                  <span class="text-primary" v-else> Go to Dashboard</span>
+                  <span class="text-primary" v-else> Go to App</span>
                 </button>
               </router-link>
               <button
@@ -248,7 +248,7 @@
               >
                 <i class="fa fa-magic text-primary"></i>
                 <span class="text-primary" v-if="!isLoggedIn"> Sign In</span>
-                <span class="text-primary" v-else> Go to Dashboard</span>
+                <span class="text-primary" v-else> Go to App</span>
               </button>
             </router-link>
             <span class="h4 text-light mx-3">or</span>

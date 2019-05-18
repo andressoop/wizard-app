@@ -158,7 +158,7 @@ export default {
             })
             .then(() => {
               this.$store.dispatch('fetchUserProfile', credential.user);
-              this.$router.push('/dashboard');
+              this.$router.push('/projects');
             })
             .catch(err => {
               this.firebaseError = err.message

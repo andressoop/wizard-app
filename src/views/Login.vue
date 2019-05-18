@@ -77,11 +77,11 @@ export default {
 
         if (user.providerData[0].providerId == 'google.com'){
           this.updateGmailData();
-          this.$router.push('/dashboard');
+          this.$router.push('/projects');
         } else {
           this.$store.commit('setCurrentUser', user);
           this.$store.dispatch('fetchUserProfile', user)
-          this.$router.push('/dashboard');
+          this.$router.push('/projects');
         }
         
       } else {
