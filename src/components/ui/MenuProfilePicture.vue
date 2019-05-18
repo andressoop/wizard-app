@@ -12,12 +12,6 @@ import sprites from '@dicebear/avatars-gridy-sprites'
 
 export default {
   name: 'MenuProfilePicture',
-  props: {
-    sidebarCollapsed: {
-      default: false,
-      type: Boolean
-    }
-  },
   computed: {
     ...mapState(['userProfile']),
     getUserPicture: function() {
@@ -50,7 +44,9 @@ export default {
 }
 
 #avatar-title {
-  display:inline-block;
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
   color: #FFF;
 }
 </style>

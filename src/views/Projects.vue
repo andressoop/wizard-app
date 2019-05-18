@@ -72,6 +72,8 @@ export default {
   },
   methods: {
     createProject() {
+      if ( this.newProject.name.length < 3 ) { return }
+
       this.$store.dispatch('createNewProject', this.newProject)
       this.newProject.name = ''
     }

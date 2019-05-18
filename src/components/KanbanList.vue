@@ -134,8 +134,8 @@ export default {
         text: "You won't be able to revert this!",
         type: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#28A745',
-        cancelButtonColor: '#d33',
+        confirmButtonColor: '#28A745!important',
+        cancelButtonColor: '#D63031!important',
         confirmButtonText: 'Yes, delete it!'
       }).then((result) => {
         if (result.value) {
@@ -216,5 +216,9 @@ export default {
 .btn-sm:hover .fa-trash-alt {
   color: white;
   transition: 0.2s ease;
+}
+
+.swal2-styled.swal2-confirm {
+  background-color: #6C63FF!important;
 }
 </style>

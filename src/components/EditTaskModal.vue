@@ -366,4 +366,8 @@ export default {
   color: white;
   transition: 0.2s ease;
 }
+
+.sweet-action-close:hover {
+  background: #6C63FF!important;
+}
 </style>

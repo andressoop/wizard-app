@@ -10,9 +10,9 @@
 <script>
 import 'vue-sidebar-menu/dist/vue-sidebar-menu.css'
 import '@fortawesome/fontawesome-free/css/all.css'
+import _ from 'lodash'
 import { mapState } from 'vuex'
 import { SidebarMenu } from 'vue-sidebar-menu'
-import { setTimeout } from 'timers'
 import firebase from '../helpers/firebaseConfig'
 import MenuSeparator from '../components/ui/MenuSeparator'
 import MenuProfilePicture from '../components/ui/MenuProfilePicture'
@@ -51,7 +51,7 @@ export default {
         },
         {
           header: true,
-          title: this.$store.getters.activeProjectName
+          title: _.truncate(this.$store.getters.activeProjectName, {'length': 25, 'omission': ' . . .'})
         },
         {
           href: `/project/${this.$store.state.activeProjectId}`,
@@ -71,14 +71,14 @@ export default {
           visibleOnCollapse: true
         },
         {
+          href: "/landing",
+          title: "Wizard App",
+          icon: "fas fa-info"
+        },
+        {
           href: "/profile",
           title: "Your Account",
           icon: "fa fa-user-edit"
-        },
-        {
-          href: "/landing",
-          title: "Introduction",
-          icon: "fas fa-info"
         },
         {
           title: "Sign Out",
@@ -94,7 +94,6 @@ export default {
       if(collapsed === true) {
         avatarTitleElement.style.display = 'none'
       } else {
-        setTimeout(() => {avatarTitleElement.style.display = 'inline-block'}, 100)
         avatarTitleElement.style.display = 'inline-block'
       }
     },
