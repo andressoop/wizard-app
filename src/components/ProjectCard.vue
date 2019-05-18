@@ -1,29 +1,47 @@
 <template>
   <div class="card-deck">
     <div class="card mr-5 mb-5">
+
       <div class="card-header p-0">
-        <div class="wrapper m-0 col-10" style="padding: 0 1.25rem">
-          <h4 class="card-title mt-4" v-if="editProject.inputField !== 'editName'">{{ projectName }}</h4>
+        <div class="wrapper m-0 col-10">
+          <h4 class="card-title mt-4 w-100" v-if="editProject.inputField !== 'editName'" @click="editProject.inputField = 'editName'">{{ projectName }}</h4>
           <input type="text" class="form-control" style="width: 104%;"
-            v-if="editProject.inputField === 'editName'"  
+            v-if="editProject.inputField === 'editName'"
+            maxlength="50"
+            v-model.trim="editProject.data.name"
+            v-focus="true"
+            @keyup.enter="editProjectName()"
+            @blur="editProjectName()"
+            @keyup.esc="clearInputFields()"
           >
         </div>
         <jazzicon class="jazzicon" :seed="projectCreatedOn.seconds" :diameter="300" :colors="jazziconColors" />
       </div>
+
       <div class="card-body">
         <div class="d-flex justify-content-between align-items-center">
-          <p class="small text-muted mt-3"># {{ projectId }}</p>
+          <p class="small mt-3"># {{ projectId }}</p>
           <button type="button" class="btn btn-outline-danger btn-sm" @click="deleteProject(projectId)"><i class="far fa-trash-alt"></i></button>
         </div>
-        <!-- <h5 class="card-title">{{ projectName }}</h5> -->
-        <p class="card-text"
-        >This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+        <p class="card-text text-muted small" v-if="!projectDescription">Add description...</p>
+        <p class="card-text" v-else>{{ projectDescription }}</p>
+        <input type="text-field" class="form-control" style="width: 104%; height: 100%"
+            v-if="editProject.inputField === 'editDescription'"
+            maxlength="120"
+            v-model.trim="editProject.data.description"
+            v-focus="true"
+            @keyup.enter="editProjectDescription()"
+            @blur="editProjectDescription()"
+            @keyup.esc="clearInputFields()"
+          >
       </div>
+
       <div class="card-footer">
         <small class="text-muted">Project created {{ projectCreatedOn | formatDate }}</small>
         <br>
         <button type="button" class="btn btn-primary btn-block mt-2 mr-2" @click="viewProject(projectId)">VIEW PROJECT</button>
       </div>
+
     </div>
   </div>
 </template>
@@ -38,7 +56,13 @@ export default {
   data() {
     return {
       editProject: {
-        inputField: null
+        inputField: null,
+        data: {
+          index: this.projectIndex,
+          id: this.projectId,
+          name: this.projectName,
+          description: this.projectDescription
+        }
       },
       jazziconColors: [
         '#20bf6b', 
@@ -55,18 +79,28 @@ export default {
     }
   },
   props: [
-    'projectName',
+    'projectIndex',
     'projectId',
-    'projectCreatedOn'
+    'projectCreatedOn',
+    'projectName',
+    'projectDescription'
   ],
   components: {
     Jazzicon
-  },
-  
+  },  
   methods: {
     viewProject(projectId) {
       this.$router.push('/project/' + projectId)
     },
+    editProjectName() {
+      if ( this.editProject.data.name.length < 3 ) { return }
+
+      this.$store.dispatch('editProjectName', this.editProject.data)
+      this.editProject.inputField = null
+    },
+    // editProjectDescription() {
+    //   console.log('edit description')
+    // },
     deleteProject(projectId) {
       const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
@@ -75,7 +109,6 @@ export default {
         },
         buttonsStyling: false,
       })
-
 
       swalWithBootstrapButtons.fire({
         title: 'Are you sure?',
@@ -95,6 +128,11 @@ export default {
           )
         }
       })
+    },
+    clearInputFields() {
+      this.editProject.inputField = null
+      this.editProject.data.name = this.projectName
+      this.editProject.data.description = this.projectDescription
     }
   },
   filters: {
@@ -108,6 +146,10 @@ export default {
 </script>
 
 <style scoped>
+.wrapper {
+  padding: 0 1.25rem;
+}
+
 .card {
   transition: 0.3s;
   width: 300px;
@@ -125,6 +167,11 @@ export default {
 
 .card-body {
   padding-top: 10px;
+}
+
+.card-text {
+  height: 120px;
+  overflow: hidden;
 }
 
 .card-title {

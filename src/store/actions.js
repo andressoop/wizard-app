@@ -74,6 +74,14 @@ export default {
       console.error("Error creating new project: ",err)
     })
   },
+  editProjectName({commit}, editedProject) {
+    commit('updateProjectName', editedProject)
+    firebase.projectsCollection.doc(editedProject.id).update({
+      name: editedProject.name
+    }).catch(err => {
+      console.error("Error editing project name: ", err);
+    })
+  },
   deleteProject(context, projectId) {
     firebase.projectsCollection.doc(projectId).delete()
     .catch(err => {

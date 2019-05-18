@@ -25,6 +25,9 @@ export default {
   setProjectKanbanLists(state, val) {
     state.projectKanbanLists = val
   },
+  updateProjectName(state, editedProject) {
+    state.userProjects[editedProject.index].name = editedProject.name
+  },
   updateKanbanListName(state, editedList) {
     state.projectKanbanLists[editedList.index].name = editedList.name
   },
