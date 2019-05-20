@@ -364,5 +364,13 @@ export default {
     }).catch(err => {
       console.error("Error editing client list: ", err);
     })
-  }
+  },
+  editClientList({commit}, editedData) {
+    commit('setClientList', editedData)
+    firebase.clientListsCollection.doc(editedData.id).update({
+      clients: editedData.clients
+    }).catch(err => {
+      console.error("Error editing client list: ", err);
+    })
+  },
 }

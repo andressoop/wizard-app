@@ -68,6 +68,7 @@
           <th scope="col">Name</th>
           <th scope="col">Contact Person</th>
           <th scope="col">Email</th>
+          <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
@@ -75,6 +76,7 @@
           <td>{{ client.name }}</td>
           <td>{{ client.contactPerson }}</td>
           <td>{{ client.email }}</td>
+          <td><button type="button" class="btn btn-outline-danger btn-sm" @click="deleteClient(index)"><i class="far fa-trash-alt"></i></button></td>
         </tr>
       </tbody>
     </table>
@@ -113,6 +115,14 @@ export default {
     createClient() {
       this.newClient.createdOn = new Date()
       this.$store.dispatch('createNewClient', this.newClient)
+      this.clearInputFields()
+    },
+    deleteClient(clientIndex) {
+      let list = this.clientList
+      list.clients.splice(clientIndex, 1)
+      this.$store.dispatch('editClientList', list)
+    },
+    clearInputFields() {
       this.newClient.name = ''
       this.newClient.contactPerson = ''
       this.newClient.email = ''
@@ -123,5 +133,16 @@ export default {
 </script>
 
 <style>
+.fa-trash-alt {
+  color: #6C757D;
+}
 
+.btn-sm {
+  border: 0;
+}
+
+.btn-sm:hover .fa-trash-alt {
+  color: white;
+  transition: 0.2s ease;
+}
 </style>
