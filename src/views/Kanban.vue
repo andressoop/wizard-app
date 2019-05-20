@@ -1,41 +1,45 @@
 <template>
   <div class="container-fluid pl-5 mt-4">
 
-    <draggable 
-      tag="div" class="d-flex flex-row mr-5" 
-      group="lists"
-      v-model="projectLists" 
-      handle=".draggable-item" 
-      filter=".not-draggable-item"
-      animation=200
-      ghostClass="ghost"
-    >
-      <div v-for="(list, index) in projectLists" :key="list.id">
-        <KanbanList :listIndex="index" :listName="list.name" :listId="list.id" @showModal="showModal" />
-      </div>
+    <LoadingSpinner v-if="!loaded"></LoadingSpinner>
 
-      <div slot="footer"> 
-        <div class="card mr-5 mb-5">
-          <div class="card-header" @click="newList.inputActive = true">
-            <h5 class="card-title text-muted" v-if="newList.inputActive === false">Add new list</h5>
-            <input type="text" class="form-control" placeholder="Insert list name"
-              v-if="newList.inputActive === true" 
-              v-model.trim="newList.name" 
-              v-focus="true"
-              @keydown.tab.prevent="createList()"
-              @keyup.enter="createList()"
-              @blur="createList()"
-              @keyup.esc="newList.name = ''; newList.inputActive = false"
-            >
-          </div>
-        </div>        
-      </div>
+    <div v-else>
+      <draggable 
+        tag="div" class="d-flex flex-row mr-5" 
+        group="lists"
+        v-model="projectLists" 
+        handle=".draggable-item" 
+        filter=".not-draggable-item"
+        animation=200
+        ghostClass="ghost"
+      >
+        <div v-for="(list, index) in projectLists" :key="list.id">
+          <KanbanList :listIndex="index" :listName="list.name" :listId="list.id" @showModal="showModal" />
+        </div>
 
-    </draggable>
-        
-    <sweet-modal ref="modal" blocking @close="closeModal()">
-      <EditTaskModal :openTask="openTask" ref="closeModal"></EditTaskModal>
-    </sweet-modal>
+        <div slot="footer"> 
+          <div class="card mr-5 mb-5">
+            <div class="card-header" @click="newList.inputActive = true">
+              <h5 class="card-title text-muted" v-if="newList.inputActive === false">Add new list</h5>
+              <input type="text" class="form-control" placeholder="Insert list name"
+                v-if="newList.inputActive === true" 
+                v-model.trim="newList.name" 
+                v-focus="true"
+                @keydown.tab.prevent="createList()"
+                @keyup.enter="createList()"
+                @blur="createList()"
+                @keyup.esc="newList.name = ''; newList.inputActive = false"
+              >
+            </div>
+          </div>        
+        </div>
+
+      </draggable>
+          
+      <sweet-modal ref="modal" blocking @close="closeModal()">
+        <EditTaskModal :openTask="openTask" ref="closeModal"></EditTaskModal>
+      </sweet-modal>
+    </div>
 
   </div>
 </template>
@@ -45,11 +49,13 @@ import { SweetModal } from 'sweet-modal-vue'
 import KanbanList from '../components/KanbanList.vue'
 import Draggable from 'vuedraggable'
 import EditTaskModal from '@/components/EditTaskModal'
+import LoadingSpinner from '../components/ui/LoadingSpinner'
 
 export default {
   name: 'Kanban',
   data() {
     return {
+      loaded: false,
       openTask: {},
       newList: {
         inputActive: false,
@@ -62,7 +68,8 @@ export default {
     KanbanList,
     Draggable,
     SweetModal,
-    EditTaskModal
+    EditTaskModal,
+    LoadingSpinner
   },
   computed: {
     projectLists: {
@@ -93,6 +100,31 @@ export default {
     closeModal() {
      this.$refs.closeModal.closeModal()
    }
+  },
+  beforeCreate() {
+    var that = this
+    var ready = false
+
+    function checkReadiness() {
+      if (ready) {
+        return
+      }
+      try {
+        if(query) {
+          that.loaded = true
+          ready = true
+        } else {
+          throw 'Not loaded'
+        }
+      } catch(e) {
+        e
+      }
+      if (ready) {
+        clearInterval(interval)
+      }
+    }    
+    var query = this.$store.state.projectKanbanTasks
+    var interval = setInterval(checkReadiness, 500)
   },
   created() {
     this.$store.commit('setActiveProjectId', this.$route.params.id)

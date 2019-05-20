@@ -1,5 +1,6 @@
 <template>
   <div class="container-fluid pl-5 mt-4">
+    
     <LoadingSpinner v-if="!loaded"></LoadingSpinner>
 
     <div v-else>
@@ -25,7 +26,7 @@
 </template>
 
 <script>
-import { mapGetters} from 'vuex'
+import { mapGetters } from 'vuex'
 import Note from '../components/Note'
 import LoadingSpinner from '../components/ui/LoadingSpinner'
 
@@ -37,8 +38,7 @@ export default {
   },
   data() {
     return {
-      loaded: false,
-      hasNotes: false,
+      loaded: false
     }
   },
   computed: {
@@ -50,32 +50,32 @@ export default {
     }
   },
   beforeCreate() {
-    var that = this
     this.$store.commit('setActiveProjectId', this.$route.params.id)
     this.$store.dispatch('fetchProjectNotes', this.$route.params.id)
 
+    var that = this
     var ready = false
+
     function checkReadiness() {
       if (ready) {
-        return;
+        return
       }
       try {
-        if(checkNotes) {
-          if(checkNotes.id) { that.hasNotes = true }
-          that.loaded = true;
-          ready = true;
+        if(query) {
+          that.loaded = true
+          ready = true
         } else {
-          throw 'Not loaded';
+          throw 'Not loaded'
         }
       } catch(e) {
         e
       }
       if (ready) {
-        clearInterval(interval);
+        clearInterval(interval)
       }
     }    
-    var checkNotes = this.$store.state.projectNotes;
-    var interval = setInterval(checkReadiness, 500);
+    var query = this.$store.state.projectNotes
+    var interval = setInterval(checkReadiness, 500)
   },
   destroyed() {
     this.$store.commit('setProjectNotes', {})
