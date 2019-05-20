@@ -7,7 +7,7 @@
         <div class="form-label-group mr-2" :class="{invalid: $v.newProject.name.$error}">
           <input
             name="newProjectName"
-            maxlength="50"
+            maxlength="40"
             type="text"
             class="form-control"
             placeholder="Project name"
@@ -38,6 +38,7 @@
           :projectCreatedOn="project.createdOn"
           :projectName="project.name"
           :projectDescription="project.description"
+          :projectDueDate="project.dueDate"
         />
       </div>
     </div>

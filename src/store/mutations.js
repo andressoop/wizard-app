@@ -28,6 +28,9 @@ export default {
   updateProjectName(state, editedProject) {
     state.userProjects[editedProject.index].name = editedProject.name
   },
+  updateProjectDescription(state, editedProject) {
+    state.userProjects[editedProject.index].description = editedProject.description
+  },
   updateKanbanListName(state, editedList) {
     state.projectKanbanLists[editedList.index].name = editedList.name
   },

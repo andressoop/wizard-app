@@ -7,12 +7,12 @@
           <h4 class="card-title mt-4 w-100" v-if="editProject.inputField !== 'editName'" @click="editProject.inputField = 'editName'">{{ projectName }}</h4>
           <input type="text" class="form-control" style="width: 104%;"
             v-if="editProject.inputField === 'editName'"
-            maxlength="50"
+            maxlength="40"
             v-model.trim="editProject.data.name"
             v-focus="true"
-            @keyup.enter="editProjectName()"
-            @blur="editProjectName()"
-            @keyup.esc="clearInputFields()"
+            @keydown.enter="editProjectName"
+            @blur="editProjectName"
+            @keyup.esc="clearInputFields"
           >
         </div>
         <jazzicon class="jazzicon" :seed="projectCreatedOn.seconds" :diameter="300" :colors="jazziconColors" />
@@ -23,17 +23,23 @@
           <p class="small mt-3"># {{ projectId }}</p>
           <button type="button" class="btn btn-outline-danger btn-sm" @click="deleteProject(projectId)"><i class="far fa-trash-alt"></i></button>
         </div>
-        <p class="card-text text-muted small" v-if="!projectDescription">Add description...</p>
-        <p class="card-text" v-else>{{ projectDescription }}</p>
-        <input type="text-field" class="form-control" style="width: 104%; height: 100%"
+        <p class="card-text text-muted small" 
+          v-if="!projectDescription && editProject.inputField !== 'editDescription'"
+          @click="editProject.inputField = 'editDescription'">
+        Add description...</p>
+        <p class="card-text" 
+          v-else-if="projectDescription && editProject.inputField !== 'editDescription'"
+          @click="editProject.inputField = 'editDescription'">
+        {{ projectDescription }}</p>
+        <textarea class="form-control card-text"
             v-if="editProject.inputField === 'editDescription'"
-            maxlength="120"
+            maxlength="80"
             v-model.trim="editProject.data.description"
             v-focus="true"
-            @keyup.enter="editProjectDescription()"
-            @blur="editProjectDescription()"
-            @keyup.esc="clearInputFields()"
-          >
+            @keydown.enter="editProjectDescription"
+            @blur="editProjectDescription"
+            @keyup.esc="clearInputFields"
+          ></textarea>
       </div>
 
       <div class="card-footer">
@@ -98,9 +104,15 @@ export default {
       this.$store.dispatch('editProjectName', this.editProject.data)
       this.editProject.inputField = null
     },
-    // editProjectDescription() {
-    //   console.log('edit description')
-    // },
+    editProjectDescription(e) {
+      e.stopPropagation()
+      e.preventDefault()
+      e.returnValue = false
+
+      if ( !this.editProject.data.description ) { return }
+      this.$store.dispatch('editProjectDescription', this.editProject.data)
+      this.editProject.inputField = null
+    },
     deleteProject(projectId) {
       const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
@@ -146,6 +158,10 @@ export default {
 </script>
 
 <style scoped>
+textarea {
+  resize: none;
+}
+
 .wrapper {
   padding: 0 1.25rem;
 }
