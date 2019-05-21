@@ -25,6 +25,7 @@
                 v-if="newList.inputActive === true" 
                 v-model.trim="newList.name" 
                 v-focus="true"
+                maxlength="20"
                 @keydown.tab.prevent="createList()"
                 @keyup.enter="createList()"
                 @blur="createList()"

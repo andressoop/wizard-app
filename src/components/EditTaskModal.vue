@@ -8,6 +8,7 @@
           v-if="task.inputField === 'editName'"
           v-model.trim="task.data.name"
           v-focus="true"
+          maxlength="35"
           @keyup.enter="editTaskName()"
           @keyup.esc="task.data = openTask; task.inputField = null"
           @blur="editTaskName()">

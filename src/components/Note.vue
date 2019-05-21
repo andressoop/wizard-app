@@ -115,9 +115,10 @@
 
         </div>
       </div>
-    </editor-menu-bar>
 
-    <editor-content :editor="editor"/>
+    </editor-menu-bar>
+    <editor-content class="editor-content p-3" :editor="editor"></editor-content>
+
   </div>
 </template>
 
@@ -138,7 +139,6 @@ import {
   Strike,
   Underline,
   History,
-  Placeholder,
 } from 'tiptap-extensions'
 
 export default {
@@ -150,6 +150,7 @@ export default {
     return {
       editedNote: {},
       editor: new Editor({
+        autoFocus: true,
         extensions: [
           new BulletList(),
           new HardBreak(),
@@ -164,11 +165,6 @@ export default {
           new Strike(),
           new Underline(),
           new History(),
-          new Placeholder({
-            emptyClass: 'is-empty',
-            emptyNodeText: 'Write something here …',
-            showOnlyWhenEditable: true,
-          }),
         ],
         onUpdate: ({ getHTML }) => {
           this.editedNote.content = getHTML()
@@ -194,7 +190,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .editor p.is-empty:first-child::before {
   content: attr(data-empty-text);
   float: left;
@@ -202,5 +198,10 @@ export default {
   pointer-events: none;
   height: 0;
   font-style: italic;
+}
+
+.editor-content {
+  background: #FFF;
+  border-radius: 0.25rem;
 }
 </style>
