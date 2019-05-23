@@ -1,11 +1,20 @@
 <template>
-    <div class="d-flex flex-column bg-light task-card">
-      <p class="lead"> {{ listTask.name }}</p>
-      <hr>
-      <span class="text-muted small d-flex justify-content-end align-items-center">
-        <i class="far fa-clock d-flex mr-1" v-if="listTask.dueDate"></i> <span v-if="listTask.dueDate"> {{ listTask.dueDate | formatDate }} </span>
-      </span>
+  <div class="d-flex flex-column bg-light task-card">
+    <p class="lead"> {{ listTask.name }}</p>
+    <div class="d-inline-flex flex-row flex-wrap">
+      <span class="badge badge-light m-1" v-for="label in listTask.labels" :key="label.code">{{ label.name }}</span>
     </div>
+    <hr>
+    <div class="text-muted small d-flex justify-content-between align-items-center">
+      <div>
+        <span class="badge badge-info float-left py-1 px-2 mr-2" v-if="listTask.difficulty != 0">{{ listTask.difficulty }}</span>
+        <span v-if="listTask.duration">{{ listTask.duration }} min</span>
+      </div>
+      <div>
+        <i class="far fa-clock mr-1" v-if="listTask.dueDate"></i> <span v-if="listTask.dueDate"> {{ listTask.dueDate | formatDate }} </span>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>

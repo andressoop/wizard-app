@@ -10,7 +10,6 @@
           v-focus="true"
           maxlength="35"
           @keyup.enter="editTaskName()"
-          @keyup.esc="task.data = openTask; task.inputField = null"
           @blur="editTaskName()">
           <p class="text-muted small"># {{ openTask.id }}</p>
       </div>
@@ -72,7 +71,6 @@
           </div>
           <div>
             <button class="btn btn-outline-danger btn-sm" type="button" @click="task.data = openTask; editTaskDifficulty(0)" style="border: 0;"><i class="far fa-trash-alt"></i></button>
-            <!-- <i class="far fa-trash-alt" @click="taskDifficulty = '0'"></i>            -->
           </div>
         </div>
       </div>
