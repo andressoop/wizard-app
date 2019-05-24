@@ -2,7 +2,7 @@
   <div class="d-flex flex-column bg-light task-card">
     <p class="lead"> {{ listTask.name }}</p>
     <div class="d-inline-flex flex-row flex-wrap">
-      <span class="badge badge-light m-1" v-for="label in listTask.labels" :key="label.code">{{ label.name }}</span>
+      <span class="badge badge-light text-muted" v-for="label in listTask.labels" :key="label.code">{{ label.name }}</span>
     </div>
     <hr>
     <div class="text-muted small d-flex justify-content-between align-items-center">
