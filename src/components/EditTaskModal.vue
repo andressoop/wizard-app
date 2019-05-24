@@ -1,8 +1,9 @@
 <template>
   <form class="text-left">
+
     <div class="form-row">
       <div class="form-group col-md-12">
-        <h3 class="modal-h3" v-if="task.inputField !== 'editName'" @click="task.inputField = 'editName'; task.data = openTask">{{ openTask.name }}</h3>
+        <h3 class="modal-h3" v-if="task.inputField !== 'editName'" @click="task.inputField = 'editName'; task.data.name = openTask.name">{{ openTask.name }}</h3>
         <input type="text" class="form-control" id="taskName" 
           placeholder="Task name" 
           v-if="task.inputField === 'editName'"
@@ -14,19 +15,22 @@
           <p class="text-muted small"># {{ openTask.id }}</p>
       </div>
     </div>
+
     <div class="form-group">
       <label for="taskDescription">Description</label>
       <textarea class="form-control" id="taskDescription" rows="3" 
         v-model="openTask.description" 
-        @click="task.inputField = 'editDescription'; task.data = openTask"
+        @click="task.data.description = openTask.description"
         @blur="editTaskDescription()"
       ></textarea>
     </div>
+
     <div class="form-row">
       <div class="form-group col-md-6">
         <label for="createdOn">Created on</label>
         <input type="text" class="date-field form-control text-muted" id="createdOn" disabled v-model="createdOn">
       </div>
+
       <div class="form-group col-md-6">
         <label for="dueDate">Due date</label>
         <datepicker name="dueDate" input-class="date-field date-input text-muted"
@@ -41,7 +45,9 @@
         ></datepicker>
       </div>
     </div>
+
     <div class="form-row">
+
       <div class="form-group col-md-6">
         <label for="difficulty">Difficulty</label>
         <div id="difficulty" class="input-group d-flex align-items-center">
@@ -50,30 +56,31 @@
             <label class="custom-control-label" for="difficulty0">0</label>
           </div>
           <div class="custom-control custom-radio custom-control-inline">
-            <input type="radio" id="difficulty1" name="difficulty" class="custom-control-input" value="1" v-model="openTask.difficulty" @click="task.data = openTask; editTaskDifficulty(1)">
+            <input type="radio" id="difficulty1" name="difficulty" class="custom-control-input" value="1" v-model="openTask.difficulty" @click="editTaskDifficulty(1)">
             <label class="custom-control-label" for="difficulty1">1</label>
           </div>
           <div class="custom-control custom-radio custom-control-inline">
-            <input type="radio" id="difficulty2" name="difficulty" class="custom-control-input" value="2" v-model="openTask.difficulty" @click="task.data = openTask; editTaskDifficulty(2)">
+            <input type="radio" id="difficulty2" name="difficulty" class="custom-control-input" value="2" v-model="openTask.difficulty" @click="editTaskDifficulty(2)">
             <label class="custom-control-label" for="difficulty2">2</label>
           </div>
           <div class="custom-control custom-radio custom-control-inline">
-            <input type="radio" id="difficulty3" name="difficulty" class="custom-control-input" value="3" v-model="openTask.difficulty" @click="task.data = openTask; editTaskDifficulty(3)">
+            <input type="radio" id="difficulty3" name="difficulty" class="custom-control-input" value="3" v-model="openTask.difficulty" @click="editTaskDifficulty(3)">
             <label class="custom-control-label" for="difficulty3">3</label>
           </div>
           <div class="custom-control custom-radio custom-control-inline">
-            <input type="radio" id="difficulty4" name="difficulty" class="custom-control-input" value="4" v-model="openTask.difficulty" @click="task.data = openTask; editTaskDifficulty(4)">
+            <input type="radio" id="difficulty4" name="difficulty" class="custom-control-input" value="4" v-model="openTask.difficulty" @click="editTaskDifficulty(4)">
             <label class="custom-control-label" for="difficulty4">4</label>
           </div>
           <div class="custom-control custom-radio custom-control-inline">
-            <input type="radio" id="difficulty5" name="difficulty" class="custom-control-input" value="5" v-model="openTask.difficulty" @click="task.data = openTask; editTaskDifficulty(5)">
+            <input type="radio" id="difficulty5" name="difficulty" class="custom-control-input" value="5" v-model="openTask.difficulty" @click="editTaskDifficulty(5)">
             <label class="custom-control-label" for="difficulty5">5</label>
           </div>
           <div>
-            <button class="btn btn-outline-danger btn-sm" type="button" @click="task.data = openTask; editTaskDifficulty(0)" style="border: 0;"><i class="far fa-trash-alt"></i></button>
+            <button class="btn btn-outline-danger btn-sm" type="button" @click="openTask.difficulty = 0; editTaskDifficulty(0)" style="border: 0;"><i class="far fa-trash-alt"></i></button>
           </div>
         </div>
       </div>
+
       <div class="form-group col-md-6">
         <label for="duration">Duration</label>
         <div class="input-group">
@@ -83,15 +90,17 @@
           <input type="text" class="form-control" id="duration" 
             v-on:keypress="isNumber"
             v-model.trim="openTask.duration"
-            @click="task.inputField = 'editDuration'; task.data = openTask"
+            @click="task.data.duration = openTask.duration"
             @blur="editTaskDuration()"
           >
           <div class="input-group-append" @click="deleteTaskDuration()">
-            <div class="input-group-text"><i class="far fa-trash-alt"></i></div>            
+            <button type="button" class="btn btn-outline-danger btn-sm px-3"><i class="far fa-trash-alt"></i></button>        
           </div>
         </div>
       </div>
+
     </div>
+
     <div class="form-row">
       <div class="form-group col-md-12">
         <label for="taskLabels">Labels</label>
@@ -108,7 +117,9 @@
         ></multiselect>
       </div>
     </div>
+
     <hr>
+
     <div class="form-row">
       <div class="form-group">
         <label for="taskTodo">Todo</label>
@@ -139,14 +150,13 @@
             </div>          
             <input type="text" class="form-control text-muted" :class="[{'line-through' : todo.checked}]" disabled v-model="todo.name">
             <div class="input-group-append">
-              <div class="input-group-text" @click="deleteTodoItem(index)"><i class="far fa-trash-alt"></i></div>
+              <div class="input-group-text btn btn-outline-danger" @click="deleteTodoItem(index)"><i class="far fa-trash-alt"></i></div>
             </div>
           </div>
         </draggable>
-
       </div>
     </div>
-    
+
       <!-- <button type="submit" class="btn btn-primary mr-2"><i class="fas fa-save"></i> Save</button>
       <button type="submit" class="btn btn-outline-warning mr-2"><i class="fas fa-archive"></i> Archive</button>
       <button type="submit" class="btn btn-outline-danger mr-2"><i class="fas fa-trash-alt"></i> Delete</button>
@@ -264,14 +274,12 @@ export default {
       if(data) { 
         newDate = new Date(data) 
       }
-      this.task.inputField = 'editDueDate'
-      this.task.data = this.openTask
       this.task.data.dueDate = newDate
       this.$store.dispatch('editTaskDueDate', this.task.data)
     },
     createTodoItem() {
       if(this.newTodo == '') { return }
-      this.task.data = this.openTask
+      this.task.data.todo = this.openTask.todo
       if(!this.task.data.todo) {
         this.task.data.todo = [{checked: false, name: this.newTodo}]
       } else {
@@ -281,11 +289,12 @@ export default {
       this.newTodo = ''
     },
     changeTodoList() {
-      this.task.data = this.openTask
+      console.log(this.openTask.todo)
+      this.task.data.todo = this.openTask.todo
       this.$store.dispatch('editTaskTodos', this.task.data)
     },
     deleteTodoItem(todoIndex) {
-      this.task.data = this.openTask
+      this.task.data.todo = this.openTask.todo
       this.task.data.todo.splice(todoIndex, 1)
       this.$store.dispatch('editTaskTodos', this.task.data)
     },
@@ -304,6 +313,9 @@ export default {
        data: {}
      }
    }
+  },
+  updated() {
+    this.task.data.id = this.openTask.id
   },
   filters: {
     formatDate(val) {
@@ -369,4 +381,13 @@ export default {
 .sweet-action-close:hover {
   background: #6C63FF!important;
 }
+
+.btn-outline-danger:hover {
+  cursor: pointer;
+}
+
+.btn-outline-danger:hover > i {
+  color: #FFF;
+}
+
 </style>
