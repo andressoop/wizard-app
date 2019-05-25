@@ -27,13 +27,12 @@
                   <span class="text-primary" v-else> Go to App</span>
                 </button>
               </router-link>
-              <button
-                class="btn btn-lg btn-light btn-login text-uppercase font-weight-bold mb-2"
+              <a href="https://dionix.eu/wizard-app/Wizard.zip"><button
+                class="btn btn-lg btn-outline-light btn-login text-uppercase font-weight-bold mb-2"
                 type="button"
-                disabled
               >
-                <i class="fa fa-download"></i> Download
-              </button>
+                <i class="fa fa-download"></i> <span> Download for Win 10</span>
+              </button></a>
             </div>
           </div>
           <div class="col-4 mt-1">
@@ -252,13 +251,12 @@
               </button>
             </router-link>
             <span class="h4 text-light mx-3">or</span>
-            <button
-              class="btn btn-lg btn-light btn-login text-uppercase font-weight-bold mb-2"
+            <a href="https://dionix.eu/wizard-app/Wizard.zip"><button
+              class="btn btn-lg btn-outline-light btn-login text-uppercase font-weight-bold mb-2"
               type="button"
-              disabled
             >
-              <i class="fa fa-download"></i> Download
-            </button>
+              <i class="fa fa-download"></i> <span> Download for Win 10</span>
+            </button></a>
           </div>
         </div>
       </div>
@@ -358,5 +356,9 @@ export default {
   .card {
     margin-bottom: 30px;
   }
+}
+
+.btn-outline-light:hover {
+ color: #6C63FF !important;
 }
 </style>
