@@ -37,7 +37,7 @@
 
       </draggable>
           
-      <sweet-modal ref="modal" blocking @close="closeModal()">
+      <sweet-modal ref="modal" @close="closeModal()">
         <EditTaskModal :openTask="openTask" ref="closeModal"></EditTaskModal>
       </sweet-modal>
     </div>

@@ -50,27 +50,27 @@
             <label class="custom-control-label" for="difficulty0">0</label>
           </div>
           <div class="custom-control custom-radio custom-control-inline">
-            <input type="radio" id="difficulty1" name="difficulty" class="custom-control-input" value="1" v-model="openTask.difficulty" @click="task.data = openTask; editTaskDifficulty(1)">
+            <input type="radio" id="difficulty1" name="difficulty" class="custom-control-input" value="1" v-model="openTask.difficulty" @click="editTaskDifficulty(1)">
             <label class="custom-control-label" for="difficulty1">1</label>
           </div>
           <div class="custom-control custom-radio custom-control-inline">
-            <input type="radio" id="difficulty2" name="difficulty" class="custom-control-input" value="2" v-model="openTask.difficulty" @click="task.data = openTask; editTaskDifficulty(2)">
+            <input type="radio" id="difficulty2" name="difficulty" class="custom-control-input" value="2" v-model="openTask.difficulty" @click="editTaskDifficulty(2)">
             <label class="custom-control-label" for="difficulty2">2</label>
           </div>
           <div class="custom-control custom-radio custom-control-inline">
-            <input type="radio" id="difficulty3" name="difficulty" class="custom-control-input" value="3" v-model="openTask.difficulty" @click="task.data = openTask; editTaskDifficulty(3)">
+            <input type="radio" id="difficulty3" name="difficulty" class="custom-control-input" value="3" v-model="openTask.difficulty" @click="editTaskDifficulty(3)">
             <label class="custom-control-label" for="difficulty3">3</label>
           </div>
           <div class="custom-control custom-radio custom-control-inline">
-            <input type="radio" id="difficulty4" name="difficulty" class="custom-control-input" value="4" v-model="openTask.difficulty" @click="task.data = openTask; editTaskDifficulty(4)">
+            <input type="radio" id="difficulty4" name="difficulty" class="custom-control-input" value="4" v-model="openTask.difficulty" @click="editTaskDifficulty(4)">
             <label class="custom-control-label" for="difficulty4">4</label>
           </div>
           <div class="custom-control custom-radio custom-control-inline">
-            <input type="radio" id="difficulty5" name="difficulty" class="custom-control-input" value="5" v-model="openTask.difficulty" @click="task.data = openTask; editTaskDifficulty(5)">
+            <input type="radio" id="difficulty5" name="difficulty" class="custom-control-input" value="5" v-model="openTask.difficulty" @click="editTaskDifficulty(5)">
             <label class="custom-control-label" for="difficulty5">5</label>
           </div>
           <div>
-            <button class="btn btn-outline-danger btn-sm" type="button" @click="task.data = openTask; editTaskDifficulty(0)" style="border: 0;"><i class="far fa-trash-alt"></i></button>
+            <button class="btn btn-outline-danger btn-sm" type="button" @click="editTaskDifficulty(0)" style="border: 0;"><i class="far fa-trash-alt"></i></button>
           </div>
         </div>
       </div>
@@ -87,7 +87,7 @@
             @blur="editTaskDuration()"
           >
           <div class="input-group-append" @click="deleteTaskDuration()">
-            <div class="input-group-text"><i class="far fa-trash-alt"></i></div>            
+            <div class="input-group-text btn btn-outline-danger"><i class="far fa-trash-alt"></i></div>            
           </div>
         </div>
       </div>
@@ -131,7 +131,7 @@
           handle=".draggable-item" 
         >        
           <div class="input-group todo-item" v-for="(todo, index) in openTask.todo" v-bind:key="index">
-            <div class="input-group-prepend">
+            <div class="input-group-prepend"> 
               <div class="input-group-text">
                 <i class="fa fa-grip-vertical todo-handle draggable-item"></i>
                 <input type="checkbox" class="todo-checkbox" v-model="todo.checked" @click="changeTodoList">
@@ -247,12 +247,9 @@ export default {
       }
     },
     editTaskDifficulty(value) {
-      if (this.task.data.difficulty) {
-        this.task.data.difficulty = value;
-        this.$store.dispatch('editDifficultyOnTask', this.task.data)
-      } else {
-        return
-      }
+      this.task.data.id = this.openTask.id
+      this.task.data.difficulty = value
+      this.$store.dispatch('editDifficultyOnTask', this.task.data)
     },
     deleteTaskDuration() {
       let data = this.openTask

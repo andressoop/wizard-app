@@ -7,7 +7,7 @@
     <hr>
     <div class="text-muted small d-flex justify-content-between align-items-center">
       <div>
-        <span class="badge badge-info float-left py-1 px-2 mr-2" v-if="listTask.difficulty != 0">{{ listTask.difficulty }}</span>
+        <span class="badge badge-success float-left py-1 px-2 mr-2" v-if="listTask.difficulty != 0">{{ listTask.difficulty }}</span>
         <span v-if="listTask.duration">{{ listTask.duration }} min</span>
       </div>
       <div>
