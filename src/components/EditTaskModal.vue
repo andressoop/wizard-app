@@ -139,7 +139,7 @@
             </div>          
             <input type="text" class="form-control text-muted" :class="[{'line-through' : todo.checked}]" disabled v-model="todo.name">
             <div class="input-group-append">
-              <div class="input-group-text" @click="deleteTodoItem(index)"><i class="far fa-trash-alt"></i></div>
+              <div class="input-group-text btn btn-outline-danger" @click="deleteTodoItem(index)"><i class="far fa-trash-alt"></i></div>
             </div>
           </div>
         </draggable>
@@ -369,4 +369,13 @@ export default {
 .sweet-action-close:hover {
   background: #6C63FF!important;
 }
+
+.btn-outline-danger:hover {
+  cursor: pointer;
+}
+
+.btn-outline-danger:hover > i {
+  color: #FFF;
+}
+
 </style>
