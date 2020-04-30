@@ -23,7 +23,7 @@
     "electron-builder": "^20.40.2",
     "express": "^4.16.4",
     "firebase": "^5.11.1",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "lodash": "^4.17.11",
     "moment": "^2.24.0",
     "popper.js": "^1.15.0",
