@@ -52,7 +52,7 @@
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "^24.7.1",
     "babel-preset-env": "^1.7.0",
-    "electron": "^4.1.4",
+    "electron": "^7.2.4",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0",
     "jest": "^24.7.1",
